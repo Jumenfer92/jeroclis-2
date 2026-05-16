@@ -1,0 +1,1914 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HeroClix OS // KPRESE LABS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body, #root { width: 100%; height: 100%; overflow: hidden; }
+    body { background: #080810; font-family: 'Share Tech Mono', 'Courier New', monospace; color: #C9A050; }
+    .orbitron { font-family: 'Orbitron', 'Share Tech Mono', monospace; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: #0D0D16; }
+    ::-webkit-scrollbar-thumb { background: #A97C37; border-radius: 2px; }
+    .nav-item { transition: all 0.2s ease; cursor: pointer; border-left: 3px solid transparent; }
+    .nav-item:hover { border-left-color: #A97C37; background: rgba(169,124,55,0.1); }
+    .nav-item.active { border-left-color: #A97C37; background: rgba(169,124,55,0.15); }
+    .color-btn { transition: transform 0.15s, box-shadow 0.15s; cursor: pointer; }
+    .color-btn:hover { transform: scale(1.07); }
+    .color-btn.sel { transform: scale(1.1); outline: 2px solid white; outline-offset: 2px; }
+    .fade-in { animation: fadeIn 0.25s ease; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+    .scan-line { background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(169,124,55,0.015) 2px,rgba(169,124,55,0.015) 4px); pointer-events:none; position:absolute; inset:0; z-index:0; }
+    .panel { background: #13131A; border: 1px solid rgba(169,124,55,0.35); position: relative; }
+    .corner::before, .corner::after { content:''; position:absolute; width:12px; height:12px; border-color:#A97C37; border-style:solid; }
+    .corner::before { top:5px; left:5px; border-width:2px 0 0 2px; }
+    .corner::after { bottom:5px; right:5px; border-width:0 2px 2px 0; }
+    .btn-gold { background:linear-gradient(135deg,#7A5820,#A97C37); border:1px solid #C9A050; color:#080810; font-family:'Share Tech Mono',monospace; font-weight:bold; cursor:pointer; transition:all 0.2s; }
+    .btn-gold:hover { background:linear-gradient(135deg,#A97C37,#D4A855); box-shadow:0 0 14px rgba(169,124,55,0.5); transform:translateY(-1px); }
+    .btn-outline { background:transparent; border:1px solid rgba(169,124,55,0.4); color:#A97C37; font-family:'Share Tech Mono',monospace; cursor:pointer; transition:all 0.2s; }
+    .btn-outline:hover { border-color:#A97C37; background:rgba(169,124,55,0.1); box-shadow:0 0 8px rgba(169,124,55,0.25); }
+    .btn-red { background:transparent; border:1px solid rgba(220,50,50,0.4); color:#DC3232; font-family:'Share Tech Mono',monospace; cursor:pointer; transition:all 0.2s; }
+    .btn-red:hover { border-color:#DC3232; background:rgba(220,50,50,0.1); }
+    .btn-blue { background:transparent; border:1px solid rgba(59,130,246,0.5); color:#60A5FA; font-family:'Share Tech Mono',monospace; cursor:pointer; transition:all 0.2s; }
+    .btn-blue:hover { border-color:#60A5FA; background:rgba(59,130,246,0.1); }
+    input, textarea, select { background:rgba(169,124,55,0.06); border:1px solid rgba(169,124,55,0.3); color:#C9A050; font-family:'Share Tech Mono',monospace; outline:none; transition:border-color 0.2s; }
+    input:focus, textarea:focus, select:focus { border-color:#A97C37; box-shadow:0 0 8px rgba(169,124,55,0.25); }
+    input::placeholder, textarea::placeholder { color:rgba(169,124,55,0.35); }
+    select option { background:#13131A; color:#C9A050; }
+    .tag { display:inline-block; font-size:9px; padding:1px 6px; background:rgba(169,124,55,0.1); border:1px solid rgba(169,124,55,0.3); color:rgba(169,124,55,0.7); }
+    .cat-btn { transition:all 0.2s; cursor:pointer; text-align:center; padding:8px 4px; }
+    .cat-btn:hover { background:rgba(169,124,55,0.12); }
+    .cat-btn.active { background:rgba(169,124,55,0.2); box-shadow:0 0 8px rgba(169,124,55,0.3); }
+    .char-row { background:#13131A; border:1px solid rgba(169,124,55,0.2); display:flex; align-items:center; gap:8px; padding:8px; transition:border-color 0.2s; }
+    .char-row:hover { border-color:rgba(169,124,55,0.4); }
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.85); display:flex; align-items:center; justify-content:center; z-index:100; }
+    .modal { background:#13131A; border:1px solid #A97C37; box-shadow:0 0 40px rgba(169,124,55,0.5); padding:20px; width:100%; max-width:480px; }
+    .over-limit { color:#EF4444; text-shadow:0 0 12px rgba(239,68,68,0.7); }
+    .alert-bar { background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.5); color:#FCA5A5; padding:8px 12px; font-size:11px; text-align:center; }
+    .pwr-type { font-size:9px; padding:2px 8px; background:rgba(169,124,55,0.12); border:1px solid rgba(169,124,55,0.3); color:#A97C37; letter-spacing:1px; display:inline-block; }
+    .prob-bar-wrap { background:rgba(169,124,55,0.08); border:1px solid rgba(169,124,55,0.2); border-radius:2px; overflow:hidden; height:14px; }
+    .prob-bar { height:100%; transition:width 0.4s ease; }
+    .dice-face { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; background:#13131A; border:1px solid rgba(169,124,55,0.4); border-radius:4px; font-size:16px; }
+    .ta-card { background:#13131A; border:1px solid rgba(169,124,55,0.25); padding:14px; transition:border-color 0.2s; cursor:default; }
+    .ta-card:hover { border-color:rgba(169,124,55,0.5); }
+    .ta-badge { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:50%; font-size:14px; flex-shrink:0; border:2px solid rgba(255,255,255,0.15); }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+const { useState, useEffect, useCallback, useRef } = React;
+
+// ═══════════════════════════════════════════════════════════
+//  PAC DATA — PODERES Y HABILIDADES
+// ═══════════════════════════════════════════════════════════
+const COLORS = [
+  { id:'red',       label:'Rojo',        bg:'#DC2626', fg:'#fff' },
+  { id:'orange',    label:'Naranja',     bg:'#EA580C', fg:'#fff' },
+  { id:'yellow',    label:'Amarillo',    bg:'#CA8A04', fg:'#fff' },
+  { id:'green',     label:'Verde',       bg:'#16A34A', fg:'#fff' },
+  { id:'lightblue', label:'Azul Claro',  bg:'#0EA5E9', fg:'#fff' },
+  { id:'darkblue',  label:'Azul Oscuro', bg:'#1D4ED8', fg:'#fff' },
+  { id:'purple',    label:'Morado',      bg:'#7C3AED', fg:'#fff' },
+  { id:'pink',      label:'Rosa',        bg:'#DB2777', fg:'#fff' },
+  { id:'brown',     label:'Marrón',      bg:'#92400E', fg:'#fff' },
+  { id:'black',     label:'Negro',       bg:'#374151', fg:'#9CA3AF' },
+  { id:'white',     label:'Blanco',      bg:'#E5E7EB', fg:'#111827' },
+];
+
+const PAC = {
+  movement: {
+    id:'movement', label:'MOVIMIENTO', labelEn:'Speed', icon:'⚡', accent:'#0EA5E9',
+    powers: {
+      red:      { name:'Charge', nameEs:'Carga', type:'Acción de Poder', desc:'Da a este personaje una acción de poder. Muévelo hasta la mitad de su valor de Movimiento hacia un personaje rival, luego puede realizar un ataque de combate cercano. Si realizó el movimiento, aplica +2 al resultado del dado de Daño en ese ataque.', kw:['Combate Cercano','½ Movimiento','Acción de Poder'] },
+      orange:   { name:'Hypersonic Speed', nameEs:'Velocidad Hipersónica', type:'Acción de Poder', desc:'Da a este personaje una acción de poder. Mueve hasta su valor de Movimiento completo, realiza un ataque cercano o a distancia gratuito (el valor de Daño es 1 durante este ataque), luego mueve hasta su valor de Movimiento de nuevo. No puede ser transportado durante esta acción. Ignora el daño por empuje en el primer movimiento.', kw:['Movimiento Doble','Daño=1','Acción de Poder'] },
+      yellow:   { name:'Phasing / Teleport', nameEs:'Desvanecimiento / Teletransporte', type:'Acción de Poder', desc:'Da a este personaje una acción de poder y muévelo hasta su valor de Movimiento. El terreno obstaculizador y los personajes no bloquean el movimiento, aunque el terreno obstaculizador reduce el movimiento en 1 por cuadro. Puede moverse a través de personajes enemigos sin restricciones.', kw:['Intangibilidad','Ignorar Personajes','Acción de Poder'] },
+      green:    { name:'Plasticity', nameEs:'Plasticidad', type:'Pasiva', desc:'Los personajes rivales adyacentes no pueden moverse ni ser colocados a menos que escapen con éxito. Modificador –2 a sus tiradas de escape. Este personaje tiene éxito automático en sus propias tiradas de escape. Representa la capacidad del personaje de estirarse y atrapar rivales.', kw:['Control','Escape Automático','Pasiva'] },
+      lightblue:{ name:'Leap / Climb', nameEs:'Salto / Escalada', type:'Pasiva', desc:'Este personaje ignora el terreno obstaculizador y el terreno elevado a efectos de movimiento. Puede transportar a 1 personaje amigo sin capacidad de vuelo. Puede trepar muros y superficies verticales sin coste adicional de movimiento.', kw:['Terreno Elevado','Transporte x1','Pasiva'] },
+      darkblue: { name:'Running Shot', nameEs:'Disparo en Movimiento', type:'Acción de Poder', desc:'Da a este personaje una acción de poder. Muévelo hasta la mitad de su valor de Movimiento. Luego realiza un ataque de combate a distancia contra cualquier objetivo válido dentro de su rango y línea de fuego al final del movimiento.', kw:['Combate a Distancia','½ Movimiento','Acción de Poder'] },
+      purple:   { name:'Sidestep', nameEs:'Esquivar', type:'Acción Gratuita', desc:'Da a este personaje una acción gratuita para moverlo hasta 2 cuadros. Este movimiento no puede atravesar personajes ni terreno bloqueado. No puede usarse para cargar ni atacar. Puede realizarse antes o después de otra acción del personaje.', kw:['2 Cuadros','Sin Ataque','Acción Gratuita'] },
+      pink:     { name:'Stealth', nameEs:'Sigilo', type:'Pasiva', desc:'Las líneas de fuego trazadas hacia este personaje que pasen a través de terreno obstaculizador quedan bloqueadas. Los atacantes a distancia no pueden apuntarle si la LoF atraviesa terreno obstaculizador. No aplica en combate cercano ni cuando el personaje ataca.', kw:['Bloqueo LoF','Terreno Obstaculizador','Pasiva'] },
+      brown:    { name:'Earthbound / Neutralized', nameEs:'Arraigado / Neutralizado', type:'Pasiva (Penalización)', desc:'Este personaje no puede usar ninguna habilidad de vuelo, movimiento especial ni ser transportado. Todos sus valores de Movimiento se reducen a la mitad (mínimo 1). Esta habilidad reemplaza y cancela cualquier otra habilidad de movimiento activa en el clic actual.', kw:['Penalización','½ Movimiento','Sin Vuelo'] },
+      black:    { name:'Flier (Símbolo ✈)', nameEs:'Volador', type:'Característica', desc:'Este personaje puede volar. Ignora todo el terreno excepto el bloqueado durante el movimiento. Puede transportar personajes amigos sin capacidad de vuelo. Se mueve a/desde terreno elevado sin coste extra. Los personajes voladores no son afectados por ataques de Área de Efecto en el suelo si están en vuelo.', kw:['Vuelo','Transporte','Terreno Libre'] },
+      white:    { name:'Transporter', nameEs:'Transportador', type:'Característica', desc:'Este personaje puede llevar hasta [X] personajes amigos durante un movimiento (X indicado en su tarjeta). Los pasajeros se colocan en cuadros adyacentes al destino final. Los pasajeros no pueden realizar acciones durante el transporte. Puede atacar tras transportar si posee la habilidad correspondiente.', kw:['Transporte Múltiple','Pasajeros','Característica'] },
+    }
+  },
+  attack: {
+    id:'attack', label:'ATAQUE', labelEn:'Attack', icon:'⚔️', accent:'#DC2626',
+    powers: {
+      red:      { name:'Blades / Claws / Fangs', nameEs:'Cuchillas / Garras / Colmillos', type:'Habilidad de Ataque', desc:'Cuando este personaje realiza un ataque de combate cercano, lanza 1d6 en lugar de usar su valor de Daño normal. Ese resultado es el Daño del ataque. Con un 6 natural, el ataque ignora adicionalmente la Invulnerabilidad y la Impenetrabilidad del defensor.', kw:['1d6 Daño','Ignorar Reducción (6)','Cercano'] },
+      orange:   { name:'Penetrating / Psychic Blast', nameEs:'Disparo Penetrante / Explosión Psíquica', type:'Habilidad de Ataque', desc:'El daño de todos los ataques de este personaje ignora las habilidades de reducción de daño del defensor (Resistencia, Invulnerabilidad, Impenetrabilidad, Impervious). El daño se aplica directamente a los clics de vida. Aplica tanto en combate cercano como a distancia.', kw:['Ignorar Toda Reducción','Penetrante','Cercano y Distancia'] },
+      yellow:   { name:'Pulse Wave', nameEs:'Onda de Pulso', type:'Acción de Poder', desc:'Da a este personaje una acción de poder. Realiza un ataque que afecta a TODOS los personajes (amigos y rivales) dentro del rango. El Daño se divide entre el número de objetivos (mínimo 1). Ningún objetivo puede usar reducción de daño ni habilidades de evasión contra este ataque.', kw:['Área Total','Daño Dividido','Ignora Evasión'] },
+      green:    { name:'Exploit Weakness', nameEs:'Explotar Debilidad', type:'Habilidad de Ataque', desc:'El daño de los ataques de combate CERCANO de este personaje ignora las habilidades de reducción de daño del defensor. Solo aplica en cuerpo a cuerpo. Los ataques a distancia siguen siendo reducibles normalmente. No aplica contra Barrier ni contra objetos inanimados.', kw:['Ignorar Reducción','Solo Cercano','Cuerpo a Cuerpo'] },
+      lightblue:{ name:'Incapacitate', nameEs:'Incapacitar', type:'Habilidad de Ataque', desc:'Cuando este personaje realiza un ataque exitoso, en lugar de infligir daño coloca un marcador de acción en el objetivo. Si el objetivo ya tiene un marcador de acción, recibe 1 punto de daño en su lugar. Un personaje con 2 marcadores de acción está incapacitado y no puede actuar ese turno.', kw:['Marcadores de Acción','Control','Sin Daño Directo'] },
+      darkblue: { name:'Energy Explosion', nameEs:'Explosión de Energía', type:'Habilidad de Ataque', desc:'Al impactar con un ataque a distancia, el daño "salta" a todos los personajes adyacentes al objetivo principal. Cada personaje adyacente recibe 1 punto de daño (reducible normalmente). El objetivo principal recibe el Daño normal del atacante. Los objetos adyacentes también son destruidos.', kw:['Daño en Cadena','Splash 1 Daño','Ataque a Distancia'] },
+      purple:   { name:'Mind Control', nameEs:'Control Mental', type:'Acción de Poder', desc:'Da a este personaje una acción de poder. Elige un personaje rival dentro del rango y línea de fuego. Si el ataque tiene éxito, ese personaje realiza una acción gratuita controlada por el atacante (puede dañar a sus propios aliados). Tras el efecto, el controlador recibe daño = coste del personaje controlado ÷ 10 (redondeado arriba).', kw:['Control Temporal','Daño al Controlador','Acción de Poder'] },
+      pink:     { name:'Poison', nameEs:'Veneno', type:'Pasiva', desc:'Al inicio del turno de CADA jugador, todos los personajes rivales adyacentes a este personaje reciben 1 punto de daño. Este daño no es un ataque, no puede ser evadido con Super Sentidos ni Cambio de Forma, y no puede ser reducido por ninguna habilidad de reducción de daño estándar.', kw:['Daño Pasivo','Inicio de Turno','No Reducible'] },
+      brown:    { name:'Quake', nameEs:'Terremoto', type:'Acción de Poder', desc:'Da a este personaje una acción de poder. Realiza un ataque de combate cercano contra TODOS los personajes adyacentes (amigos y rivales). El Daño se reduce a la mitad (mínimo 1). Los personajes afectados que estén erguidos son derribados. Los objetos adyacentes son destruidos.', kw:['Área Adyacente','Derribar','½ Daño'] },
+      black:    { name:'Super Strength', nameEs:'Superfuerza', type:'Pasiva', desc:'Este personaje puede recoger y usar objetos como armas (pesados: +2 Daño; ligeros: +1 Daño, destruido tras usarlo). Puede lanzar objetos hasta 4 cuadros como ataque alternativo. Puede recoger y lanzar a otros personajes de menor coste como si fueran objetos pesados.', kw:['Objetos','Lanzar','Daño Mejorado'] },
+      white:    { name:'Force Blast', nameEs:'Ráfaga de Fuerza', type:'Acción Gratuita', desc:'Da a este personaje una acción gratuita. Ataca a un personaje rival adyacente. Si tiene éxito, el objetivo es empujado 1d6 cuadros en dirección opuesta. Si colisiona con un obstáculo o personaje, recibe daño adicional por impacto según las reglas de colisión. Este ataque no inflige daño directo por sí mismo.', kw:['Empujar','Colisión','Acción Gratuita'] },
+    }
+  },
+  defense: {
+    id:'defense', label:'DEFENSA', labelEn:'Defense', icon:'🛡️', accent:'#16A34A',
+    powers: {
+      red:      { name:'Impervious', nameEs:'Impenetrabilidad', type:'Pasiva', desc:'Cuando este personaje recibiría daño reducible, lanza 1d6. Con resultado 5–6 el daño se reduce a 0 (inmunidad total). Con cualquier otro resultado, reduce el daño en 2 (mínimo 1). Es la habilidad de reducción de daño más poderosa de la PAC estándar.', kw:['50% Inmunidad','–2 Daño','Dado Defensa'] },
+      orange:   { name:'Invulnerability', nameEs:'Invulnerabilidad', type:'Pasiva', desc:'Cuando este personaje recibiría daño reducible, reduce ese daño en 2 automáticamente (mínimo 1). No requiere tirada de dado. Habilidad de reducción de daño de nivel alto. Segunda mejor reducción estándar tras Impervious.', kw:['–2 Daño Automático','Sin Tirada','Alta Resistencia'] },
+      yellow:   { name:'Toughness', nameEs:'Resistencia', type:'Pasiva', desc:'Cuando este personaje recibiría daño reducible, reduce ese daño en 1 automáticamente (mínimo 1). No requiere tirada de dado. Habilidad de reducción de daño básica y la más común en toda la PAC estándar.', kw:['–1 Daño Automático','Sin Tirada','Reducción Básica'] },
+      green:    { name:'Defend', nameEs:'Defender', type:'Pasiva', desc:'Los personajes amigos adyacentes pueden usar el valor de Defensa de este personaje si es mayor que el propio cuando son atacados. Este personaje actúa como escudo defensivo para sus aliados. No requiere acción activa y aplica a todos los aliados adyacentes simultáneamente.', kw:['Defensa Compartida','Adyacente','Apoyo Pasivo'] },
+      lightblue:{ name:'Mastermind', nameEs:'Mente Maestra', type:'Pasiva', desc:'Cuando este personaje recibiría daño de un ataque, puede trasladar todo ese daño a un personaje amigo adyacente de menor coste en puntos. El daño trasladado se aplica al receptor con reducción de daño normal. Solo puede usarse una vez por ataque recibido.', kw:['Redirección de Daño','Sacrificio Aliado','Pasiva'] },
+      darkblue: { name:'Combat Reflexes', nameEs:'Reflejos de Combate', type:'Pasiva', desc:'Este personaje obtiene +2 a su valor de Defensa contra ataques de combate CERCANO. Este modificador no aplica contra ataques a distancia. Representa destreza y velocidad de reacción en el combate cuerpo a cuerpo. Se suma antes de resolver el ataque.', kw:['+2 Defensa Cercano','No Aplica a Distancia','Pasiva'] },
+      purple:   { name:'Super Senses', nameEs:'Súper Sentidos', type:'Pasiva', desc:'Cuando este personaje es objetivo de un ataque, lanza 1d6. Con resultado 5–6, el ataque falla automáticamente (evasión total). Con cualquier otro resultado, el ataque se resuelve normalmente. Aplica tanto a ataques cercanos como a distancia. No aplica contra Pulse Wave ni Poison.', kw:['33% Evasión','Dado Evasión','Cercano y Distancia'] },
+      pink:     { name:'Energy Shield / Deflection', nameEs:'Escudo de Energía / Deflección', type:'Pasiva', desc:'Este personaje obtiene +2 a su valor de Defensa contra ataques de combate A DISTANCIA. Este modificador no aplica contra ataques cercanos. Representa un campo de energía defensivo o la habilidad de desviar y esquivar proyectiles y rayos de energía.', kw:['+2 Defensa Distancia','No Aplica Cercano','Campo Energético'] },
+      brown:    { name:'Regeneration', nameEs:'Regeneración', type:'Acción de Poder', desc:'Da a este personaje una acción de poder. Lanza 1d6. El resultado indica cuántos clics hacia atrás (hacia el inicio de su dial) puede retroceder este personaje. Con resultado 1 o 2, la Regeneración falla este turno y no hay cambio en el dial.', kw:['Curación','1d6 Clics','Acción de Poder'] },
+      black:    { name:'Willpower', nameEs:'Fuerza de Voluntad', type:'Pasiva', desc:'Este personaje no recibe daño por empuje (pushing damage). El pushing damage es el 1 punto de daño irreducible que normalmente recibe un personaje al actuar por segunda vez en un mismo turno. Willpower elimina completamente esta penalización, permitiendo actuar dos veces sin consecuencias.', kw:['Sin Pushing Damage','Doble Acción Libre','Pasiva'] },
+      white:    { name:'Barrier', nameEs:'Barrera', type:'Acción de Poder', desc:'Da a este personaje una acción de poder. Coloca hasta 4 marcadores de Barrera en cuadros vacíos adyacentes entre sí y dentro del rango de este personaje. Los marcadores actúan como terreno obstaculizador y bloquean movimiento. Al inicio del próximo turno de este jugador, retira todos los marcadores de Barrera.', kw:['Terreno Temporal','4 Marcadores','Obstáculo'] },
+    }
+  },
+  damage: {
+    id:'damage', label:'DAÑO', labelEn:'Damage', icon:'💥', accent:'#EA580C',
+    powers: {
+      red:      { name:'Outwit', nameEs:'Neutralizar', type:'Acción Gratuita', desc:'Da a este personaje una acción gratuita. Elige un personaje rival dentro del rango con línea de fuego sin obstáculos. Selecciona una habilidad de ese personaje (PAC, especial, etc.). Esa habilidad queda neutralizada hasta el inicio del próximo turno de este jugador. Un Outwit no puede neutralizar otro Outwit activo.', kw:['Neutralizar Habilidad','Línea de Fuego','Acción Gratuita'] },
+      orange:   { name:'Probability Control', nameEs:'Control de Probabilidad', type:'Acción Gratuita', desc:'Una vez por turno (tuyo o del rival), da a este personaje una acción gratuita. Fuerza la repetición de cualquier tirada de dado realizada por cualquier personaje dentro del rango y línea de fuego. Se debe aceptar el segundo resultado. Máximo 1 uso por turno total.', kw:['Repetir Tirada','1 vez/turno','Acción Gratuita'] },
+      yellow:   { name:'Support', nameEs:'Apoyo Médico', type:'Acción de Poder', desc:'Da a este personaje una acción de poder. Elige un personaje amigo adyacente dañado. Realiza una tirada de ataque cercano contra el aliado (usando su valor de Defensa). Si tiene éxito, el aliado retrocede su dial un número de clics = (exceso de la tirada) ÷ 2, redondeando hacia arriba (mínimo 1 clic).', kw:['Curación Aliado','Tirada de Ataque','Acción de Poder'] },
+      green:    { name:'Enhancement', nameEs:'Potenciación', type:'Pasiva', desc:'Los personajes amigos adyacentes obtienen +1 a su valor de Daño en ataques de combate A DISTANCIA. Solo aplica a ataques a distancia, no en cuerpo a cuerpo. Múltiples personajes con Enhancement no se apilan entre sí (no es stackable con copias de sí mismo).', kw:['+1 Daño Distancia','No Apilable','Pasiva Apoyo'] },
+      lightblue:{ name:'Shape Change', nameEs:'Cambio de Forma', type:'Pasiva', desc:'Cuando este personaje es elegido como objetivo de un ataque, lanza 1d6. Con resultado 5–6, el atacante debe elegir un objetivo diferente válido. Si no hay otro objetivo válido, el ataque continúa. Aplica antes de resolver el ataque. No aplica contra Pulse Wave, Quake ni Poison.', kw:['33% Redirección','Objetivo Diferente','Pasiva'] },
+      darkblue: { name:'Close Combat Expert', nameEs:'Experto en Combate Cercano', type:'Acción Gratuita', desc:'Da a este personaje una acción gratuita antes de su ataque cercano. Elige uno: +2 al valor de Ataque O +2 al valor de Daño para ese ataque (no ambos). La elección debe hacerse antes de lanzar los dados. La mejora dura hasta el final del ataque. No acumulable con otros CCE.', kw:['+2 Ataque o Daño','Elección','Combate Cercano'] },
+      purple:   { name:'Perplex', nameEs:'Perplejidad', type:'Acción Gratuita', desc:'Da a este personaje una acción gratuita. Modifica UN valor de combate (Movimiento, Ataque, Defensa o Daño) de cualquier personaje (amigo o rival) dentro del rango y línea de fuego en ±1. El efecto dura hasta el inicio del próximo turno de este jugador. Solo un valor por uso de Perplex.', kw:['±1 Cualquier Valor','Amigo o Rival','Acción Gratuita'] },
+      pink:     { name:'Empower', nameEs:'Empoderar', type:'Pasiva', desc:'Los personajes amigos adyacentes obtienen +1 a su valor de Daño en ataques de combate CERCANO. Solo aplica a ataques cuerpo a cuerpo, no a distancia. Múltiples personajes con Empower no se apilan entre sí (no es stackable con copias de sí mismo).', kw:['+1 Daño Cercano','No Apilable','Pasiva Apoyo'] },
+      brown:    { name:'Battle Fury', nameEs:'Furia de Batalla', type:'Pasiva', desc:'Este personaje solo puede realizar ataques de combate CERCANO (no puede atacar a distancia aunque tenga rango). No puede ser objetivo de Mind Control ni habilidades de control mental similares. Escapa automáticamente de cualquier efecto de agarre. Sus ataques no pueden ser redirigidos por Shape Change.', kw:['Solo Cercano','Inmune Control Mental','Escape Automático'] },
+      black:    { name:'Ranged Combat Expert', nameEs:'Experto en Combate a Distancia', type:'Acción Gratuita', desc:'Da a este personaje una acción gratuita antes de su ataque a distancia. Elige uno: +2 al valor de Ataque O +2 al valor de Daño para ese ataque (no ambos). La elección debe hacerse antes de lanzar los dados. La mejora dura hasta el final del ataque. No acumulable con otros RCE.', kw:['+2 Ataque o Daño','Elección','Combate a Distancia'] },
+      white:    { name:'Leadership', nameEs:'Liderazgo', type:'Acción Gratuita', desc:'Da a este personaje una acción gratuita y lanza 1d6. Con resultado 5–6, retira un marcador de acción de un personaje amigo adyacente de menor coste en puntos. Si este personaje es el líder designado de la fuerza, puede incrementar en 1 el número de acciones disponibles de su equipo durante este turno.', kw:['Quitar Marcador','Liderazgo','Acción Gratuita'] },
+    }
+  }
+};
+
+// ═══════════════════════════════════════════════════════════
+//  TEAM ABILITIES DATA
+// ═══════════════════════════════════════════════════════════
+const TEAM_ABILITIES = [
+  {
+    id:'avengers', name:'Avengers', nameEs:'Vengadores', color:'#1D4ED8', icon:'🅐',
+    faction:'Marvel', era:'Modern Age',
+    desc:'Los personajes amigos que usen esta habilidad de equipo pueden modificar un valor de combate de un personaje adyacente amigo en +1 una vez por turno como acción gratuita. Los personajes con la keyword "Avengers" obtienen acceso especial a esta habilidad si está en su dial.',
+    effect:'Un personaje amigo adyacente obtiene +1 a un valor de combate (acción gratuita, 1/turno).',
+    note:'Requiere múltiples personajes con keyword "Avengers" para maximizar el beneficio.',
+    tags:['Marvel','Apoyo','Modificador']
+  },
+  {
+    id:'xmen', name:'X-Men', nameEs:'X-Men', color:'#FBBF24', icon:'✕',
+    faction:'Marvel', era:'Modern Age',
+    desc:'Los personajes amigos con esta habilidad de equipo pueden usar Perplex una vez por turno como acción gratuita. Cuando este personaje usa la habilidad, todos los personajes amigos con la misma habilidad de equipo que sean adyacentes también pueden beneficiarse del efecto de Perplex aplicado.',
+    effect:'Perplex gratuito 1/turno. Los aliados adyacentes con X-Men TA comparten el efecto.',
+    note:'Excelente para fuerzas temáticas con múltiples mutantes.',
+    tags:['Marvel','Perplex','Compartido']
+  },
+  {
+    id:'shield', name:'S.H.I.E.L.D.', nameEs:'S.H.I.E.L.D.', color:'#16A34A', icon:'🛡',
+    faction:'Marvel', era:'Modern Age',
+    desc:'Los personajes con esta habilidad de equipo pueden usar Support (Apoyo Médico) como si tuvieran ese poder en su clic de Daño actual, independientemente de si aparece en su dial. Además, obtienen +1 a los ataques contra personajes con la keyword "Villain" o "Hydra".',
+    effect:'Support disponible siempre. +1 Ataque vs. Villanos/Hydra.',
+    note:'Habilidad de apoyo y curación de alta utilidad para el equipo.',
+    tags:['Marvel','Curación','Anti-Villano']
+  },
+  {
+    id:'batman', name:'Batman Ally', nameEs:'Aliado de Batman', color:'#374151', icon:'🦇',
+    faction:'DC', era:'Modern Age',
+    desc:'Los personajes con esta habilidad de equipo pueden usar Stealth (Sigilo) independientemente de si aparece en su clic actual. Cuando están adyacentes a otro personaje con Batman Ally TA, ambos obtienen +1 a las tiradas de escape y a los ataques de combate cercano.',
+    effect:'Stealth permanente. +1 Escape y Ataque Cercano junto a otro Batman Ally.',
+    note:'Ideal para fuerzas de infiltración y control del tablero.',
+    tags:['DC','Stealth','Combinación']
+  },
+  {
+    id:'superman', name:'Superman Ally', nameEs:'Aliado de Superman', color:'#DC2626', icon:'🦸',
+    faction:'DC', era:'Modern Age',
+    desc:'Los personajes con esta habilidad de equipo pueden ignorar el daño por empuje (pushing damage) durante el turno en el que usen esta habilidad como acción gratuita. Adicionalmente, obtienen +1 a su valor de Defensa contra ataques a distancia mientras haya otro personaje amigo con Superman Ally TA en el mapa.',
+    effect:'Ignorar pushing damage (acción gratuita). +1 Defensa a distancia con aliado presente.',
+    note:'Perfecta para fuerzas agresivas que necesitan actuar repetidamente.',
+    tags:['DC','Sin Pushing','Defensa']
+  },
+  {
+    id:'mystics', name:'Mystics (Spider-Man)', nameEs:'Místicos', color:'#7C3AED', icon:'🕸',
+    faction:'Marvel', era:'Modern Age',
+    desc:'Cuando un personaje con esta habilidad de equipo es impactado por un ataque, el atacante recibe 1 punto de daño (no reducible, no un ataque). Este daño se aplica automáticamente después de resolver el ataque, independientemente del resultado del daño al objetivo.',
+    effect:'Al recibir un impacto, el atacante recibe 1 daño irreducible.',
+    note:'Muy efectiva en personajes de bajo coste para disuadir ataques.',
+    tags:['Marvel','Daño Reflejo','Irreducible']
+  },
+  {
+    id:'defenders', name:'Defenders', nameEs:'Defensores', color:'#0EA5E9', icon:'◎',
+    faction:'Marvel', era:'Modern Age',
+    desc:'Los personajes con esta habilidad de equipo obtienen Willpower (no reciben pushing damage) cuando están adyacentes a otro personaje amigo con Defenders TA. Además, pueden usar la habilidad Defend (compartir valor de Defensa con adyacentes) aunque no aparezca en su dial actual.',
+    effect:'Willpower y Defend disponibles cuando está junto a otro Defender.',
+    note:'Sinergia excelente en grupos. El efecto requiere adyacencia constante.',
+    tags:['Marvel','Willpower','Defend']
+  },
+  {
+    id:'gcvillain', name:'Gotham City Villains', nameEs:'Villanos de Gotham City', color:'#92400E', icon:'◉',
+    faction:'DC', era:'Modern Age',
+    desc:'Los personajes con esta habilidad de equipo pueden usar Outwit una vez por turno como acción gratuita, aunque no aparezca en su dial. Cuando están adyacentes a otro Gotham City Villain TA, el rango del Outwit se incrementa en 2 cuadros adicionales.',
+    effect:'Outwit gratuito 1/turno. +2 Rango de Outwit junto a otro GCV.',
+    note:'Habilidad de control muy versátil para fuerzas villanas de DC.',
+    tags:['DC','Outwit','Rango Extendido']
+  },
+  {
+    id:'jla', name:'Justice League of America', nameEs:'Liga de la Justicia', color:'#FBBF24', icon:'★',
+    faction:'DC', era:'Modern Age',
+    desc:'Los personajes con esta habilidad de equipo pueden usar Probability Control una vez por ronda como acción gratuita. Cuando se usa junto a otro miembro de la JLA TA adyacente, pueden repetir una tirada de la misma acción dos veces en lugar de una sola vez por ronda.',
+    effect:'Probability Control 1/ronda. Doble repetición con otro JLA adyacente.',
+    note:'La habilidad de control de dados más poderosa disponible como TA.',
+    tags:['DC','Probability Control','Control Dados']
+  },
+  {
+    id:'calculator', name:'Calculator', nameEs:'Calculator', color:'#6B7280', icon:'⌨',
+    faction:'DC', era:'Modern Age',
+    desc:'Los personajes con esta habilidad de equipo pueden usar Perplex y Outwit como si tuvieran esos poderes en su dial, pero solo targeteando personajes a distancia (rango = rango de este personaje o mínimo 6 si no tiene rango). Representa el acceso a información táctica de Calculator como broker de información.',
+    effect:'Perplex + Outwit a distancia (mín. rango 6).',
+    note:'Habilidad de soporte a distancia de gran utilidad táctica.',
+    tags:['DC','Perplex','Outwit']
+  },
+  {
+    id:'sinister', name:'Sinister Syndicate', nameEs:'Siniestro Sindicato', color:'#DC2626', icon:'◈',
+    faction:'Marvel', era:'Modern Age',
+    desc:'Una vez por turno, cuando un personaje con esta habilidad de equipo derrota a un rival en combate cercano, puede realizar inmediatamente un movimiento gratuito de hasta la mitad de su valor de Movimiento. Este movimiento no provoca ataques de oportunidad ni puede ser usado para cargar nuevamente.',
+    effect:'Movimiento gratuito (½ Mov) tras derrotar a un rival en melee.',
+    note:'Excelente para fuerzas villanas agresivas y de rápida reposición.',
+    tags:['Marvel','Movimiento Bonus','Post-KO']
+  },
+  {
+    id:'thunderbolts', name:'Thunderbolts', nameEs:'Thunderbolts', color:'#7C3AED', icon:'⚡',
+    faction:'Marvel', era:'Modern Age',
+    desc:'Los personajes con esta habilidad de equipo obtienen +1 al valor de Ataque cuando atacan a personajes con la keyword "Hero" o "Avengers". Adicionalmente, una vez por partida, un personaje con Thunderbolts TA puede ignorar completamente un resultado de fallo en una tirada de ataque (la tirada se cuenta como mínima para impactar).',
+    effect:'+1 Ataque vs. Heroes/Avengers. 1/partida: convertir un fallo en impacto.',
+    note:'Alta utilidad en torneos donde los equipos Heroes son predominantes.',
+    tags:['Marvel','Anti-Héroe','1/Partida']
+  },
+];
+
+// ═══════════════════════════════════════════════════════════
+//  REGLAMENTO DATA
+// ═══════════════════════════════════════════════════════════
+const REGLAMENTO = [
+  {
+    id:'basics', title:'CONCEPTOS BÁSICOS',
+    items: [
+      { t:'Valor de Combate', d:'Los cuatro valores del dial: Movimiento (azul), Ataque (rojo), Defensa (verde) y Daño (amarillo). Cada clic del dial puede mostrar valores y habilidades distintos.' },
+      { t:'Clic de Vida', d:'Cada avance del dial hacia adelante representa daño recibido. Al superar el último clic, el personaje es KO. Algunos poderes permiten retroceder el dial (curación).' },
+      { t:'Línea de Fuego (LoF)', d:'Línea imaginaria desde el centro del cuadro del atacante al del objetivo. Bloqueada por terreno bloqueado y personajes. El terreno obstaculizador reduce el movimiento pero no bloquea LoF (excepto para Stealth).' },
+      { t:'Rango', d:'Distancia máxima en cuadros para ataques a distancia. Rango 0 = solo combate cercano. Se mide en cuadros de distancia en línea recta, no en cuadros de movimiento.' },
+      { t:'KO (Fuera de Combate)', d:'Un personaje KO es retirado del mapa. El oponente anota sus puntos de victoria. Personajes que salen del mapa involuntariamente también son KO.' },
+      { t:'Adyacente', d:'Dos personajes son adyacentes si están en cuadros que compartan al menos un borde o esquina (incluye diagonales). Los efectos "adyacentes" requieren estar a 1 cuadro de distancia.' },
+    ]
+  },
+  {
+    id:'actions', title:'TIPOS DE ACCIÓN',
+    items: [
+      { t:'Acción de Poder', d:'Activa una habilidad de poder del clic actual. Consume el marcador de acción del personaje.' },
+      { t:'Acción de Movimiento', d:'El personaje se mueve hasta su valor de Movimiento completo sin atacar.' },
+      { t:'Acción de Ataque', d:'El personaje realiza un ataque cercano o a distancia sin moverse (salvo habilidades como Charge o Running Shot).' },
+      { t:'Acción Gratuita', d:'No consume el marcador de acción. Puede usarse además de la acción principal. Algunas habilidades limitan el número de acciones gratuitas por turno.' },
+      { t:'Pushing Damage', d:'Recibir un segundo marcador de acción en el mismo turno inflige 1 daño irreducible al final. Willpower cancela este daño.' },
+      { t:'Marcador de Acción', d:'Ficha sobre el personaje cuando actúa. Se retira al inicio del siguiente turno del jugador. Personajes con 2 marcadores no pueden volver a actuar ese turno sin sufrir pushing damage.' },
+    ]
+  },
+  {
+    id:'combat', title:'RESOLUCIÓN DE COMBATE',
+    items: [
+      { t:'Tirada de Ataque', d:'Lanza 2d6 y suma el valor de Ataque. Si el total ≥ valor de Defensa del defensor, el ataque impacta.' },
+      { t:'Aplicar Daño', d:'Si impacta, el defensor avanza su dial un número de clics = valor de Daño del atacante. Las habilidades de reducción de daño se aplican antes de avanzar el dial.' },
+      { t:'Crítico (Doubles)', d:'Un resultado natural de dobles (1+1, 2+2, etc.) es siempre un impacto. El 1+1 (snake eyes) es siempre un fallo, independientemente de modificadores.' },
+      { t:'Daño Irreducible', d:'Daño que no puede ser reducido por ninguna habilidad. Se aplica directamente al dial. El pushing damage y el daño de Mystics TA son ejemplos.' },
+      { t:'Orden de Modificadores', d:'Se aplican en este orden: 1) Habilidades del atacante → 2) Habilidades del defensor → 3) Efectos de terreno → 4) Objetos y tokens.' },
+      { t:'Ataque a Múltiples Objetivos', d:'Con Rango múltiple (arco de fuego), el atacante puede dividir su ataque entre varios objetivos dentro del rango, pero el Daño se divide entre el número de objetivos (mínimo 1 cada uno).' },
+    ]
+  },
+  {
+    id:'terrain', title:'TIPOS DE TERRENO',
+    items: [
+      { t:'Terreno Abierto', d:'Sin efecto sobre movimiento ni LoF. Cuadros vacíos estándar del mapa.' },
+      { t:'Terreno Obstaculizador', d:'Reduce el movimiento en 1 por cuadro atravesado. Bloquea LoF hacia personajes con Stealth. Incluye arbustos, árboles y mobiliario urbano.' },
+      { t:'Terreno Bloqueado', d:'No puede atravesarse salvo con habilidad específica. Bloquea LoF totalmente. Muros, paredes y edificios cerrados son ejemplos.' },
+      { t:'Terreno Elevado', d:'Posición elevada. Los personajes en altura pueden atacar al nivel inferior con LoF al borde elevado. Desde el suelo, es necesario trazar LoF hasta el borde de elevación.' },
+      { t:'Agua', d:'Cada cuadro de agua cuenta como 2 cuadros de movimiento para personajes sin habilidad acuática. Los personajes acuáticos o con natación no sufren esta penalización.' },
+      { t:'Grieta / Hueco', d:'Cuadros que no pueden ser ocupados por ningún personaje. Sirven como obstáculos naturales. Los personajes con Phasing o Leap/Climb pueden moverse a través pero no detenerse en ellos.' },
+    ]
+  },
+  {
+    id:'objects', title:'OBJETOS Y TOKENS',
+    items: [
+      { t:'Objetos Pesados (Naranja)', d:'Otorgan +2 al valor de Daño cuando se usan como arma. Solo pueden usarse por personajes con Super Strength. Se destruyen tras usarlos como arma.' },
+      { t:'Objetos Ligeros (Gris)', d:'Otorgan +1 al valor de Daño. Pueden ser usados por cualquier personaje con Super Strength o por personajes que específicamente puedan usarlos. Se destruyen tras usarlos como arma.' },
+      { t:'Reliquias', d:'Objetos especiales que permanecen en el campo. Requieren una acción para recogerlos. Otorgan habilidades especiales al personaje que los lleva. Tienen reglas propias según la reliquia.' },
+      { t:'Tokens de Acción', d:'Marcadores colocados sobre personajes al realizar acciones. Se retiran al inicio del turno siguiente. Acumular 2 tokens en un mismo turno provoca pushing damage (salvo Willpower).' },
+      { t:'Marcadores de Barrera', d:'Colocados por la habilidad Barrier. Actúan como terreno obstaculizador. Se retiran al inicio del siguiente turno del jugador que los colocó. No pueden ser destruidos por ataques.' },
+    ]
+  },
+  {
+    id:'keywords', title:'KEYWORDS Y EQUIPO',
+    items: [
+      { t:'Keyword (Palabra Clave)', d:'Etiqueta temática de un personaje (ej: Avenger, Robot, Gotham City Villain). Permite sinergias de equipo y el uso de ciertas Team Abilities o recursos.' },
+      { t:'Fuerza (Team)', d:'Conjunto de personajes usado en torneo. El total de puntos no puede superar el límite (habitualmente 300, 400 o 500 pts). Algunos formatos permiten personajes de un único universo.' },
+      { t:'Recursos y Reliquias Equipadas', d:'Objetos especiales que se equipan antes de la partida y cuentan para el límite de puntos. Otorgan habilidades adicionales. Algunos requieren keywords específicas.' },
+      { t:'ID Cards', d:'Tarjetas que permiten reemplazar una figura KO por otra versión del mismo personaje. Solo 1 ID Card por figura. Debe declararse antes del comienzo de la partida.' },
+      { t:'Bystanders y Alia', d:'Personajes de apoyo de bajo coste (habitualmente 0–5 pts) que añaden activaciones adicionales. Generalmente tienen valores bajos pero pueden transportar o bloquear posiciones.' },
+      { t:'Fuerzas Temáticas', d:'Si todos los personajes del equipo comparten al menos una keyword, el equipo se considera temático. Los equipos temáticos obtienen tiradas de iniciativa adicionales y posibles bonificadores según el formato.' },
+    ]
+  },
+  {
+    id:'victory', title:'CONDICIONES DE VICTORIA',
+    items: [
+      { t:'Puntos de Victoria', d:'El jugador que derrota a un personaje rival anota sus puntos de coste como puntos de victoria. Al final de la partida, el jugador con más puntos de victoria gana.' },
+      { t:'KO Completo', d:'Si todos los personajes de un jugador son KO, el oponente gana automáticamente, independientemente del tiempo restante.' },
+      { t:'Tiempo Límite', d:'Los partidos de torneo tienen un tiempo límite (habitualmente 50–60 minutos). Al agotarse el tiempo, gana el jugador con más puntos de victoria acumulados.' },
+      { t:'Condición de Objetivo (Scenario)', d:'Algunos formatos de juego incluyen objetivos secundarios (capturar zonas, escoltar personajes, etc.) que añaden puntos de victoria adicionales independientemente de los KO.' },
+    ]
+  },
+];
+
+// ═══════════════════════════════════════════════════════════
+//  CALCULADORA — PROBABILIDADES 2d6
+// ═══════════════════════════════════════════════════════════
+function calcProb(atk, def) {
+  // P(2d6 + atk >= def) = P(2d6 >= def - atk)
+  const target = def - atk;
+  let hits = 0;
+  for (let d1 = 1; d1 <= 6; d1++) {
+    for (let d2 = 1; d2 <= 6; d2++) {
+      const sum = d1 + d2;
+      if ((d1 === d2 && d1 !== 1) || sum >= target) hits++;
+      // snake eyes (1+1) always miss — already excluded since d1===d2===1 won't pass
+    }
+  }
+  // subtract snake eyes (always miss)
+  if (target <= 2) hits--; // 1+1 = 2, always miss
+  return Math.max(0, Math.min(36, hits)) / 36;
+}
+
+const OUTCOMES = [2,3,4,5,6,7,8,9,10,11,12];
+function diceDistrib() {
+  const dist = {};
+  for (let d1=1;d1<=6;d1++) for (let d2=1;d2<=6;d2++) { const s=d1+d2; dist[s]=(dist[s]||0)+1; }
+  return dist;
+}
+const DIST = diceDistrib();
+
+// ═══════════════════════════════════════════════════════════
+//  UTILS / STORAGE
+// ═══════════════════════════════════════════════════════════
+const STORAGE_KEY = 'heroclix_cmd_v2';
+const loadTeams = () => { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch { return []; } };
+const saveTeams = (t) => { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(t)); } catch {} };
+
+// ═══════════════════════════════════════════════════════════
+//  STATUS BAR
+// ═══════════════════════════════════════════════════════════
+function StatusBar() {
+  const [, tick] = useState(0);
+  useEffect(() => { const id=setInterval(()=>tick(t=>t+1),1000); return ()=>clearInterval(id); }, []);
+  const now = new Date();
+  return (
+    <div style={{background:'#080810',borderBottom:'1px solid rgba(169,124,55,0.25)',display:'flex',justifyContent:'space-between',alignItems:'center',padding:'3px 14px',fontSize:'10px',color:'rgba(169,124,55,0.5)',flexShrink:0}}>
+      <span className="orbitron" style={{letterSpacing:'2px'}}>KPRESE LABS // HEROCLIX COMMAND v2.0</span>
+      <div style={{display:'flex',gap:'16px'}}>
+        <span style={{color:'rgba(169,124,55,0.35)'}}>SYS:ONLINE</span>
+        <span>{now.toLocaleTimeString('es-ES')}</span>
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════
+//  SIDEBAR NAV
+// ═══════════════════════════════════════════════════════════
+function SideNav({ active, onChange }) {
+  const items = [
+    { id:'pac',        label:'PAC',          sub:'PODERES',        icon:'◈' },
+    { id:'teamabs',    label:'TEAM ABS.',     sub:'HABILIDADES',    icon:'◉' },
+    { id:'builder',    label:'TEAM BUILDER',  sub:'EDITOR EQUIPOS', icon:'⊕' },
+    { id:'calculator', label:'CALCULADORA',   sub:'COMBATE',        icon:'⌗' },
+    { id:'reglamento', label:'REGLAMENTO',    sub:'REGLAS',         icon:'◎' },
+    { id:'eventos',    label:'EVENTOS',       sub:'HISTORIAL',      icon:'◷' },
+  ];
+  return (
+    <div style={{background:'#0A0A0D',borderRight:'1px solid rgba(169,124,55,0.3)',display:'flex',flexDirection:'column',height:'100%'}}>
+      <div style={{padding:'14px 12px 10px',borderBottom:'1px solid rgba(169,124,55,0.18)',textAlign:'center'}}>
+        <div className="orbitron" style={{fontSize:'18px',fontWeight:900,color:'#A97C37',textShadow:'0 0 14px rgba(169,124,55,0.7)',lineHeight:1}}>HERO</div>
+        <div className="orbitron" style={{fontSize:'7px',color:'rgba(169,124,55,0.45)',letterSpacing:'5px',marginTop:'2px'}}>COMMAND</div>
+        <div style={{fontSize:'8px',color:'rgba(169,124,55,0.25)',marginTop:'5px',letterSpacing:'1px'}}>KPRESE LABS</div>
+      </div>
+      <div style={{padding:'6px 12px 2px'}}><div style={{height:'1px',background:'linear-gradient(90deg,transparent,#A97C37,transparent)'}}/></div>
+      <nav style={{flex:1,paddingTop:'2px',overflowY:'auto'}}>
+        {items.map(it => (
+          <div key={it.id} className={`nav-item ${active===it.id?'active':''}`} onClick={()=>onChange(it.id)}
+               style={{padding:'10px 12px',marginBottom:'1px'}}>
+            <div style={{display:'flex',alignItems:'center',gap:'7px'}}>
+              <span style={{color:active===it.id?'#A97C37':'rgba(169,124,55,0.35)',fontSize:'12px',flexShrink:0}}>{it.icon}</span>
+              <div>
+                <div className="orbitron" style={{fontSize:'9px',fontWeight:'bold',color:active===it.id?'#C9A050':'rgba(169,124,55,0.6)',letterSpacing:'1px',lineHeight:1.2}}>{it.label}</div>
+                <div style={{fontSize:'7px',color:'rgba(169,124,55,0.3)',letterSpacing:'1px',marginTop:'2px'}}>{it.sub}</div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </nav>
+      <div style={{padding:'8px 12px',borderTop:'1px solid rgba(169,124,55,0.18)',fontSize:'8px',color:'rgba(169,124,55,0.28)',lineHeight:'1.6'}}>
+        <div>WizKids HeroClix</div>
+        <div>Modern Age Rules</div>
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════
+//  PAC SECTION
+// ═══════════════════════════════════════════════════════════
+function PACSection() {
+  const [cat, setCat] = useState('movement');
+  const [col, setCol] = useState(null);
+  const catData = PAC[cat];
+  const power = col && catData.powers[col];
+
+  return (
+    <div style={{display:'flex',flexDirection:'column',height:'100%',overflow:'hidden'}}>
+      {/* Category tabs */}
+      <div style={{display:'flex',gap:'4px',padding:'10px',borderBottom:'1px solid rgba(169,124,55,0.2)',background:'#0D0D16',flexShrink:0}}>
+        {Object.values(PAC).map(c => {
+          const isA = cat===c.id;
+          return (
+            <button key={c.id} onClick={()=>{setCat(c.id);setCol(null);}} className="cat-btn"
+                    style={{flex:1,background:isA?'rgba(169,124,55,0.2)':'rgba(169,124,55,0.04)',border:`1px solid ${isA?'#A97C37':'rgba(169,124,55,0.2)'}`,color:isA?'#C9A050':'rgba(169,124,55,0.5)',borderRadius:'2px'}}>
+              <div style={{fontSize:'18px',lineHeight:1}}>{c.icon}</div>
+              <div className="orbitron" style={{fontSize:'8px',marginTop:'3px',letterSpacing:'1px'}}>{c.label}</div>
+            </button>
+          );
+        })}
+      </div>
+
+      <div style={{flex:1,overflow:'hidden',display:'flex',flexDirection:'column',padding:'12px',gap:'10px'}}>
+        {/* Color buttons */}
+        <div style={{flexShrink:0}}>
+          <div style={{fontSize:'9px',color:'rgba(169,124,55,0.45)',letterSpacing:'2px',marginBottom:'8px'}}>▸ SELECCIONAR COLOR — {catData.label} ({catData.labelEn})</div>
+          <div style={{display:'flex',flexWrap:'wrap',gap:'6px'}}>
+            {COLORS.map(c => (
+              <button key={c.id} onClick={()=>setCol(col===c.id?null:c.id)} className={`color-btn ${col===c.id?'sel':''}`}
+                      style={{background:c.bg,color:c.fg,border:col===c.id?'2px solid white':'2px solid transparent',padding:'4px 10px',fontSize:'10px',fontFamily:"'Share Tech Mono',monospace",fontWeight:'bold',borderRadius:'3px',minWidth:'70px',cursor:'pointer'}}>
+                {c.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Power panel */}
+        <div style={{flex:1,overflowY:'auto'}}>
+          {!power ? (
+            <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'100%',flexDirection:'column',gap:'10px',color:'rgba(169,124,55,0.3)'}}>
+              <div style={{fontSize:'52px'}}>{catData.icon}</div>
+              <div className="orbitron" style={{fontSize:'13px',color:'rgba(169,124,55,0.5)'}}>{catData.label}</div>
+              <div style={{fontSize:'11px'}}>Selecciona un color para ver el poder</div>
+              <div style={{marginTop:'8px',display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'4px',maxWidth:'280px',opacity:0.3}}>
+                {COLORS.map(c=><div key={c.id} style={{height:'6px',borderRadius:'2px',background:c.bg}}/>)}
+              </div>
+            </div>
+          ) : (
+            <div className="panel corner fade-in" style={{padding:'18px'}}>
+              <div style={{display:'flex',alignItems:'center',gap:'14px',marginBottom:'14px'}}>
+                <div style={{width:42,height:42,background:COLORS.find(c=>c.id===col)?.bg,borderRadius:'5px',flexShrink:0,border:'1px solid rgba(255,255,255,0.2)',boxShadow:`0 0 12px ${COLORS.find(c=>c.id===col)?.bg}60`}}/>
+                <div style={{flex:1}}>
+                  <div className="orbitron" style={{fontSize:'14px',fontWeight:900,color:'#C9A050',lineHeight:1.2}}>{power.name}</div>
+                  <div style={{fontSize:'11px',color:'rgba(169,124,55,0.55)',marginTop:'3px'}}>{power.nameEs}</div>
+                </div>
+                <div style={{fontSize:'9px',color:'rgba(169,124,55,0.35)',textAlign:'right'}}>
+                  <div>{catData.label}</div>
+                  <div style={{color:'rgba(169,124,55,0.5)',marginTop:'2px'}}>{COLORS.find(c=>c.id===col)?.label.toUpperCase()}</div>
+                </div>
+              </div>
+
+              <span className="pwr-type">{power.type.toUpperCase()}</span>
+
+              <div style={{marginTop:'14px',fontSize:'12px',lineHeight:'1.8',color:'rgba(201,160,80,0.88)'}}>{power.desc}</div>
+
+              <div style={{marginTop:'14px',paddingTop:'12px',borderTop:'1px solid rgba(169,124,55,0.2)'}}>
+                <div style={{fontSize:'9px',color:'rgba(169,124,55,0.4)',letterSpacing:'2px',marginBottom:'6px'}}>TAGS</div>
+                <div style={{display:'flex',flexWrap:'wrap',gap:'5px'}}>
+                  {power.kw.map(k=><span key={k} className="tag">{k}</span>)}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════
+//  TEAM ABILITIES SECTION
+// ═══════════════════════════════════════════════════════════
+function TeamAbilitiesSection() {
+  const [selected, setSelected] = useState(null);
+  const [filter, setFilter] = useState('ALL');
+
+  const factions = ['ALL','Marvel','DC'];
+  const filtered = filter==='ALL' ? TEAM_ABILITIES : TEAM_ABILITIES.filter(ta=>ta.faction===filter);
+  const detail = selected && TEAM_ABILITIES.find(t=>t.id===selected);
+
+  return (
+    <div style={{display:'flex',height:'100%',overflow:'hidden'}}>
+      {/* List panel */}
+      <div style={{width:'220px',flexShrink:0,display:'flex',flexDirection:'column',borderRight:'1px solid rgba(169,124,55,0.2)',background:'#0A0A0D'}}>
+        {/* Filter */}
+        <div style={{padding:'10px',borderBottom:'1px solid rgba(169,124,55,0.15)',display:'flex',gap:'4px'}}>
+          {factions.map(f=>(
+            <button key={f} onClick={()=>setFilter(f)}
+                    style={{flex:1,padding:'4px',fontSize:'9px',cursor:'pointer',background:filter===f?'rgba(169,124,55,0.2)':'transparent',border:`1px solid ${filter===f?'#A97C37':'rgba(169,124,55,0.2)'}`,color:filter===f?'#C9A050':'rgba(169,124,55,0.5)',fontFamily:"'Share Tech Mono',monospace"}}>
+              {f}
+            </button>
+          ))}
+        </div>
+        {/* Cards list */}
+        <div style={{flex:1,overflowY:'auto'}}>
+          {filtered.map(ta=>(
+            <div key={ta.id} onClick={()=>setSelected(selected===ta.id?null:ta.id)}
+                 style={{padding:'10px 12px',cursor:'pointer',borderLeft:`3px solid ${selected===ta.id?ta.color:'transparent'}`,background:selected===ta.id?'rgba(169,124,55,0.1)':'transparent',borderBottom:'1px solid rgba(169,124,55,0.1)',transition:'all 0.2s'}}>
+              <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
+                <div className="ta-badge" style={{background:ta.color+'22',borderColor:ta.color+'44',color:ta.color,fontSize:'12px',width:28,height:28}}>{ta.icon}</div>
+                <div style={{flex:1,overflow:'hidden'}}>
+                  <div style={{fontSize:'10px',fontWeight:'bold',color:selected===ta.id?'#C9A050':'rgba(169,124,55,0.7)',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{ta.name}</div>
+                  <div style={{fontSize:'8px',color:'rgba(169,124,55,0.35)',marginTop:'1px'}}>{ta.faction} · {ta.era}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Detail panel */}
+      <div style={{flex:1,overflowY:'auto',padding:'16px'}}>
+        {!detail ? (
+          <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'100%',flexDirection:'column',gap:'10px',color:'rgba(169,124,55,0.3)'}}>
+            <div style={{fontSize:'48px'}}>◉</div>
+            <div className="orbitron" style={{fontSize:'12px'}}>HABILIDADES DE EQUIPO</div>
+            <div style={{fontSize:'11px'}}>Selecciona una Team Ability para ver su descripción</div>
+          </div>
+        ) : (
+          <div className="fade-in">
+            {/* Header */}
+            <div className="panel corner" style={{padding:'16px',marginBottom:'12px'}}>
+              <div style={{display:'flex',alignItems:'center',gap:'14px',marginBottom:'12px'}}>
+                <div className="ta-badge" style={{width:52,height:52,background:detail.color+'22',borderColor:detail.color+'66',color:detail.color,fontSize:'22px'}}>{detail.icon}</div>
+                <div style={{flex:1}}>
+                  <div className="orbitron" style={{fontSize:'16px',fontWeight:900,color:'#C9A050'}}>{detail.name}</div>
+                  <div style={{fontSize:'11px',color:'rgba(169,124,55,0.55)',marginTop:'2px'}}>{detail.nameEs}</div>
+                  <div style={{display:'flex',gap:'8px',marginTop:'6px'}}>
+                    <span className="tag">{detail.faction}</span>
+                    <span className="tag">{detail.era}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Effect box */}
+            <div style={{padding:'12px',marginBottom:'12px',background:'rgba(169,124,55,0.08)',border:'1px solid rgba(169,124,55,0.35)',borderLeft:`3px solid ${detail.color}`}}>
+              <div style={{fontSize:'9px',color:'rgba(169,124,55,0.5)',letterSpacing:'2px',marginBottom:'6px'}}>EFECTO ACTIVO</div>
+              <div style={{fontSize:'12px',color:'#C9A050',fontWeight:'bold',lineHeight:'1.6'}}>{detail.effect}</div>
+            </div>
+
+            {/* Full description */}
+            <div className="panel" style={{padding:'14px',marginBottom:'12px'}}>
+              <div style={{fontSize:'9px',color:'rgba(169,124,55,0.45)',letterSpacing:'2px',marginBottom:'8px'}}>DESCRIPCIÓN COMPLETA</div>
+              <div style={{fontSize:'12px',color:'rgba(201,160,80,0.85)',lineHeight:'1.8'}}>{detail.desc}</div>
+            </div>
+
+            {/* Note */}
+            <div style={{padding:'10px 12px',background:'rgba(59,130,246,0.06)',border:'1px solid rgba(59,130,246,0.2)'}}>
+              <div style={{fontSize:'9px',color:'rgba(96,165,250,0.7)',letterSpacing:'2px',marginBottom:'4px'}}>NOTA TÁCTICA</div>
+              <div style={{fontSize:'11px',color:'rgba(96,165,250,0.8)',lineHeight:'1.6'}}>{detail.note}</div>
+            </div>
+
+            {/* Tags */}
+            <div style={{marginTop:'12px',display:'flex',flexWrap:'wrap',gap:'5px'}}>
+              {detail.tags.map(t=><span key={t} className="tag">{t}</span>)}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════
+//  TEAM BUILDER
+// ═══════════════════════════════════════════════════════════
+// ── helpers de estilo reutilizables dentro del builder ──
+const S = {
+  label: { fontSize:'9px', color:'rgba(169,124,55,0.55)', letterSpacing:'1.5px', marginBottom:'4px', display:'block' },
+  field: { width:'100%', padding:'8px 10px', fontSize:'11px', borderRadius:'2px' },
+  row:   { display:'flex', gap:'8px' },
+  sep:   { height:'1px', background:'rgba(169,124,55,0.15)', margin:'12px 0' },
+  err:   { fontSize:'10px', color:'#F87171', marginTop:'4px' },
+};
+
+const LIMIT_OPTIONS = [
+  { v:200,  l:'200 pts — Starter' },
+  { v:300,  l:'300 pts — Standard' },
+  { v:400,  l:'400 pts — Extended' },
+  { v:500,  l:'500 pts — Epic' },
+  { v:600,  l:'600 pts — Unlimited' },
+  { v:0,    l:'Personalizado…' },
+];
+
+function TeamBuilder() {
+  const [teams,    setTeams]    = useState(loadTeams);
+  const [idx,      setIdx]      = useState(0);
+
+  // modal: 'new' | 'addChar' | 'export' | 'import' | 'confirmDelete' | null
+  const [modal,    setModal]    = useState(null);
+
+  // formulario "Nuevo equipo"
+  const [nt, setNt] = useState({ name:'', limitSel:300, limitCustom:'', format:'Modern Age', notes:'' });
+  const [ntErr, setNtErr] = useState('');
+
+  // formulario "Añadir figura"
+  const [nc, setNc] = useState({ name:'', pts:'', kw:'', notes:'' });
+  const [ncErr, setNcErr] = useState('');
+
+  // export / import
+  const [exportJson, setExportJson] = useState('');
+  const [copied,     setCopied]     = useState(false);
+  const [importTxt,  setImportTxt]  = useState('');
+  const [importErr,  setImportErr]  = useState('');
+  const [importOk,   setImportOk]   = useState(false);
+
+  // edición inline del nombre del equipo
+  const [editingName, setEditingName] = useState(false);
+  const [editNameVal,  setEditNameVal]  = useState('');
+  const nameRef = useRef(null);
+
+  useEffect(()=>{ saveTeams(teams); }, [teams]);
+
+  const team  = teams[idx] || null;
+  const total = team ? team.chars.reduce((s,c)=>s+(parseInt(c.pts)||0), 0) : 0;
+  const over  = team && total > team.limit;
+  const pct   = team ? Math.min(100, Math.round(total / team.limit * 100)) : 0;
+  const remaining = team ? team.limit - total : 0;
+
+  // ── Abrir modal limpio ────────────────────────────────
+  const openNew = () => {
+    setNt({ name:'', limitSel:300, limitCustom:'', format:'Modern Age', notes:'' });
+    setNtErr('');
+    setModal('new');
+  };
+  const openAddChar = () => {
+    setNc({ name:'', pts:'', kw:'', notes:'' });
+    setNcErr('');
+    setModal('addChar');
+  };
+  const openExport = () => {
+    if (!team) return;
+    const txt = JSON.stringify({ ...team, exportedAt: new Date().toISOString() }, null, 2);
+    setExportJson(txt);
+    setCopied(false);
+    setModal('export');
+  };
+  const openImport = () => {
+    setImportTxt('');
+    setImportErr('');
+    setImportOk(false);
+    setModal('import');
+  };
+  const closeModal = () => setModal(null);
+
+  // ── Crear equipo ──────────────────────────────────────
+  const createTeam = () => {
+    if (!nt.name.trim()) { setNtErr('El nombre del equipo es obligatorio.'); return; }
+    const lim = nt.limitSel === 0 ? (parseInt(nt.limitCustom) || 0) : nt.limitSel;
+    if (lim < 1) { setNtErr('Define un límite de puntos válido.'); return; }
+    const t = { id:Date.now(), name:nt.name.trim(), limit:lim, format:nt.format, notes:nt.notes.trim(), chars:[] };
+    const u = [...teams, t];
+    setTeams(u);
+    setIdx(u.length - 1);
+    closeModal();
+  };
+
+  // ── Añadir figura ─────────────────────────────────────
+  const addChar = () => {
+    if (!nc.name.trim()) { setNcErr('El nombre de la figura es obligatorio.'); return; }
+    if (!nc.pts || parseInt(nc.pts) < 0) { setNcErr('Introduce un coste en puntos válido (≥ 0).'); return; }
+    const c = {
+      id: Date.now(),
+      name: nc.name.trim(),
+      pts:  parseInt(nc.pts) || 0,
+      kw:   nc.kw.split(',').map(k=>k.trim()).filter(Boolean),
+      notes: nc.notes.trim(),
+    };
+    setTeams(teams.map((t,i)=>i===idx ? {...t, chars:[...t.chars, c]} : t));
+    closeModal();
+  };
+
+  // ── Eliminar figura ───────────────────────────────────
+  const removeChar = (cid) =>
+    setTeams(teams.map((t,i)=>i===idx ? {...t, chars:t.chars.filter(c=>c.id!==cid)} : t));
+
+  // ── Borrar equipo ─────────────────────────────────────
+  const confirmDelete = () => {
+    const u = teams.filter((_,i)=>i!==idx);
+    setTeams(u);
+    setIdx(Math.max(0, idx - 1));
+    closeModal();
+  };
+
+  // ── Export al portapapeles ────────────────────────────
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(exportJson)
+      .then(()=>{ setCopied(true); setTimeout(()=>setCopied(false), 2500); })
+      .catch(()=>{}); // ya tienen el texto en el textarea
+  };
+
+  // ── Import ────────────────────────────────────────────
+  const doImport = () => {
+    setImportErr('');
+    setImportOk(false);
+    if (!importTxt.trim()) { setImportErr('Pega el JSON del equipo antes de importar.'); return; }
+    try {
+      const d = JSON.parse(importTxt);
+      if (typeof d.name !== 'string' || !Array.isArray(d.chars))
+        throw new Error('Estructura inválida');
+      // normalizar chars por si hay campos faltantes
+      const chars = d.chars.map(c=>({
+        id:    c.id    || Date.now() + Math.random(),
+        name:  c.name  || '—',
+        pts:   parseInt(c.pts) || 0,
+        kw:    Array.isArray(c.kw) ? c.kw : [],
+        notes: c.notes || '',
+      }));
+      const t = { id:Date.now(), name:d.name, limit:parseInt(d.limit)||300, format:d.format||'Modern Age', notes:d.notes||'', chars };
+      const u = [...teams, t];
+      setTeams(u);
+      setIdx(u.length - 1);
+      setImportOk(true);
+      setTimeout(closeModal, 1200);
+    } catch(e) {
+      setImportErr('JSON inválido o estructura incorrecta. Revisa el formato.');
+    }
+  };
+
+  // ── Edición inline del nombre ─────────────────────────
+  const startEditName = () => {
+    if (!team) return;
+    setEditNameVal(team.name);
+    setEditingName(true);
+    setTimeout(()=> nameRef.current?.select(), 30);
+  };
+  const commitEditName = () => {
+    if (editNameVal.trim())
+      setTeams(teams.map((t,i)=>i===idx ? {...t, name:editNameVal.trim()} : t));
+    setEditingName(false);
+  };
+
+  // ── Render ─────────────────────────────────────────────
+  return (
+    <div style={{display:'flex',flexDirection:'column',height:'100%',overflow:'hidden',position:'relative'}}>
+
+      {/* ── TABS DE EQUIPOS ── */}
+      <div style={{display:'flex',gap:'3px',padding:'8px',borderBottom:'1px solid rgba(169,124,55,0.2)',background:'#0D0D16',flexShrink:0,overflowX:'auto',alignItems:'center'}}>
+        {teams.map((t,i)=>(
+          <button key={t.id} onClick={()=>setIdx(i)} className="orbitron"
+                  style={{flexShrink:0,padding:'5px 12px',fontSize:'9px',background:i===idx?'rgba(169,124,55,0.2)':'rgba(169,124,55,0.05)',border:`1px solid ${i===idx?'#A97C37':'rgba(169,124,55,0.2)'}`,color:i===idx?'#C9A050':'rgba(169,124,55,0.5)',cursor:'pointer',whiteSpace:'nowrap',borderRadius:'2px',transition:'all 0.15s'}}>
+            {t.name}
+            {i===idx && <span style={{marginLeft:'4px',color:'rgba(169,124,55,0.5)',fontSize:'8px'}}>{t.chars.reduce((s,c)=>s+(parseInt(c.pts)||0),0)}p</span>}
+          </button>
+        ))}
+        <button onClick={openNew}
+                style={{flexShrink:0,padding:'5px 12px',fontSize:'9px',background:'transparent',border:'1px dashed rgba(169,124,55,0.4)',color:'rgba(169,124,55,0.5)',cursor:'pointer',fontFamily:"'Share Tech Mono',monospace",borderRadius:'2px',transition:'all 0.15s'}}
+                onMouseEnter={e=>{e.target.style.borderColor='#A97C37';e.target.style.color='#A97C37';}}
+                onMouseLeave={e=>{e.target.style.borderColor='rgba(169,124,55,0.4)';e.target.style.color='rgba(169,124,55,0.5)';}}>
+          + NUEVO
+        </button>
+        <div style={{flex:1}}/>
+        <button onClick={openImport}
+                style={{flexShrink:0,padding:'5px 10px',fontSize:'9px',background:'transparent',border:'1px solid rgba(169,124,55,0.25)',color:'rgba(169,124,55,0.45)',cursor:'pointer',fontFamily:"'Share Tech Mono',monospace",borderRadius:'2px'}}>
+          ↓ IMPORTAR
+        </button>
+      </div>
+
+      {/* ── PANTALLA VACÍA ── */}
+      {!team ? (
+        <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',gap:'16px',color:'rgba(169,124,55,0.4)'}}>
+          <div style={{fontSize:'44px',lineHeight:1}}>⊕</div>
+          <div className="orbitron" style={{fontSize:'12px',letterSpacing:'2px'}}>SIN EQUIPOS</div>
+          <div style={{fontSize:'11px',color:'rgba(169,124,55,0.3)',textAlign:'center',maxWidth:'280px',lineHeight:'1.6'}}>
+            Crea tu primer equipo con <strong style={{color:'#A97C37'}}>+ NUEVO</strong> o importa uno existente.
+          </div>
+          <div style={{display:'flex',gap:'8px',marginTop:'4px'}}>
+            <button className="btn-gold" style={{padding:'10px 22px',fontSize:'10px',borderRadius:'2px'}} onClick={openNew}>+ CREAR EQUIPO</button>
+            <button className="btn-outline" style={{padding:'10px 16px',fontSize:'10px',borderRadius:'2px'}} onClick={openImport}>↓ IMPORTAR</button>
+          </div>
+        </div>
+      ) : (
+
+      /* ── EQUIPO ACTIVO ── */
+      <div style={{flex:1,overflow:'hidden',display:'flex',flexDirection:'column',padding:'12px',gap:'10px'}}>
+
+        {/* Cabecera del equipo */}
+        <div className="panel" style={{padding:'12px 14px',flexShrink:0}}>
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'8px'}}>
+            <div style={{flex:1,marginRight:'12px'}}>
+              {editingName ? (
+                <input ref={nameRef} style={{...S.field, fontSize:'13px', padding:'4px 8px', fontWeight:'bold', width:'auto', maxWidth:'100%'}}
+                       value={editNameVal}
+                       onChange={e=>setEditNameVal(e.target.value)}
+                       onBlur={commitEditName}
+                       onKeyDown={e=>{ if(e.key==='Enter') commitEditName(); if(e.key==='Escape') setEditingName(false); }}/>
+              ) : (
+                <div style={{display:'flex',alignItems:'center',gap:'6px',cursor:'pointer'}} onClick={startEditName} title="Haz clic para renombrar">
+                  <div className="orbitron" style={{fontSize:'13px',fontWeight:900,color:'#C9A050'}}>{team.name}</div>
+                  <span style={{fontSize:'9px',color:'rgba(169,124,55,0.35)'}}>✎</span>
+                </div>
+              )}
+              <div style={{display:'flex',gap:'8px',marginTop:'3px',flexWrap:'wrap'}}>
+                <span style={{fontSize:'9px',color:'rgba(169,124,55,0.45)',letterSpacing:'1px'}}>LÍMITE: {team.limit} PTS</span>
+                <span style={{fontSize:'9px',color:'rgba(169,124,55,0.35)'}}>·</span>
+                <span style={{fontSize:'9px',color:'rgba(169,124,55,0.45)',letterSpacing:'1px'}}>{team.chars.length} FIGURAS</span>
+                <span style={{fontSize:'9px',color:'rgba(169,124,55,0.35)'}}>·</span>
+                <span style={{fontSize:'9px',color:'rgba(169,124,55,0.45)',letterSpacing:'1px'}}>{team.format||'Modern Age'}</span>
+              </div>
+              {team.notes && <div style={{fontSize:'9px',color:'rgba(169,124,55,0.35)',marginTop:'3px',fontStyle:'italic'}}>{team.notes}</div>}
+            </div>
+            <div style={{textAlign:'right',flexShrink:0}}>
+              <div className="orbitron" style={{fontSize:'22px',fontWeight:900,
+                color:over?'#EF4444':'#A97C37',
+                textShadow:over?'0 0 14px rgba(239,68,68,0.8)':'0 0 10px rgba(169,124,55,0.6)'}}>
+                {total}<span style={{fontSize:'13px',color:'rgba(169,124,55,0.4)',fontWeight:'normal'}}> / {team.limit}</span>
+              </div>
+              <div style={{fontSize:'9px',color:over?'#FCA5A5':remaining===0?'#C9A050':'rgba(169,124,55,0.5)'}}>
+                {over ? `⚠ +${total-team.limit} pts sobre límite` : remaining===0 ? '✓ LÍMITE EXACTO' : `${remaining} pts disponibles`}
+              </div>
+            </div>
+          </div>
+          {/* Barra de progreso */}
+          <div className="prob-bar-wrap">
+            <div className="prob-bar" style={{width:`${pct}%`,background:over
+              ?'linear-gradient(90deg,#DC2626,#EF4444)'
+              :pct>85
+                ?'linear-gradient(90deg,#92400E,#CA8A04)'
+                :'linear-gradient(90deg,#7A5820,#A97C37,#C9A050)'}}/>
+          </div>
+          <div style={{display:'flex',justifyContent:'space-between',marginTop:'3px',fontSize:'8px',color:'rgba(169,124,55,0.4)'}}>
+            <span>0</span>
+            <span style={{color:over?'#FCA5A5':'rgba(169,124,55,0.6)'}}>{pct}%</span>
+            <span>{team.limit}</span>
+          </div>
+        </div>
+
+        {over && (
+          <div className="alert-bar fade-in">
+            ⚠ EQUIPO ILEGAL — EXCEDE EL LÍMITE EN {total - team.limit} PUNTOS
+          </div>
+        )}
+
+        {/* Lista de figuras */}
+        <div style={{flex:1,overflowY:'auto'}}>
+          {team.chars.length===0 ? (
+            <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',height:'100%',gap:'10px',color:'rgba(169,124,55,0.3)'}}>
+              <div style={{fontSize:'32px'}}>◈</div>
+              <div style={{fontSize:'11px'}}>Sin figuras. Pulsa <strong style={{color:'rgba(169,124,55,0.5)'}}>+ AÑADIR FIGURA</strong>.</div>
+            </div>
+          ) : (
+            <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
+              {team.chars.map((c,ci)=>(
+                <div key={c.id} className="char-row fade-in">
+                  <div className="orbitron" style={{fontSize:'9px',color:'rgba(169,124,55,0.4)',minWidth:'22px',flexShrink:0}}>
+                    {String(ci+1).padStart(2,'0')}
+                  </div>
+                  <div style={{flex:1,overflow:'hidden'}}>
+                    <div style={{fontSize:'12px',fontWeight:'bold',color:'#C9A050',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{c.name}</div>
+                    <div style={{display:'flex',flexWrap:'wrap',gap:'3px',marginTop:'2px'}}>
+                      {c.kw.map(k=><span key={k} className="tag" style={{fontSize:'8px'}}>{k}</span>)}
+                      {c.notes && <span style={{fontSize:'8px',color:'rgba(169,124,55,0.35)',fontStyle:'italic'}}>{c.notes}</span>}
+                    </div>
+                  </div>
+                  <div className="orbitron" style={{fontSize:'15px',fontWeight:900,color:'#A97C37',flexShrink:0}}>{c.pts}</div>
+                  <div style={{fontSize:'9px',color:'rgba(169,124,55,0.4)',flexShrink:0}}>pts</div>
+                  <button className="btn-red" style={{padding:'3px 8px',fontSize:'10px',borderRadius:'2px',flexShrink:0}}
+                          onClick={()=>removeChar(c.id)}>✕</button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Barra de acciones */}
+        <div style={{display:'flex',gap:'5px',flexWrap:'wrap',flexShrink:0}}>
+          <button className="btn-gold" style={{flex:'1 1 auto',padding:'9px 10px',fontSize:'10px',borderRadius:'2px'}}
+                  onClick={openAddChar}>+ AÑADIR FIGURA</button>
+          <button className="btn-outline" style={{padding:'9px 12px',fontSize:'10px',borderRadius:'2px'}}
+                  onClick={openExport}>↑ EXPORTAR</button>
+          <button className="btn-outline" style={{padding:'9px 12px',fontSize:'10px',borderRadius:'2px'}}
+                  onClick={openImport}>↓ IMPORTAR</button>
+          <button className="btn-red" style={{padding:'9px 12px',fontSize:'10px',borderRadius:'2px'}}
+                  onClick={()=>setModal('confirmDelete')}>✕ BORRAR</button>
+        </div>
+      </div>
+      )}
+
+      {/* ══════════════════════════════════════════════════════
+          MODAL: NUEVO EQUIPO
+      ══════════════════════════════════════════════════════ */}
+      {modal==='new' && (
+        <div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&closeModal()}>
+          <div className="modal fade-in" style={{maxWidth:'440px'}}>
+            {/* Cabecera */}
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px',paddingBottom:'10px',borderBottom:'1px solid rgba(169,124,55,0.2)'}}>
+              <div>
+                <div className="orbitron" style={{fontSize:'13px',fontWeight:900,color:'#C9A050'}}>CREAR NUEVO EQUIPO</div>
+                <div style={{fontSize:'9px',color:'rgba(169,124,55,0.4)',marginTop:'2px',letterSpacing:'1px'}}>TEAM BUILDER // KPRESE LABS</div>
+              </div>
+              <button onClick={closeModal} style={{background:'none',border:'none',color:'rgba(169,124,55,0.5)',fontSize:'16px',cursor:'pointer',padding:'4px'}}>✕</button>
+            </div>
+
+            {/* Nombre */}
+            <div style={{marginBottom:'12px'}}>
+              <label style={S.label}>NOMBRE DEL EQUIPO *</label>
+              <input style={{...S.field, borderColor: ntErr&&!nt.name.trim()?'rgba(239,68,68,0.6)':'rgba(169,124,55,0.3)'}}
+                     placeholder="Ej: Avengers Elite Force"
+                     value={nt.name}
+                     autoFocus
+                     onChange={e=>{ setNt({...nt,name:e.target.value}); setNtErr(''); }}
+                     onKeyDown={e=>e.key==='Enter'&&createTeam()}/>
+            </div>
+
+            {/* Límite de puntos */}
+            <div style={{marginBottom:'12px'}}>
+              <label style={S.label}>LÍMITE DE PUNTOS *</label>
+              <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'5px'}}>
+                {LIMIT_OPTIONS.filter(o=>o.v!==0).map(o=>(
+                  <button key={o.v} onClick={()=>setNt({...nt,limitSel:o.v,limitCustom:''})}
+                          style={{padding:'7px 4px',fontSize:'10px',cursor:'pointer',background:nt.limitSel===o.v?'rgba(169,124,55,0.25)':'rgba(169,124,55,0.04)',border:`1px solid ${nt.limitSel===o.v?'#A97C37':'rgba(169,124,55,0.2)'}`,color:nt.limitSel===o.v?'#C9A050':'rgba(169,124,55,0.55)',fontFamily:"'Share Tech Mono',monospace",transition:'all 0.15s',lineHeight:'1.3'}}>
+                    <div className="orbitron" style={{fontSize:'12px',fontWeight:900}}>{o.v}</div>
+                    <div style={{fontSize:'8px',opacity:0.7}}>{o.l.split('—')[1].trim()}</div>
+                  </button>
+                ))}
+              </div>
+              {/* Personalizado */}
+              <div style={{marginTop:'6px',display:'flex',alignItems:'center',gap:'8px'}}>
+                <button onClick={()=>setNt({...nt,limitSel:0})}
+                        style={{padding:'6px 10px',fontSize:'9px',cursor:'pointer',background:nt.limitSel===0?'rgba(169,124,55,0.2)':'rgba(169,124,55,0.04)',border:`1px solid ${nt.limitSel===0?'#A97C37':'rgba(169,124,55,0.2)'}`,color:nt.limitSel===0?'#C9A050':'rgba(169,124,55,0.5)',fontFamily:"'Share Tech Mono',monospace",flexShrink:0}}>
+                  PERSONALIZADO
+                </button>
+                {nt.limitSel===0 && (
+                  <input style={{...S.field,flex:1}} type="number" min="1" placeholder="Ej: 350"
+                         value={nt.limitCustom} autoFocus
+                         onChange={e=>{ setNt({...nt,limitCustom:e.target.value}); setNtErr(''); }}/>
+                )}
+              </div>
+            </div>
+
+            {/* Formato */}
+            <div style={{marginBottom:'12px'}}>
+              <label style={S.label}>FORMATO DE JUEGO</label>
+              <div style={{display:'flex',gap:'5px'}}>
+                {['Modern Age','Golden Age','Pulp','Sealed','Casual'].map(f=>(
+                  <button key={f} onClick={()=>setNt({...nt,format:f})}
+                          style={{flex:1,padding:'6px 4px',fontSize:'9px',cursor:'pointer',background:nt.format===f?'rgba(169,124,55,0.2)':'rgba(169,124,55,0.04)',border:`1px solid ${nt.format===f?'#A97C37':'rgba(169,124,55,0.2)'}`,color:nt.format===f?'#C9A050':'rgba(169,124,55,0.5)',fontFamily:"'Share Tech Mono',monospace"}}>
+                    {f}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Notas */}
+            <div style={{marginBottom:'14px'}}>
+              <label style={S.label}>NOTAS (opcional)</label>
+              <input style={S.field} placeholder="Estrategia, evento, notas personales…"
+                     value={nt.notes} onChange={e=>setNt({...nt,notes:e.target.value})}
+                     onKeyDown={e=>e.key==='Enter'&&createTeam()}/>
+            </div>
+
+            {/* Error */}
+            {ntErr && <div style={S.err}>⚠ {ntErr}</div>}
+
+            {/* Acciones */}
+            <div style={{display:'flex',gap:'8px',marginTop:'14px'}}>
+              <button className="btn-gold" style={{flex:1,padding:'10px',fontSize:'11px',borderRadius:'2px'}} onClick={createTeam}>
+                ✓ CREAR EQUIPO
+              </button>
+              <button className="btn-outline" style={{padding:'10px 16px',fontSize:'11px',borderRadius:'2px'}} onClick={closeModal}>
+                CANCELAR
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ══════════════════════════════════════════════════════
+          MODAL: AÑADIR FIGURA
+      ══════════════════════════════════════════════════════ */}
+      {modal==='addChar' && (
+        <div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&closeModal()}>
+          <div className="modal fade-in" style={{maxWidth:'420px'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'14px',paddingBottom:'10px',borderBottom:'1px solid rgba(169,124,55,0.2)'}}>
+              <div>
+                <div className="orbitron" style={{fontSize:'12px',fontWeight:900,color:'#C9A050'}}>AÑADIR FIGURA</div>
+                <div style={{fontSize:'9px',color:'rgba(169,124,55,0.4)',marginTop:'2px'}}>{team?.name} · {remaining} pts disponibles</div>
+              </div>
+              <button onClick={closeModal} style={{background:'none',border:'none',color:'rgba(169,124,55,0.5)',fontSize:'16px',cursor:'pointer',padding:'4px'}}>✕</button>
+            </div>
+
+            {/* Nombre + Puntos */}
+            <div style={{...S.row, marginBottom:'10px'}}>
+              <div style={{flex:1}}>
+                <label style={S.label}>NOMBRE DE LA FIGURA *</label>
+                <input style={{...S.field, borderColor:ncErr&&!nc.name.trim()?'rgba(239,68,68,0.5)':'rgba(169,124,55,0.3)'}}
+                       placeholder="Ej: Spider-Man, Avenger"
+                       value={nc.name} autoFocus
+                       onChange={e=>{ setNc({...nc,name:e.target.value}); setNcErr(''); }}
+                       onKeyDown={e=>e.key==='Enter'&&addChar()}/>
+              </div>
+              <div style={{width:'88px',flexShrink:0}}>
+                <label style={S.label}>PUNTOS *</label>
+                <input style={{...S.field,textAlign:'center', borderColor:ncErr&&(!nc.pts||parseInt(nc.pts)<0)?'rgba(239,68,68,0.5)':'rgba(169,124,55,0.3)'}}
+                       type="number" min="0" placeholder="0"
+                       value={nc.pts}
+                       onChange={e=>{ setNc({...nc,pts:e.target.value}); setNcErr(''); }}
+                       onKeyDown={e=>e.key==='Enter'&&addChar()}/>
+              </div>
+            </div>
+
+            {/* Keywords */}
+            <div style={{marginBottom:'10px'}}>
+              <label style={S.label}>KEYWORDS <span style={{color:'rgba(169,124,55,0.35)',fontSize:'8px'}}>(separadas por coma)</span></label>
+              <input style={S.field} placeholder="Avenger, Robot, Giant, Mystical…"
+                     value={nc.kw} onChange={e=>setNc({...nc,kw:e.target.value})}
+                     onKeyDown={e=>e.key==='Enter'&&addChar()}/>
+              {/* Preview de tags */}
+              {nc.kw.trim() && (
+                <div style={{display:'flex',flexWrap:'wrap',gap:'4px',marginTop:'6px'}}>
+                  {nc.kw.split(',').map(k=>k.trim()).filter(Boolean).map(k=>(
+                    <span key={k} className="tag">{k}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Notas */}
+            <div style={{marginBottom:'6px'}}>
+              <label style={S.label}>NOTAS <span style={{color:'rgba(169,124,55,0.35)',fontSize:'8px'}}>(opcional)</span></label>
+              <input style={S.field} placeholder="Clic de inicio, versión, set…"
+                     value={nc.notes} onChange={e=>setNc({...nc,notes:e.target.value})}
+                     onKeyDown={e=>e.key==='Enter'&&addChar()}/>
+            </div>
+
+            {/* Aviso de límite */}
+            {nc.pts && parseInt(nc.pts) > remaining && (
+              <div style={{...S.err, marginBottom:'6px'}}>
+                ⚠ Esta figura ({nc.pts} pts) supera los {remaining} pts disponibles.
+              </div>
+            )}
+
+            {ncErr && <div style={S.err}>⚠ {ncErr}</div>}
+
+            <div style={{display:'flex',gap:'8px',marginTop:'14px'}}>
+              <button className="btn-gold" style={{flex:1,padding:'10px',fontSize:'11px',borderRadius:'2px'}} onClick={addChar}>
+                ✓ AÑADIR FIGURA
+              </button>
+              <button className="btn-outline" style={{padding:'10px 16px',fontSize:'11px',borderRadius:'2px'}} onClick={closeModal}>
+                CANCELAR
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ══════════════════════════════════════════════════════
+          MODAL: EXPORTAR
+      ══════════════════════════════════════════════════════ */}
+      {modal==='export' && (
+        <div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&closeModal()}>
+          <div className="modal fade-in" style={{maxWidth:'480px'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'14px',paddingBottom:'10px',borderBottom:'1px solid rgba(169,124,55,0.2)'}}>
+              <div>
+                <div className="orbitron" style={{fontSize:'12px',fontWeight:900,color:'#C9A050'}}>EXPORTAR EQUIPO</div>
+                <div style={{fontSize:'9px',color:'rgba(169,124,55,0.4)',marginTop:'2px'}}>{team?.name} · {team?.chars.length} figuras · {total} pts</div>
+              </div>
+              <button onClick={closeModal} style={{background:'none',border:'none',color:'rgba(169,124,55,0.5)',fontSize:'16px',cursor:'pointer',padding:'4px'}}>✕</button>
+            </div>
+
+            <div style={{fontSize:'10px',color:'rgba(169,124,55,0.5)',marginBottom:'8px',lineHeight:'1.5'}}>
+              Copia el JSON y compártelo con otros jugadores para que puedan importar tu equipo exacto.
+            </div>
+
+            <textarea readOnly
+                      style={{...S.field,height:'200px',resize:'none',lineHeight:'1.4',cursor:'text',background:'rgba(169,124,55,0.03)'}}
+                      value={exportJson}
+                      onClick={e=>e.target.select()}/>
+
+            <div style={{display:'flex',gap:'8px',marginTop:'12px'}}>
+              <button className="btn-gold" style={{flex:1,padding:'10px',fontSize:'11px',borderRadius:'2px'}} onClick={copyToClipboard}>
+                {copied ? '✓ COPIADO AL PORTAPAPELES' : '⧉ COPIAR JSON'}
+              </button>
+              <button className="btn-outline" style={{padding:'10px 16px',fontSize:'11px',borderRadius:'2px'}} onClick={closeModal}>
+                CERRAR
+              </button>
+            </div>
+            {copied && (
+              <div style={{marginTop:'8px',fontSize:'10px',color:'#22C55E',textAlign:'center'}}>
+                ✓ JSON copiado. Pégalo en cualquier chat o documento para compartir.
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ══════════════════════════════════════════════════════
+          MODAL: IMPORTAR
+      ══════════════════════════════════════════════════════ */}
+      {modal==='import' && (
+        <div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&closeModal()}>
+          <div className="modal fade-in" style={{maxWidth:'480px'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'14px',paddingBottom:'10px',borderBottom:'1px solid rgba(169,124,55,0.2)'}}>
+              <div>
+                <div className="orbitron" style={{fontSize:'12px',fontWeight:900,color:'#C9A050'}}>IMPORTAR EQUIPO</div>
+                <div style={{fontSize:'9px',color:'rgba(169,124,55,0.4)',marginTop:'2px',letterSpacing:'1px'}}>PEGAR JSON DEL EQUIPO</div>
+              </div>
+              <button onClick={closeModal} style={{background:'none',border:'none',color:'rgba(169,124,55,0.5)',fontSize:'16px',cursor:'pointer',padding:'4px'}}>✕</button>
+            </div>
+
+            <div style={{fontSize:'10px',color:'rgba(169,124,55,0.5)',marginBottom:'10px',lineHeight:'1.5'}}>
+              Pega aquí el JSON exportado de otro jugador. Se creará una copia nueva del equipo en tu biblioteca.
+            </div>
+
+            <textarea style={{...S.field,height:'200px',resize:'none',lineHeight:'1.4',borderColor:importErr?'rgba(239,68,68,0.5)':'rgba(169,124,55,0.3)'}}
+                      placeholder={'{\n  "name": "Nombre del equipo",\n  "limit": 300,\n  "chars": [ ... ]\n}'}
+                      value={importTxt}
+                      onChange={e=>{ setImportTxt(e.target.value); setImportErr(''); setImportOk(false); }}/>
+
+            {importErr && (
+              <div style={{padding:'8px 10px',background:'rgba(239,68,68,0.08)',border:'1px solid rgba(239,68,68,0.3)',marginTop:'8px',fontSize:'10px',color:'#F87171'}}>
+                ⚠ {importErr}
+              </div>
+            )}
+            {importOk && (
+              <div style={{padding:'8px 10px',background:'rgba(34,197,94,0.08)',border:'1px solid rgba(34,197,94,0.3)',marginTop:'8px',fontSize:'10px',color:'#86EFAC'}}>
+                ✓ Equipo importado correctamente. Redirigiendo…
+              </div>
+            )}
+
+            <div style={{display:'flex',gap:'8px',marginTop:'12px'}}>
+              <button className="btn-gold" style={{flex:1,padding:'10px',fontSize:'11px',borderRadius:'2px'}} onClick={doImport}
+                      disabled={importOk}>
+                ↓ IMPORTAR EQUIPO
+              </button>
+              <button className="btn-outline" style={{padding:'10px 16px',fontSize:'11px',borderRadius:'2px'}} onClick={closeModal}>
+                CANCELAR
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ══════════════════════════════════════════════════════
+          MODAL: CONFIRMAR BORRADO
+      ══════════════════════════════════════════════════════ */}
+      {modal==='confirmDelete' && (
+        <div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&closeModal()}>
+          <div className="modal fade-in" style={{maxWidth:'360px'}}>
+            <div style={{textAlign:'center',padding:'8px 0 16px'}}>
+              <div style={{fontSize:'36px',marginBottom:'10px'}}>⚠</div>
+              <div className="orbitron" style={{fontSize:'13px',color:'#C9A050',marginBottom:'8px'}}>ELIMINAR EQUIPO</div>
+              <div style={{fontSize:'12px',color:'rgba(169,124,55,0.7)',lineHeight:'1.7'}}>
+                ¿Eliminar <strong style={{color:'#C9A050'}}>"{team?.name}"</strong>?<br/>
+                Esta acción no se puede deshacer.<br/>
+                <span style={{fontSize:'10px',color:'rgba(169,124,55,0.45)'}}>
+                  Se borrarán {team?.chars.length} figuras · {total} pts
+                </span>
+              </div>
+            </div>
+            <div style={{display:'flex',gap:'8px',marginTop:'4px'}}>
+              <button className="btn-red" style={{flex:1,padding:'10px',fontSize:'11px',borderRadius:'2px'}} onClick={confirmDelete}>
+                ✕ SÍ, ELIMINAR
+              </button>
+              <button className="btn-gold" style={{flex:1,padding:'10px',fontSize:'11px',borderRadius:'2px'}} onClick={closeModal}>
+                CANCELAR
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════
+//  CALCULADORA DE COMBATE
+// ═══════════════════════════════════════════════════════════
+function Calculator() {
+  const [atk, setAtk] = useState(10);
+  const [def, setDef] = useState(17);
+  const [dmg, setDmg] = useState(3);
+  const [reducer, setReducer] = useState('none');
+  const [rolls, setRolls] = useState([]);
+  const [simCount, setSimCount] = useState(0);
+
+  const REDUCERS = [
+    {id:'none',   label:'Ninguno',        val:0},
+    {id:'tough',  label:'Resistencia',    val:1},
+    {id:'invuln', label:'Invulnerabilidad',val:2},
+    {id:'imperv', label:'Impenetrabilidad',val:null}, // special: 50% -> 0, else -2
+  ];
+
+  const prob = calcProb(atk, def);
+  const probPct = (prob*100).toFixed(1);
+
+  const effDmg = () => {
+    const r = REDUCERS.find(r=>r.id===reducer);
+    if (reducer==='imperv') return `${(dmg*0.5).toFixed(1)} (promedio)`; // 50% full, 50% max(dmg-2,1)
+    const reduced = r ? Math.max(1, dmg - r.val) : dmg;
+    return `${reduced} daño`;
+  };
+
+  const expectedDmg = () => {
+    const r = REDUCERS.find(r=>r.id===reducer);
+    let d;
+    if (reducer==='imperv') {
+      d = (dmg * 0.5) + (Math.max(1, dmg-2) * 0.5); // avg over rolls
+    } else {
+      d = r ? Math.max(1, dmg - r.val) : dmg;
+    }
+    return (prob * d).toFixed(2);
+  };
+
+  const rollDice = () => {
+    const d1 = Math.ceil(Math.random()*6);
+    const d2 = Math.ceil(Math.random()*6);
+    const total = d1+d2;
+    const snakeEyes = d1===1&&d2===1;
+    const critical = d1===d2 && !snakeEyes;
+    const hit = !snakeEyes && (critical || (total+atk >= def));
+    const r = REDUCERS.find(r=>r.id===reducer);
+    let dmgDealt = 0;
+    if (hit) {
+      if (reducer==='imperv') {
+        const impRoll = Math.ceil(Math.random()*6);
+        dmgDealt = impRoll>=5 ? 0 : Math.max(1,dmg-2);
+      } else {
+        dmgDealt = r ? Math.max(1, dmg-r.val) : dmg;
+      }
+    }
+    const entry = {id:Date.now(),d1,d2,total,hit,critical,snakeEyes,dmgDealt,atkMod:total+atk};
+    setRolls(prev=>[entry,...prev.slice(0,14)]);
+    setSimCount(c=>c+1);
+  };
+
+  const clearRolls = () => { setRolls([]); setSimCount(0); };
+
+  const probColor = p => p>=0.7?'#22C55E': p>=0.4?'#A97C37': '#EF4444';
+
+  return (
+    <div style={{display:'flex',flexDirection:'column',height:'100%',overflow:'hidden',padding:'14px',gap:'12px'}}>
+
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'12px',flexShrink:0}}>
+        {/* Combat inputs */}
+        <div className="panel corner" style={{padding:'14px'}}>
+          <div className="orbitron" style={{fontSize:'10px',color:'rgba(169,124,55,0.7)',marginBottom:'12px',letterSpacing:'2px'}}>⚔ CONFIGURAR COMBATE</div>
+          <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
+            {[
+              {label:'ATAQUE',  val:atk, set:setAtk, min:1, max:20},
+              {label:'DEFENSA', val:def, set:setDef, min:1, max:22},
+              {label:'DAÑO',    val:dmg, set:setDmg, min:1, max:10},
+            ].map(({label,val,set,min,max})=>(
+              <div key={label} style={{display:'flex',alignItems:'center',gap:'8px'}}>
+                <div className="orbitron" style={{fontSize:'9px',color:'rgba(169,124,55,0.5)',minWidth:'58px',letterSpacing:'1px'}}>{label}</div>
+                <button onClick={()=>set(v=>Math.max(min,v-1))} className="btn-outline" style={{width:26,height:26,padding:0,fontSize:'14px',lineHeight:1}}>−</button>
+                <div className="orbitron" style={{fontSize:'18px',fontWeight:900,color:'#C9A050',minWidth:'36px',textAlign:'center'}}>{val}</div>
+                <button onClick={()=>set(v=>Math.min(max,v+1))} className="btn-outline" style={{width:26,height:26,padding:0,fontSize:'14px',lineHeight:1}}>+</button>
+                <input type="range" min={min} max={max} value={val} onChange={e=>set(parseInt(e.target.value))}
+                       style={{flex:1,accentColor:'#A97C37',height:'4px',background:'transparent',cursor:'pointer'}}/>
+              </div>
+            ))}
+            <div style={{display:'flex',alignItems:'center',gap:'8px',marginTop:'4px'}}>
+              <div className="orbitron" style={{fontSize:'9px',color:'rgba(169,124,55,0.5)',minWidth:'58px',letterSpacing:'1px'}}>REDUCTOR</div>
+              <select value={reducer} onChange={e=>setReducer(e.target.value)} style={{flex:1,padding:'4px 8px',fontSize:'10px',borderRadius:'2px'}}>
+                {REDUCERS.map(r=><option key={r.id} value={r.id}>{r.label}</option>)}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Stats */}
+        <div className="panel" style={{padding:'14px',display:'flex',flexDirection:'column',gap:'10px'}}>
+          <div className="orbitron" style={{fontSize:'10px',color:'rgba(169,124,55,0.7)',letterSpacing:'2px'}}>📊 ESTADÍSTICAS</div>
+
+          <div style={{textAlign:'center',padding:'10px 0'}}>
+            <div className="orbitron" style={{fontSize:'36px',fontWeight:900,color:probColor(prob),textShadow:`0 0 16px ${probColor(prob)}88`}}>{probPct}%</div>
+            <div style={{fontSize:'10px',color:'rgba(169,124,55,0.5)',marginTop:'2px'}}>PROBABILIDAD DE IMPACTO</div>
+          </div>
+
+          <div className="prob-bar-wrap">
+            <div className="prob-bar" style={{width:`${probPct}%`,background:`linear-gradient(90deg,${probColor(prob)}88,${probColor(prob)})`}}/>
+          </div>
+
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'6px',marginTop:'4px'}}>
+            {[
+              {l:'Necesitas',   v:`${Math.max(2,def-atk)} en 2d6`},
+              {l:'Daño efectivo',v:effDmg()},
+              {l:'Daño esperado',v:expectedDmg()},
+              {l:'Fallos',       v:`${(100-parseFloat(probPct)).toFixed(1)}%`},
+            ].map(({l,v})=>(
+              <div key={l} style={{background:'rgba(169,124,55,0.06)',border:'1px solid rgba(169,124,55,0.15)',padding:'7px 8px',borderRadius:'2px'}}>
+                <div style={{fontSize:'8px',color:'rgba(169,124,55,0.4)',letterSpacing:'1px'}}>{l}</div>
+                <div style={{fontSize:'11px',color:'#C9A050',fontWeight:'bold',marginTop:'2px'}}>{v}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Distribución 2d6 */}
+          <div style={{marginTop:'4px'}}>
+            <div style={{fontSize:'8px',color:'rgba(169,124,55,0.4)',letterSpacing:'1px',marginBottom:'5px'}}>DISTRIBUCIÓN 2d6 (necesitas ≥{Math.max(2,def-atk)})</div>
+            <div style={{display:'flex',gap:'2px',alignItems:'flex-end',height:'36px'}}>
+              {OUTCOMES.map(o=>{
+                const cnt=DIST[o]||0; const pct=cnt/36; const needed=Math.max(2,def-atk);
+                const hits=(o>=needed)||(o===2&&def-atk<=2);
+                const isSnakeEyes=o===2;
+                const barH=Math.round(pct*36);
+                return (
+                  <div key={o} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:'1px'}}>
+                    <div style={{width:'100%',height:`${barH}px`,background:isSnakeEyes?'#374151':hits?'#16A34A':'rgba(169,124,55,0.25)',borderRadius:'1px 1px 0 0',minHeight:'2px',transition:'height 0.3s'}}/>
+                    <div style={{fontSize:'7px',color:'rgba(169,124,55,0.4)'}}>{o}</div>
+                  </div>
+                );
+              })}
+            </div>
+            <div style={{display:'flex',gap:'10px',marginTop:'4px',fontSize:'8px'}}>
+              <span style={{color:'#16A34A'}}>■ Impacto</span>
+              <span style={{color:'rgba(169,124,55,0.35)'}}>■ Fallo</span>
+              <span style={{color:'#374151'}}>■ Snake Eyes</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Dice roller */}
+      <div style={{display:'flex',gap:'12px',flex:1,overflow:'hidden',minHeight:0}}>
+        <div style={{flex:1,display:'flex',flexDirection:'column',gap:'8px',overflow:'hidden'}}>
+          <div style={{display:'flex',gap:'8px',alignItems:'center',flexShrink:0}}>
+            <div className="orbitron" style={{fontSize:'10px',color:'rgba(169,124,55,0.7)',letterSpacing:'2px',flex:1}}>🎲 SIMULADOR DE TIRADAS</div>
+            <button className="btn-gold" style={{padding:'6px 16px',fontSize:'10px',borderRadius:'2px'}} onClick={rollDice}>TIRAR 2d6</button>
+            {rolls.length>0 && <button className="btn-outline" style={{padding:'6px 10px',fontSize:'10px',borderRadius:'2px'}} onClick={clearRolls}>LIMPIAR</button>}
+          </div>
+
+          <div style={{flex:1,overflowY:'auto'}}>
+            {rolls.length===0 ? (
+              <div style={{textAlign:'center',padding:'24px',color:'rgba(169,124,55,0.3)',fontSize:'11px'}}>
+                <div style={{fontSize:'28px',marginBottom:'8px'}}>🎲</div>
+                Pulsa TIRAR 2d6 para simular ataques
+              </div>
+            ) : (
+              <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
+                {rolls.map((r,i)=>(
+                  <div key={r.id} className="fade-in" style={{display:'flex',alignItems:'center',gap:'8px',padding:'6px 10px',background:r.snakeEyes?'rgba(239,68,68,0.06)':r.hit?'rgba(22,163,74,0.06)':'rgba(169,124,55,0.04)',border:`1px solid ${r.snakeEyes?'rgba(239,68,68,0.3)':r.hit?'rgba(22,163,74,0.2)':'rgba(169,124,55,0.15)'}`,borderRadius:'2px'}}>
+                    <div style={{display:'flex',gap:'3px'}}>
+                      <span className="dice-face" style={{width:24,height:24,fontSize:'13px',borderColor:r.critical?'#A97C37':'rgba(169,124,55,0.3)'}}>{r.d1}</span>
+                      <span className="dice-face" style={{width:24,height:24,fontSize:'13px',borderColor:r.critical?'#A97C37':'rgba(169,124,55,0.3)'}}>{r.d2}</span>
+                    </div>
+                    <div className="orbitron" style={{fontSize:'13px',fontWeight:900,color:'rgba(169,124,55,0.7)',minWidth:'24px'}}>{r.total}</div>
+                    <div style={{fontSize:'10px',color:'rgba(169,124,55,0.5)'}}>+{atk} = <strong style={{color:'#C9A050'}}>{r.atkMod}</strong> vs {def}</div>
+                    <div style={{flex:1,fontSize:'10px',fontWeight:'bold',color:r.snakeEyes?'#EF4444':r.hit?'#22C55E':'rgba(169,124,55,0.5)'}}>
+                      {r.snakeEyes?'✕ SNAKE EYES':r.critical?`★ CRÍTICO ${r.hit?'':' (falla)'}`:r.hit?'✓ IMPACTO':'✕ FALLO'}
+                    </div>
+                    {r.hit && <div className="orbitron" style={{fontSize:'12px',fontWeight:900,color:'#EF4444',flexShrink:0}}>{r.dmgDealt > 0 ? `-${r.dmgDealt}♥`:'-0♥'}</div>}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════
+//  REGLAMENTO SECTION
+// ═══════════════════════════════════════════════════════════
+function ReglamentoSection() {
+  const [active, setActive] = useState('basics');
+  const [search, setSearch] = useState('');
+  const sec = REGLAMENTO.find(s=>s.id===active);
+
+  const filteredItems = sec ? (search.trim() ?
+    sec.items.filter(it=>it.t.toLowerCase().includes(search.toLowerCase())||it.d.toLowerCase().includes(search.toLowerCase()))
+    : sec.items) : [];
+
+  return (
+    <div style={{display:'flex',height:'100%',overflow:'hidden'}}>
+      {/* Sub-nav */}
+      <div style={{width:'155px',flexShrink:0,overflowY:'auto',background:'#0A0A0D',borderRight:'1px solid rgba(169,124,55,0.2)',display:'flex',flexDirection:'column'}}>
+        <div style={{padding:'8px',borderBottom:'1px solid rgba(169,124,55,0.1)'}}>
+          <div className="orbitron" style={{fontSize:'8px',color:'rgba(169,124,55,0.4)',letterSpacing:'2px',textAlign:'center'}}>SECCIONES</div>
+        </div>
+        {REGLAMENTO.map(s=>(
+          <div key={s.id} onClick={()=>{setActive(s.id);setSearch('');}}
+               style={{padding:'11px 12px',cursor:'pointer',fontSize:'9px',lineHeight:'1.4',borderLeft:`3px solid ${active===s.id?'#A97C37':'transparent'}`,background:active===s.id?'rgba(169,124,55,0.1)':'transparent',color:active===s.id?'#C9A050':'rgba(169,124,55,0.5)',letterSpacing:'1px',transition:'all 0.2s',borderBottom:'1px solid rgba(169,124,55,0.08)'}}>
+            {s.title}
+          </div>
+        ))}
+      </div>
+
+      {/* Content */}
+      <div style={{flex:1,overflow:'hidden',display:'flex',flexDirection:'column'}}>
+        {/* Search */}
+        <div style={{padding:'10px 14px',borderBottom:'1px solid rgba(169,124,55,0.15)',background:'#0D0D16',flexShrink:0}}>
+          <input style={{width:'100%',padding:'6px 10px',fontSize:'11px',borderRadius:'2px'}} placeholder="Buscar en esta sección..."
+                 value={search} onChange={e=>setSearch(e.target.value)}/>
+        </div>
+
+        <div style={{flex:1,overflowY:'auto',padding:'14px'}}>
+          {sec && (
+            <div className="fade-in">
+              <div className="orbitron" style={{fontSize:'12px',fontWeight:900,color:'#C9A050',paddingBottom:'10px',borderBottom:'1px solid rgba(169,124,55,0.25)',marginBottom:'12px'}}>{sec.title}</div>
+              {filteredItems.length===0 ? (
+                <div style={{textAlign:'center',padding:'24px',color:'rgba(169,124,55,0.3)',fontSize:'11px'}}>Sin resultados para "{search}"</div>
+              ) : (
+                <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
+                  {filteredItems.map(it=>(
+                    <div key={it.t} style={{background:'#13131A',border:'1px solid rgba(169,124,55,0.2)',padding:'12px'}}>
+                      <div style={{color:'#A97C37',fontSize:'12px',fontWeight:'bold',marginBottom:'5px'}}>{it.t}</div>
+                      <div style={{color:'rgba(201,160,80,0.75)',fontSize:'11px',lineHeight:'1.7'}}>{it.d}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════
+//  EVENTOS — storage helpers
+// ═══════════════════════════════════════════════════════════
+const EVENTS_KEY = 'heroclix_events_v1';
+const loadEvents = () => { try { return JSON.parse(localStorage.getItem(EVENTS_KEY)) || []; } catch { return []; } };
+const saveEvents = (ev) => { try { localStorage.setItem(EVENTS_KEY, JSON.stringify(ev)); } catch {} };
+
+const EVENT_TYPES = [
+  { id:'torneo',       label:'Torneo',       icon:'🏆', color:'#CA8A04' },
+  { id:'presentacion', label:'Presentación', icon:'📋', color:'#0EA5E9' },
+  { id:'pachanga',     label:'Pachanga',     icon:'🎮', color:'#16A34A' },
+  { id:'liga',         label:'Liga',         icon:'🥇', color:'#7C3AED' },
+  { id:'amistoso',     label:'Amistoso',     icon:'🤝', color:'#A97C37' },
+];
+
+const EVENT_FORMATS = ['Modern Age','Golden Age','Pulp','Sealed','Casual'];
+
+const RESULT_OPTIONS = [
+  { id:'',          label:'Sin registrar' },
+  { id:'1',         label:'🥇 1.º puesto' },
+  { id:'2',         label:'🥈 2.º puesto' },
+  { id:'3',         label:'🥉 3.º puesto' },
+  { id:'top8',      label:'Top 8' },
+  { id:'top16',     label:'Top 16' },
+  { id:'participe', label:'Participé' },
+  { id:'baja',      label:'Baja / No asistí' },
+];
+
+function EventosSection() {
+  const [events,    setEvents]    = useState(loadEvents);
+  const [selId,     setSelId]     = useState(null);
+  const [modal,     setModal]     = useState(null); // 'new' | 'edit' | 'confirmDelete'
+  const [filterType,setFilterType]= useState('ALL');
+  const [search,    setSearch]    = useState('');
+
+  // form state compartido para crear/editar
+  const EMPTY_FORM = { name:'', date:'', location:'', type:'torneo', format:'Modern Age', result:'', teamUsed:'', notes:'' };
+  const [form, setForm] = useState(EMPTY_FORM);
+  const [formErr, setFormErr] = useState('');
+
+  useEffect(()=>{ saveEvents(events); }, [events]);
+
+  // evento seleccionado
+  const event = events.find(e=>e.id===selId) || null;
+
+  // lista filtrada + ordenada por fecha desc
+  const filtered = events
+    .filter(e => filterType==='ALL' || e.type===filterType)
+    .filter(e => !search.trim() || e.name.toLowerCase().includes(search.toLowerCase()) || (e.location||'').toLowerCase().includes(search.toLowerCase()))
+    .sort((a,b)=> (b.date||'').localeCompare(a.date||''));
+
+  // helpers de apertura de modal
+  const openNew = () => {
+    setForm({ ...EMPTY_FORM, date: new Date().toISOString().slice(0,10) });
+    setFormErr('');
+    setModal('new');
+  };
+  const openEdit = (ev) => {
+    setForm({ name:ev.name||'', date:ev.date||'', location:ev.location||'', type:ev.type||'torneo', format:ev.format||'Modern Age', result:ev.result||'', teamUsed:ev.teamUsed||'', notes:ev.notes||'' });
+    setFormErr('');
+    setModal('edit');
+  };
+  const closeModal = () => setModal(null);
+
+  const saveEvent = () => {
+    if (!form.name.trim()) { setFormErr('El nombre del evento es obligatorio.'); return; }
+    if (!form.date)         { setFormErr('La fecha es obligatoria.'); return; }
+    if (modal==='new') {
+      const ev = { id:Date.now(), ...form, name:form.name.trim(), location:form.location.trim(), teamUsed:form.teamUsed.trim(), notes:form.notes.trim() };
+      const u = [...events, ev];
+      setEvents(u);
+      setSelId(ev.id);
+    } else {
+      setEvents(events.map(e=>e.id===selId ? { ...e, ...form, name:form.name.trim(), location:form.location.trim(), teamUsed:form.teamUsed.trim(), notes:form.notes.trim() } : e));
+    }
+    closeModal();
+  };
+
+  const deleteEvent = () => {
+    const u = events.filter(e=>e.id!==selId);
+    setEvents(u);
+    setSelId(u.length>0 ? u[0].id : null);
+    closeModal();
+  };
+
+  const typeInfo = (id) => EVENT_TYPES.find(t=>t.id===id) || EVENT_TYPES[0];
+  const resultLabel = (id) => RESULT_OPTIONS.find(r=>r.id===id)?.label || '';
+
+  const fmtDate = (d) => {
+    if (!d) return '—';
+    try { return new Date(d+'T12:00:00').toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}); }
+    catch { return d; }
+  };
+
+  // stats rápidas
+  const stats = {
+    total:   events.length,
+    torneos: events.filter(e=>e.type==='torneo').length,
+    podios:  events.filter(e=>['1','2','3'].includes(e.result)).length,
+  };
+
+  // ── UI ──────────────────────────────────────────────────
+  return (
+    <div style={{display:'flex',height:'100%',overflow:'hidden',position:'relative'}}>
+
+      {/* ── COLUMNA IZQUIERDA: lista + filtros ── */}
+      <div style={{width:'240px',flexShrink:0,display:'flex',flexDirection:'column',borderRight:'1px solid rgba(169,124,55,0.2)',background:'#0A0A0D'}}>
+
+        {/* Stats rápidas */}
+        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'1px',background:'rgba(169,124,55,0.15)',borderBottom:'1px solid rgba(169,124,55,0.2)'}}>
+          {[
+            {l:'EVENTOS', v:stats.total},
+            {l:'TORNEOS', v:stats.torneos},
+            {l:'PODIOS',  v:stats.podios},
+          ].map(s=>(
+            <div key={s.l} style={{background:'#0A0A0D',padding:'8px 4px',textAlign:'center'}}>
+              <div className="orbitron" style={{fontSize:'16px',fontWeight:900,color:'#A97C37'}}>{s.v}</div>
+              <div style={{fontSize:'7px',color:'rgba(169,124,55,0.4)',letterSpacing:'1px',marginTop:'1px'}}>{s.l}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Botón nuevo */}
+        <div style={{padding:'8px'}}>
+          <button className="btn-gold" style={{width:'100%',padding:'8px',fontSize:'10px',borderRadius:'2px'}} onClick={openNew}>
+            + NUEVO EVENTO
+          </button>
+        </div>
+
+        {/* Buscador */}
+        <div style={{padding:'0 8px 6px'}}>
+          <input style={{width:'100%',padding:'6px 8px',fontSize:'10px',borderRadius:'2px'}}
+                 placeholder="Buscar evento o lugar…"
+                 value={search} onChange={e=>setSearch(e.target.value)}/>
+        </div>
+
+        {/* Filtro por tipo */}
+        <div style={{padding:'0 8px 6px',display:'flex',flexWrap:'wrap',gap:'3px'}}>
+          <button onClick={()=>setFilterType('ALL')}
+                  style={{padding:'3px 7px',fontSize:'8px',cursor:'pointer',fontFamily:"'Share Tech Mono',monospace",borderRadius:'2px',background:filterType==='ALL'?'rgba(169,124,55,0.2)':'transparent',border:`1px solid ${filterType==='ALL'?'#A97C37':'rgba(169,124,55,0.2)'}`,color:filterType==='ALL'?'#C9A050':'rgba(169,124,55,0.45)'}}>
+            TODOS
+          </button>
+          {EVENT_TYPES.map(t=>(
+            <button key={t.id} onClick={()=>setFilterType(filterType===t.id?'ALL':t.id)}
+                    style={{padding:'3px 7px',fontSize:'8px',cursor:'pointer',fontFamily:"'Share Tech Mono',monospace",borderRadius:'2px',background:filterType===t.id?'rgba(169,124,55,0.2)':'transparent',border:`1px solid ${filterType===t.id?t.color:'rgba(169,124,55,0.2)'}`,color:filterType===t.id?t.color:'rgba(169,124,55,0.45)'}}>
+              {t.icon} {t.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Lista de eventos */}
+        <div style={{flex:1,overflowY:'auto',borderTop:'1px solid rgba(169,124,55,0.1)'}}>
+          {filtered.length===0 ? (
+            <div style={{textAlign:'center',padding:'32px 12px',color:'rgba(169,124,55,0.3)',fontSize:'10px'}}>
+              {events.length===0 ? 'Sin eventos. Crea el primero.' : 'Sin resultados para el filtro.'}
+            </div>
+          ) : filtered.map(ev=>{
+            const ti = typeInfo(ev.type);
+            const isActive = ev.id===selId;
+            return (
+              <div key={ev.id} onClick={()=>setSelId(ev.id)}
+                   style={{padding:'10px 12px',cursor:'pointer',borderLeft:`3px solid ${isActive?ti.color:'transparent'}`,background:isActive?'rgba(169,124,55,0.08)':'transparent',borderBottom:'1px solid rgba(169,124,55,0.07)',transition:'all 0.15s'}}>
+                <div style={{display:'flex',alignItems:'flex-start',gap:'7px'}}>
+                  <span style={{fontSize:'14px',flexShrink:0,marginTop:'1px'}}>{ti.icon}</span>
+                  <div style={{flex:1,overflow:'hidden'}}>
+                    <div style={{fontSize:'11px',fontWeight:'bold',color:isActive?'#C9A050':'rgba(169,124,55,0.75)',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{ev.name}</div>
+                    <div style={{fontSize:'8px',color:'rgba(169,124,55,0.4)',marginTop:'2px'}}>{fmtDate(ev.date)}</div>
+                    {ev.location && <div style={{fontSize:'8px',color:'rgba(169,124,55,0.35)',marginTop:'1px',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>📍 {ev.location}</div>}
+                    {ev.result && <div style={{fontSize:'8px',color:ti.color,marginTop:'2px'}}>{resultLabel(ev.result)}</div>}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── COLUMNA DERECHA: detalle ── */}
+      <div style={{flex:1,overflow:'hidden',display:'flex',flexDirection:'column'}}>
+        {!event ? (
+          <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',gap:'14px',color:'rgba(169,124,55,0.3)'}}>
+            <div style={{fontSize:'44px'}}>◷</div>
+            <div className="orbitron" style={{fontSize:'12px',letterSpacing:'2px'}}>
+              {events.length===0 ? 'SIN EVENTOS' : 'SELECCIONA UN EVENTO'}
+            </div>
+            <div style={{fontSize:'11px',color:'rgba(169,124,55,0.25)',textAlign:'center',maxWidth:'260px',lineHeight:'1.7'}}>
+              {events.length===0
+                ? 'Registra torneos, presentaciones y partidas con el botón "+ NUEVO EVENTO".'
+                : 'Haz clic en un evento de la lista para ver su detalle.'}
+            </div>
+            {events.length===0 && (
+              <button className="btn-gold" style={{padding:'10px 22px',fontSize:'10px',borderRadius:'2px',marginTop:'4px'}} onClick={openNew}>
+                + CREAR PRIMER EVENTO
+              </button>
+            )}
+          </div>
+        ) : (()=>{
+          const ti = typeInfo(event.type);
+          return (
+            <div style={{flex:1,overflow:'hidden',display:'flex',flexDirection:'column'}}>
+              {/* Cabecera del detalle */}
+              <div style={{padding:'14px 16px',borderBottom:'1px solid rgba(169,124,55,0.2)',background:'#0D0D16',flexShrink:0}}>
+                <div style={{display:'flex',alignItems:'flex-start',gap:'12px'}}>
+                  <div style={{width:46,height:46,borderRadius:'6px',background:ti.color+'22',border:`2px solid ${ti.color}44`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'22px',flexShrink:0}}>
+                    {ti.icon}
+                  </div>
+                  <div style={{flex:1}}>
+                    <div className="orbitron" style={{fontSize:'15px',fontWeight:900,color:'#C9A050'}}>{event.name}</div>
+                    <div style={{display:'flex',flexWrap:'wrap',gap:'6px',marginTop:'4px'}}>
+                      <span className="tag" style={{borderColor:ti.color+'66',color:ti.color}}>{ti.label}</span>
+                      <span className="tag">{event.format||'Modern Age'}</span>
+                      {event.result && <span className="tag" style={{borderColor:'rgba(34,197,94,0.4)',color:'#86EFAC'}}>{resultLabel(event.result)}</span>}
+                    </div>
+                  </div>
+                  <div style={{display:'flex',gap:'5px',flexShrink:0}}>
+                    <button className="btn-outline" style={{padding:'6px 10px',fontSize:'10px',borderRadius:'2px'}} onClick={()=>openEdit(event)}>✎ EDITAR</button>
+                    <button className="btn-red"     style={{padding:'6px 10px',fontSize:'10px',borderRadius:'2px'}} onClick={()=>setModal('confirmDelete')}>✕</button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Cuerpo del detalle */}
+              <div style={{flex:1,overflowY:'auto',padding:'16px',display:'flex',flexDirection:'column',gap:'10px'}}>
+
+                {/* Fila de datos clave */}
+                <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'8px'}}>
+                  {[
+                    { icon:'📅', label:'FECHA',   val: fmtDate(event.date) },
+                    { icon:'📍', label:'LUGAR',   val: event.location || '—' },
+                    { icon:'🎮', label:'FORMATO', val: event.format || '—' },
+                  ].map(item=>(
+                    <div key={item.label} className="panel" style={{padding:'10px 12px'}}>
+                      <div style={{fontSize:'9px',color:'rgba(169,124,55,0.4)',letterSpacing:'1px',marginBottom:'4px'}}>{item.icon} {item.label}</div>
+                      <div style={{fontSize:'12px',color:'#C9A050',fontWeight:'bold',lineHeight:'1.3'}}>{item.val}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Equipo usado */}
+                {event.teamUsed && (
+                  <div className="panel" style={{padding:'12px'}}>
+                    <div style={{fontSize:'9px',color:'rgba(169,124,55,0.4)',letterSpacing:'1px',marginBottom:'5px'}}>⊕ EQUIPO USADO</div>
+                    <div style={{fontSize:'12px',color:'#C9A050'}}>{event.teamUsed}</div>
+                  </div>
+                )}
+
+                {/* Resultado destacado */}
+                {event.result && (
+                  <div style={{padding:'12px 14px',background:ti.color+'11',border:`1px solid ${ti.color}44`,borderLeft:`3px solid ${ti.color}`}}>
+                    <div style={{fontSize:'9px',color:'rgba(169,124,55,0.4)',letterSpacing:'1px',marginBottom:'4px'}}>RESULTADO</div>
+                    <div style={{fontSize:'16px',fontWeight:'bold',color:ti.color}}>{resultLabel(event.result)}</div>
+                  </div>
+                )}
+
+                {/* Notas */}
+                {event.notes ? (
+                  <div className="panel" style={{padding:'12px'}}>
+                    <div style={{fontSize:'9px',color:'rgba(169,124,55,0.4)',letterSpacing:'1px',marginBottom:'6px'}}>📝 NOTAS</div>
+                    <div style={{fontSize:'12px',color:'rgba(201,160,80,0.8)',lineHeight:'1.75',whiteSpace:'pre-wrap'}}>{event.notes}</div>
+                  </div>
+                ) : (
+                  <div style={{textAlign:'center',padding:'16px',color:'rgba(169,124,55,0.25)',fontSize:'10px',border:'1px dashed rgba(169,124,55,0.15)',borderRadius:'2px',cursor:'pointer'}}
+                       onClick={()=>openEdit(event)}>
+                    Sin notas — pulsa <strong>✎ EDITAR</strong> para añadir
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })()}
+      </div>
+
+      {/* ══════════════════════════════════════════════════════
+          MODAL: NUEVO / EDITAR EVENTO
+      ══════════════════════════════════════════════════════ */}
+      {(modal==='new'||modal==='edit') && (
+        <div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&closeModal()}>
+          <div className="modal fade-in" style={{maxWidth:'480px',maxHeight:'90vh',overflowY:'auto'}}>
+
+            {/* Cabecera */}
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px',paddingBottom:'10px',borderBottom:'1px solid rgba(169,124,55,0.2)',position:'sticky',top:0,background:'#13131A',zIndex:1}}>
+              <div>
+                <div className="orbitron" style={{fontSize:'12px',fontWeight:900,color:'#C9A050'}}>{modal==='new'?'NUEVO EVENTO':'EDITAR EVENTO'}</div>
+                <div style={{fontSize:'8px',color:'rgba(169,124,55,0.4)',marginTop:'2px',letterSpacing:'1px'}}>REGISTRO DE ACTIVIDAD // KPRESE LABS</div>
+              </div>
+              <button onClick={closeModal} style={{background:'none',border:'none',color:'rgba(169,124,55,0.5)',fontSize:'16px',cursor:'pointer',padding:'4px'}}>✕</button>
+            </div>
+
+            {/* Nombre */}
+            <div style={{marginBottom:'12px'}}>
+              <label style={S.label}>NOMBRE DEL EVENTO *</label>
+              <input style={{...S.field,borderColor:formErr&&!form.name.trim()?'rgba(239,68,68,0.5)':'rgba(169,124,55,0.3)'}}
+                     placeholder="Ej: Torneo Estatal HeroClix Madrid 2025"
+                     value={form.name} autoFocus
+                     onChange={e=>{ setForm({...form,name:e.target.value}); setFormErr(''); }}/>
+            </div>
+
+            {/* Fecha + Lugar */}
+            <div style={{...S.row,marginBottom:'12px'}}>
+              <div style={{flex:'0 0 140px'}}>
+                <label style={S.label}>FECHA *</label>
+                <input type="date" style={{...S.field,borderColor:formErr&&!form.date?'rgba(239,68,68,0.5)':'rgba(169,124,55,0.3)',colorScheme:'dark'}}
+                       value={form.date} onChange={e=>{ setForm({...form,date:e.target.value}); setFormErr(''); }}/>
+              </div>
+              <div style={{flex:1}}>
+                <label style={S.label}>LUGAR</label>
+                <input style={S.field} placeholder="Ciudad, local, online…"
+                       value={form.location} onChange={e=>setForm({...form,location:e.target.value})}/>
+              </div>
+            </div>
+
+            {/* Tipo de evento */}
+            <div style={{marginBottom:'12px'}}>
+              <label style={S.label}>TIPO DE EVENTO</label>
+              <div style={{display:'flex',flexWrap:'wrap',gap:'5px'}}>
+                {EVENT_TYPES.map(t=>(
+                  <button key={t.id} onClick={()=>setForm({...form,type:t.id})}
+                          style={{padding:'7px 10px',fontSize:'10px',cursor:'pointer',fontFamily:"'Share Tech Mono',monospace",borderRadius:'2px',background:form.type===t.id?t.color+'22':'rgba(169,124,55,0.04)',border:`1px solid ${form.type===t.id?t.color:'rgba(169,124,55,0.2)'}`,color:form.type===t.id?t.color:'rgba(169,124,55,0.55)',transition:'all 0.15s'}}>
+                    {t.icon} {t.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Formato */}
+            <div style={{marginBottom:'12px'}}>
+              <label style={S.label}>FORMATO DE JUEGO</label>
+              <div style={{display:'flex',flexWrap:'wrap',gap:'5px'}}>
+                {EVENT_FORMATS.map(f=>(
+                  <button key={f} onClick={()=>setForm({...form,format:f})}
+                          style={{padding:'6px 10px',fontSize:'9px',cursor:'pointer',fontFamily:"'Share Tech Mono',monospace",borderRadius:'2px',background:form.format===f?'rgba(169,124,55,0.2)':'rgba(169,124,55,0.04)',border:`1px solid ${form.format===f?'#A97C37':'rgba(169,124,55,0.2)'}`,color:form.format===f?'#C9A050':'rgba(169,124,55,0.5)',transition:'all 0.15s'}}>
+                    {f}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Resultado */}
+            <div style={{marginBottom:'12px'}}>
+              <label style={S.label}>RESULTADO OBTENIDO</label>
+              <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'4px'}}>
+                {RESULT_OPTIONS.map(r=>(
+                  <button key={r.id} onClick={()=>setForm({...form,result:r.id})}
+                          style={{padding:'6px 4px',fontSize:'9px',cursor:'pointer',fontFamily:"'Share Tech Mono',monospace",borderRadius:'2px',textAlign:'center',lineHeight:'1.3',background:form.result===r.id?'rgba(169,124,55,0.2)':'rgba(169,124,55,0.04)',border:`1px solid ${form.result===r.id?'#A97C37':'rgba(169,124,55,0.2)'}`,color:form.result===r.id?'#C9A050':'rgba(169,124,55,0.5)',transition:'all 0.15s'}}>
+                    {r.label||'—'}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Equipo usado */}
+            <div style={{marginBottom:'12px'}}>
+              <label style={S.label}>EQUIPO USADO <span style={{color:'rgba(169,124,55,0.35)',fontSize:'8px'}}>(opcional)</span></label>
+              <input style={S.field} placeholder="Nombre del equipo o figuras principales"
+                     value={form.teamUsed} onChange={e=>setForm({...form,teamUsed:e.target.value})}/>
+            </div>
+
+            {/* Notas */}
+            <div style={{marginBottom:'14px'}}>
+              <label style={S.label}>NOTAS <span style={{color:'rgba(169,124,55,0.35)',fontSize:'8px'}}>(opcional)</span></label>
+              <textarea style={{...S.field,height:'80px',resize:'vertical',lineHeight:'1.6'}}
+                        placeholder="Rivales, rondas, anécdotas, preparación…"
+                        value={form.notes} onChange={e=>setForm({...form,notes:e.target.value})}/>
+            </div>
+
+            {formErr && <div style={{...S.err,marginBottom:'8px'}}>⚠ {formErr}</div>}
+
+            <div style={{display:'flex',gap:'8px'}}>
+              <button className="btn-gold" style={{flex:1,padding:'10px',fontSize:'11px',borderRadius:'2px'}} onClick={saveEvent}>
+                {modal==='new' ? '✓ GUARDAR EVENTO' : '✓ ACTUALIZAR EVENTO'}
+              </button>
+              <button className="btn-outline" style={{padding:'10px 16px',fontSize:'11px',borderRadius:'2px'}} onClick={closeModal}>
+                CANCELAR
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ══════════════════════════════════════════════════════
+          MODAL: CONFIRMAR BORRADO
+      ══════════════════════════════════════════════════════ */}
+      {modal==='confirmDelete' && (
+        <div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&closeModal()}>
+          <div className="modal fade-in" style={{maxWidth:'340px'}}>
+            <div style={{textAlign:'center',padding:'8px 0 16px'}}>
+              <div style={{fontSize:'32px',marginBottom:'10px'}}>⚠</div>
+              <div className="orbitron" style={{fontSize:'12px',color:'#C9A050',marginBottom:'8px'}}>ELIMINAR EVENTO</div>
+              <div style={{fontSize:'12px',color:'rgba(169,124,55,0.7)',lineHeight:'1.7'}}>
+                ¿Eliminar <strong style={{color:'#C9A050'}}>"{event?.name}"</strong>?<br/>
+                <span style={{fontSize:'10px',color:'rgba(169,124,55,0.4)'}}>Esta acción no se puede deshacer.</span>
+              </div>
+            </div>
+            <div style={{display:'flex',gap:'8px',marginTop:'4px'}}>
+              <button className="btn-red"  style={{flex:1,padding:'10px',fontSize:'11px',borderRadius:'2px'}} onClick={deleteEvent}>✕ SÍ, ELIMINAR</button>
+              <button className="btn-gold" style={{flex:1,padding:'10px',fontSize:'11px',borderRadius:'2px'}} onClick={closeModal}>CANCELAR</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════
+//  APP ROOT
+// ═══════════════════════════════════════════════════════════
+const SECTION_LABELS = {
+  pac:'PODERES Y HABILIDADES (PAC)',
+  teamabs:'HABILIDADES DE EQUIPO',
+  builder:'EDITOR DE EQUIPOS',
+  calculator:'CALCULADORA DE COMBATE',
+  reglamento:'REGLAMENTO MODERNO',
+  eventos:'REGISTRO DE EVENTOS'
+};
+
+function App() {
+  const [sec, setSec] = useState('pac');
+  return (
+    <div style={{width:'100vw',height:'100vh',display:'flex',flexDirection:'column',background:'#080810',overflow:'hidden'}}>
+      <StatusBar/>
+      <div style={{flex:1,display:'flex',overflow:'hidden'}}>
+        <div style={{width:'152px',flexShrink:0}}><SideNav active={sec} onChange={setSec}/></div>
+        <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
+          {/* Top bar */}
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'7px 16px',background:'#0D0D16',borderBottom:'1px solid rgba(169,124,55,0.3)',flexShrink:0}}>
+            <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
+              <div style={{width:'3px',height:'16px',background:'#A97C37'}}/>
+              <span className="orbitron" style={{fontSize:'10px',color:'#C9A050',letterSpacing:'1px'}}>{SECTION_LABELS[sec]}</span>
+            </div>
+            <div style={{display:'flex',gap:'5px'}}>
+              {[0.3,0.55,1].map((o,i)=><div key={i} style={{width:'7px',height:'7px',borderRadius:'50%',background:`rgba(169,124,55,${o})`}}/>)}
+            </div>
+          </div>
+          {/* Content */}
+          <div style={{flex:1,overflow:'hidden',position:'relative'}}>
+            <div className="scan-line"/>
+            <div style={{position:'relative',zIndex:1,height:'100%'}}>
+              {sec==='pac'        && <PACSection/>}
+              {sec==='teamabs'    && <TeamAbilitiesSection/>}
+              {sec==='builder'    && <TeamBuilder/>}
+              {sec==='calculator' && <Calculator/>}
+              {sec==='reglamento' && <ReglamentoSection/>}
+              {sec==='eventos'    && <EventosSection/>}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
