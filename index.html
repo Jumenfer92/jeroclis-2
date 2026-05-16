@@ -10,52 +10,52 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body, #root { width: 100%; height: 100%; overflow: hidden; }
-    body { background: #080810; font-family: 'Share Tech Mono', 'Courier New', monospace; color: #C9A050; }
+    body { background: #080810; font-family: 'Share Tech Mono', 'Courier New', monospace; color: #EAC858; }
     .orbitron { font-family: 'Orbitron', 'Share Tech Mono', monospace; }
     ::-webkit-scrollbar { width: 4px; height: 4px; }
-    ::-webkit-scrollbar-track { background: #0D0D16; }
+    ::-webkit-scrollbar-track { background: #141420; }
     ::-webkit-scrollbar-thumb { background: #A97C37; border-radius: 2px; }
     .nav-item { transition: all 0.2s ease; cursor: pointer; border-left: 3px solid transparent; }
-    .nav-item:hover { border-left-color: #A97C37; background: rgba(169,124,55,0.1); }
-    .nav-item.active { border-left-color: #A97C37; background: rgba(169,124,55,0.15); }
+    .nav-item:hover { border-left-color: #A97C37; background: rgba(225,185,80,0.18); }
+    .nav-item.active { border-left-color: #A97C37; background: rgba(225,185,80,0.28); }
     .color-btn { transition: transform 0.15s, box-shadow 0.15s; cursor: pointer; }
     .color-btn:hover { transform: scale(1.07); }
     .color-btn.sel { transform: scale(1.1); outline: 2px solid white; outline-offset: 2px; }
     .fade-in { animation: fadeIn 0.25s ease; }
     @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
-    .scan-line { background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(169,124,55,0.015) 2px,rgba(169,124,55,0.015) 4px); pointer-events:none; position:absolute; inset:0; z-index:0; }
-    .panel { background: #13131A; border: 1px solid rgba(169,124,55,0.35); position: relative; }
+    .scan-line { background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(225,185,80,0.025) 2px,rgba(225,185,80,0.025) 4px); pointer-events:none; position:absolute; inset:0; z-index:0; }
+    .panel { background: #1C1C28; border: 1px solid rgba(225,185,80,0.40); position: relative; }
     .corner::before, .corner::after { content:''; position:absolute; width:12px; height:12px; border-color:#A97C37; border-style:solid; }
     .corner::before { top:5px; left:5px; border-width:2px 0 0 2px; }
     .corner::after { bottom:5px; right:5px; border-width:0 2px 2px 0; }
     .btn-gold { background:linear-gradient(135deg,#7A5820,#A97C37); border:1px solid #C9A050; color:#080810; font-family:'Share Tech Mono',monospace; font-weight:bold; cursor:pointer; transition:all 0.2s; }
-    .btn-gold:hover { background:linear-gradient(135deg,#A97C37,#D4A855); box-shadow:0 0 14px rgba(169,124,55,0.5); transform:translateY(-1px); }
-    .btn-outline { background:transparent; border:1px solid rgba(169,124,55,0.4); color:#A97C37; font-family:'Share Tech Mono',monospace; cursor:pointer; transition:all 0.2s; }
-    .btn-outline:hover { border-color:#A97C37; background:rgba(169,124,55,0.1); box-shadow:0 0 8px rgba(169,124,55,0.25); }
-    .btn-red { background:transparent; border:1px solid rgba(220,50,50,0.4); color:#DC3232; font-family:'Share Tech Mono',monospace; cursor:pointer; transition:all 0.2s; }
-    .btn-red:hover { border-color:#DC3232; background:rgba(220,50,50,0.1); }
+    .btn-gold:hover { background:linear-gradient(135deg,#A97C37,#D4A855); box-shadow:0 0 14px rgba(225,185,80,0.92); transform:translateY(-1px); }
+    .btn-outline { background:transparent; border:1px solid rgba(225,185,80,0.55); color:#D4A840; font-family:'Share Tech Mono',monospace; cursor:pointer; transition:all 0.2s; }
+    .btn-outline:hover { border-color:#D4A840; background:rgba(225,185,80,0.14); box-shadow:0 0 8px rgba(225,185,80,0.35); }
+    .btn-red { background:transparent; border:1px solid rgba(220,50,50,0.65); color:#F05050; font-family:'Share Tech Mono',monospace; cursor:pointer; transition:all 0.2s; }
+    .btn-red:hover { border-color:#F05050; background:rgba(220,50,50,0.18); }
     .btn-blue { background:transparent; border:1px solid rgba(59,130,246,0.5); color:#60A5FA; font-family:'Share Tech Mono',monospace; cursor:pointer; transition:all 0.2s; }
     .btn-blue:hover { border-color:#60A5FA; background:rgba(59,130,246,0.1); }
-    input, textarea, select { background:rgba(169,124,55,0.06); border:1px solid rgba(169,124,55,0.3); color:#C9A050; font-family:'Share Tech Mono',monospace; outline:none; transition:border-color 0.2s; }
-    input:focus, textarea:focus, select:focus { border-color:#A97C37; box-shadow:0 0 8px rgba(169,124,55,0.25); }
-    input::placeholder, textarea::placeholder { color:rgba(169,124,55,0.35); }
-    select option { background:#13131A; color:#C9A050; }
-    .tag { display:inline-block; font-size:9px; padding:1px 6px; background:rgba(169,124,55,0.1); border:1px solid rgba(169,124,55,0.3); color:rgba(169,124,55,0.7); }
+    input, textarea, select { background:rgba(225,185,80,0.07); border:1px solid rgba(225,185,80,0.40); color:#EAC858; font-family:'Share Tech Mono',monospace; outline:none; transition:border-color 0.2s; }
+    input:focus, textarea:focus, select:focus { border-color:#D4A840; box-shadow:0 0 8px rgba(225,185,80,0.35); }
+    input::placeholder, textarea::placeholder { color:rgba(225,185,80,0.55); }
+    select option { background:#1C1C28; color:#EAC858; }
+    .tag { display:inline-block; font-size:9px; padding:1px 6px; background:rgba(225,185,80,0.14); border:1px solid rgba(225,185,80,0.45); color:#D4A840; }
     .cat-btn { transition:all 0.2s; cursor:pointer; text-align:center; padding:8px 4px; }
-    .cat-btn:hover { background:rgba(169,124,55,0.12); }
-    .cat-btn.active { background:rgba(169,124,55,0.2); box-shadow:0 0 8px rgba(169,124,55,0.3); }
-    .char-row { background:#13131A; border:1px solid rgba(169,124,55,0.2); display:flex; align-items:center; gap:8px; padding:8px; transition:border-color 0.2s; }
-    .char-row:hover { border-color:rgba(169,124,55,0.4); }
+    .cat-btn:hover { background:rgba(225,185,80,0.22); }
+    .cat-btn.active { background:rgba(225,185,80,0.38); box-shadow:0 0 8px rgba(225,185,80,0.72); }
+    .char-row { background:#1C1C28; border:1px solid rgba(225,185,80,0.30); display:flex; align-items:center; gap:8px; padding:8px; transition:border-color 0.2s; }
+    .char-row:hover { border-color:rgba(225,185,80,0.65); }
     .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.85); display:flex; align-items:center; justify-content:center; z-index:100; }
-    .modal { background:#13131A; border:1px solid #A97C37; box-shadow:0 0 40px rgba(169,124,55,0.5); padding:20px; width:100%; max-width:480px; }
+    .modal { background:#1C1C28; border:1px solid #D4A840; box-shadow:0 0 40px rgba(225,185,80,0.55); padding:20px; width:100%; max-width:480px; }
     .over-limit { color:#EF4444; text-shadow:0 0 12px rgba(239,68,68,0.7); }
     .alert-bar { background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.5); color:#FCA5A5; padding:8px 12px; font-size:11px; text-align:center; }
-    .pwr-type { font-size:9px; padding:2px 8px; background:rgba(169,124,55,0.12); border:1px solid rgba(169,124,55,0.3); color:#A97C37; letter-spacing:1px; display:inline-block; }
-    .prob-bar-wrap { background:rgba(169,124,55,0.08); border:1px solid rgba(169,124,55,0.2); border-radius:2px; overflow:hidden; height:14px; }
+    .pwr-type { font-size:9px; padding:2px 8px; background:rgba(225,185,80,0.16); border:1px solid rgba(225,185,80,0.50); color:#D4A840; letter-spacing:1px; display:inline-block; }
+    .prob-bar-wrap { background:rgba(225,185,80,0.10); border:1px solid rgba(225,185,80,0.35); border-radius:2px; overflow:hidden; height:14px; }
     .prob-bar { height:100%; transition:width 0.4s ease; }
-    .dice-face { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; background:#13131A; border:1px solid rgba(169,124,55,0.4); border-radius:4px; font-size:16px; }
-    .ta-card { background:#13131A; border:1px solid rgba(169,124,55,0.25); padding:14px; transition:border-color 0.2s; cursor:default; }
-    .ta-card:hover { border-color:rgba(169,124,55,0.5); }
+    .dice-face { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; background:#1C1C28; border:1px solid rgba(225,185,80,0.55); border-radius:4px; font-size:16px; }
+    .ta-card { background:#1C1C28; border:1px solid rgba(225,185,80,0.58); padding:14px; transition:border-color 0.2s; cursor:default; }
+    .ta-card:hover { border-color:rgba(225,185,80,0.92); }
     .ta-badge { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:50%; font-size:14px; flex-shrink:0; border:2px solid rgba(255,255,255,0.15); }
   </style>
 </head>
@@ -375,10 +375,10 @@ function StatusBar() {
   useEffect(() => { const id=setInterval(()=>tick(t=>t+1),1000); return ()=>clearInterval(id); }, []);
   const now = new Date();
   return (
-    <div style={{background:'#080810',borderBottom:'1px solid rgba(169,124,55,0.25)',display:'flex',justifyContent:'space-between',alignItems:'center',padding:'3px 14px',fontSize:'10px',color:'rgba(169,124,55,0.5)',flexShrink:0}}>
+    <div style={{background:'#080810',borderBottom:'1px solid rgba(225,185,80,0.58)',display:'flex',justifyContent:'space-between',alignItems:'center',padding:'3px 14px',fontSize:'10px',color:'rgba(225,185,80,0.92)',flexShrink:0}}>
       <span className="orbitron" style={{letterSpacing:'2px'}}>KPRESE LABS // HEROCLIX COMMAND v2.0</span>
       <div style={{display:'flex',gap:'16px'}}>
-        <span style={{color:'rgba(169,124,55,0.35)'}}>SYS:ONLINE</span>
+        <span style={{color:'rgba(225,185,80,0.78)'}}>SYS:ONLINE</span>
         <span>{now.toLocaleTimeString('es-ES')}</span>
       </div>
     </div>
@@ -398,11 +398,11 @@ function SideNav({ active, onChange }) {
     { id:'eventos',    label:'EVENTOS',       sub:'HISTORIAL',      icon:'◷' },
   ];
   return (
-    <div style={{background:'#0A0A0D',borderRight:'1px solid rgba(169,124,55,0.3)',display:'flex',flexDirection:'column',height:'100%'}}>
-      <div style={{padding:'14px 12px 10px',borderBottom:'1px solid rgba(169,124,55,0.18)',textAlign:'center'}}>
-        <div className="orbitron" style={{fontSize:'18px',fontWeight:900,color:'#A97C37',textShadow:'0 0 14px rgba(169,124,55,0.7)',lineHeight:1}}>HERO</div>
-        <div className="orbitron" style={{fontSize:'7px',color:'rgba(169,124,55,0.45)',letterSpacing:'5px',marginTop:'2px'}}>COMMAND</div>
-        <div style={{fontSize:'8px',color:'rgba(169,124,55,0.25)',marginTop:'5px',letterSpacing:'1px'}}>KPRESE LABS</div>
+    <div style={{background:'#0F0F18',borderRight:'1px solid rgba(225,185,80,0.72)',display:'flex',flexDirection:'column',height:'100%'}}>
+      <div style={{padding:'14px 12px 10px',borderBottom:'1px solid rgba(225,185,80,0.32)',textAlign:'center'}}>
+        <div className="orbitron" style={{fontSize:'18px',fontWeight:900,color:'#D4A840',textShadow:'0 0 14px #D4AF50',lineHeight:1}}>HERO</div>
+        <div className="orbitron" style={{fontSize:'7px',color:'rgba(225,185,80,0.88)',letterSpacing:'5px',marginTop:'2px'}}>COMMAND</div>
+        <div style={{fontSize:'8px',color:'rgba(225,185,80,0.58)',marginTop:'5px',letterSpacing:'1px'}}>KPRESE LABS</div>
       </div>
       <div style={{padding:'6px 12px 2px'}}><div style={{height:'1px',background:'linear-gradient(90deg,transparent,#A97C37,transparent)'}}/></div>
       <nav style={{flex:1,paddingTop:'2px',overflowY:'auto'}}>
@@ -410,16 +410,16 @@ function SideNav({ active, onChange }) {
           <div key={it.id} className={`nav-item ${active===it.id?'active':''}`} onClick={()=>onChange(it.id)}
                style={{padding:'10px 12px',marginBottom:'1px'}}>
             <div style={{display:'flex',alignItems:'center',gap:'7px'}}>
-              <span style={{color:active===it.id?'#A97C37':'rgba(169,124,55,0.35)',fontSize:'12px',flexShrink:0}}>{it.icon}</span>
+              <span style={{color:active===it.id?'#D4A840':'rgba(225,185,80,0.78)',fontSize:'12px',flexShrink:0}}>{it.icon}</span>
               <div>
-                <div className="orbitron" style={{fontSize:'9px',fontWeight:'bold',color:active===it.id?'#C9A050':'rgba(169,124,55,0.6)',letterSpacing:'1px',lineHeight:1.2}}>{it.label}</div>
-                <div style={{fontSize:'7px',color:'rgba(169,124,55,0.3)',letterSpacing:'1px',marginTop:'2px'}}>{it.sub}</div>
+                <div className="orbitron" style={{fontSize:'9px',fontWeight:'bold',color:active===it.id?'#EAC858':'rgba(225,185,80,0.96)',letterSpacing:'1px',lineHeight:1.2}}>{it.label}</div>
+                <div style={{fontSize:'7px',color:'rgba(225,185,80,0.72)',letterSpacing:'1px',marginTop:'2px'}}>{it.sub}</div>
               </div>
             </div>
           </div>
         ))}
       </nav>
-      <div style={{padding:'8px 12px',borderTop:'1px solid rgba(169,124,55,0.18)',fontSize:'8px',color:'rgba(169,124,55,0.28)',lineHeight:'1.6'}}>
+      <div style={{padding:'8px 12px',borderTop:'1px solid rgba(225,185,80,0.32)',fontSize:'8px',color:'rgba(225,185,80,0.65)',lineHeight:'1.6'}}>
         <div>WizKids HeroClix</div>
         <div>Modern Age Rules</div>
       </div>
@@ -439,12 +439,12 @@ function PACSection() {
   return (
     <div style={{display:'flex',flexDirection:'column',height:'100%',overflow:'hidden'}}>
       {/* Category tabs */}
-      <div style={{display:'flex',gap:'4px',padding:'10px',borderBottom:'1px solid rgba(169,124,55,0.2)',background:'#0D0D16',flexShrink:0}}>
+      <div style={{display:'flex',gap:'4px',padding:'10px',borderBottom:'1px solid rgba(225,185,80,0.38)',background:'#141420',flexShrink:0}}>
         {Object.values(PAC).map(c => {
           const isA = cat===c.id;
           return (
             <button key={c.id} onClick={()=>{setCat(c.id);setCol(null);}} className="cat-btn"
-                    style={{flex:1,background:isA?'rgba(169,124,55,0.2)':'rgba(169,124,55,0.04)',border:`1px solid ${isA?'#A97C37':'rgba(169,124,55,0.2)'}`,color:isA?'#C9A050':'rgba(169,124,55,0.5)',borderRadius:'2px'}}>
+                    style={{flex:1,background:isA?'rgba(225,185,80,0.38)':'rgba(225,185,80,0.10)',border:`1px solid ${isA?'#D4A840':'rgba(225,185,80,0.38)'}`,color:isA?'#EAC858':'rgba(225,185,80,0.92)',borderRadius:'2px'}}>
               <div style={{fontSize:'18px',lineHeight:1}}>{c.icon}</div>
               <div className="orbitron" style={{fontSize:'8px',marginTop:'3px',letterSpacing:'1px'}}>{c.label}</div>
             </button>
@@ -455,7 +455,7 @@ function PACSection() {
       <div style={{flex:1,overflow:'hidden',display:'flex',flexDirection:'column',padding:'12px',gap:'10px'}}>
         {/* Color buttons */}
         <div style={{flexShrink:0}}>
-          <div style={{fontSize:'9px',color:'rgba(169,124,55,0.45)',letterSpacing:'2px',marginBottom:'8px'}}>▸ SELECCIONAR COLOR — {catData.label} ({catData.labelEn})</div>
+          <div style={{fontSize:'9px',color:'rgba(225,185,80,0.88)',letterSpacing:'2px',marginBottom:'8px'}}>▸ SELECCIONAR COLOR — {catData.label} ({catData.labelEn})</div>
           <div style={{display:'flex',flexWrap:'wrap',gap:'6px'}}>
             {COLORS.map(c => (
               <button key={c.id} onClick={()=>setCol(col===c.id?null:c.id)} className={`color-btn ${col===c.id?'sel':''}`}
@@ -469,9 +469,9 @@ function PACSection() {
         {/* Power panel */}
         <div style={{flex:1,overflowY:'auto'}}>
           {!power ? (
-            <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'100%',flexDirection:'column',gap:'10px',color:'rgba(169,124,55,0.3)'}}>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'100%',flexDirection:'column',gap:'10px',color:'rgba(225,185,80,0.72)'}}>
               <div style={{fontSize:'52px'}}>{catData.icon}</div>
-              <div className="orbitron" style={{fontSize:'13px',color:'rgba(169,124,55,0.5)'}}>{catData.label}</div>
+              <div className="orbitron" style={{fontSize:'13px',color:'rgba(225,185,80,0.92)'}}>{catData.label}</div>
               <div style={{fontSize:'11px'}}>Selecciona un color para ver el poder</div>
               <div style={{marginTop:'8px',display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'4px',maxWidth:'280px',opacity:0.3}}>
                 {COLORS.map(c=><div key={c.id} style={{height:'6px',borderRadius:'2px',background:c.bg}}/>)}
@@ -482,21 +482,21 @@ function PACSection() {
               <div style={{display:'flex',alignItems:'center',gap:'14px',marginBottom:'14px'}}>
                 <div style={{width:42,height:42,background:COLORS.find(c=>c.id===col)?.bg,borderRadius:'5px',flexShrink:0,border:'1px solid rgba(255,255,255,0.2)',boxShadow:`0 0 12px ${COLORS.find(c=>c.id===col)?.bg}60`}}/>
                 <div style={{flex:1}}>
-                  <div className="orbitron" style={{fontSize:'14px',fontWeight:900,color:'#C9A050',lineHeight:1.2}}>{power.name}</div>
-                  <div style={{fontSize:'11px',color:'rgba(169,124,55,0.55)',marginTop:'3px'}}>{power.nameEs}</div>
+                  <div className="orbitron" style={{fontSize:'14px',fontWeight:900,color:'#EAC858',lineHeight:1.2}}>{power.name}</div>
+                  <div style={{fontSize:'11px',color:'rgba(225,185,80,0.94)',marginTop:'3px'}}>{power.nameEs}</div>
                 </div>
-                <div style={{fontSize:'9px',color:'rgba(169,124,55,0.35)',textAlign:'right'}}>
+                <div style={{fontSize:'9px',color:'rgba(225,185,80,0.78)',textAlign:'right'}}>
                   <div>{catData.label}</div>
-                  <div style={{color:'rgba(169,124,55,0.5)',marginTop:'2px'}}>{COLORS.find(c=>c.id===col)?.label.toUpperCase()}</div>
+                  <div style={{color:'rgba(225,185,80,0.92)',marginTop:'2px'}}>{COLORS.find(c=>c.id===col)?.label.toUpperCase()}</div>
                 </div>
               </div>
 
               <span className="pwr-type">{power.type.toUpperCase()}</span>
 
-              <div style={{marginTop:'14px',fontSize:'12px',lineHeight:'1.8',color:'rgba(201,160,80,0.88)'}}>{power.desc}</div>
+              <div style={{marginTop:'14px',fontSize:'12px',lineHeight:'1.8',color:'#F0D272'}}>{power.desc}</div>
 
-              <div style={{marginTop:'14px',paddingTop:'12px',borderTop:'1px solid rgba(169,124,55,0.2)'}}>
-                <div style={{fontSize:'9px',color:'rgba(169,124,55,0.4)',letterSpacing:'2px',marginBottom:'6px'}}>TAGS</div>
+              <div style={{marginTop:'14px',paddingTop:'12px',borderTop:'1px solid rgba(225,185,80,0.38)'}}>
+                <div style={{fontSize:'9px',color:'rgba(225,185,80,0.84)',letterSpacing:'2px',marginBottom:'6px'}}>TAGS</div>
                 <div style={{display:'flex',flexWrap:'wrap',gap:'5px'}}>
                   {power.kw.map(k=><span key={k} className="tag">{k}</span>)}
                 </div>
@@ -523,12 +523,12 @@ function TeamAbilitiesSection() {
   return (
     <div style={{display:'flex',height:'100%',overflow:'hidden'}}>
       {/* List panel */}
-      <div style={{width:'220px',flexShrink:0,display:'flex',flexDirection:'column',borderRight:'1px solid rgba(169,124,55,0.2)',background:'#0A0A0D'}}>
+      <div style={{width:'220px',flexShrink:0,display:'flex',flexDirection:'column',borderRight:'1px solid rgba(225,185,80,0.38)',background:'#0F0F18'}}>
         {/* Filter */}
-        <div style={{padding:'10px',borderBottom:'1px solid rgba(169,124,55,0.15)',display:'flex',gap:'4px'}}>
+        <div style={{padding:'10px',borderBottom:'1px solid rgba(225,185,80,0.28)',display:'flex',gap:'4px'}}>
           {factions.map(f=>(
             <button key={f} onClick={()=>setFilter(f)}
-                    style={{flex:1,padding:'4px',fontSize:'9px',cursor:'pointer',background:filter===f?'rgba(169,124,55,0.2)':'transparent',border:`1px solid ${filter===f?'#A97C37':'rgba(169,124,55,0.2)'}`,color:filter===f?'#C9A050':'rgba(169,124,55,0.5)',fontFamily:"'Share Tech Mono',monospace"}}>
+                    style={{flex:1,padding:'4px',fontSize:'9px',cursor:'pointer',background:filter===f?'rgba(225,185,80,0.38)':'transparent',border:`1px solid ${filter===f?'#D4A840':'rgba(225,185,80,0.38)'}`,color:filter===f?'#EAC858':'rgba(225,185,80,0.92)',fontFamily:"'Share Tech Mono',monospace"}}>
               {f}
             </button>
           ))}
@@ -537,12 +537,12 @@ function TeamAbilitiesSection() {
         <div style={{flex:1,overflowY:'auto'}}>
           {filtered.map(ta=>(
             <div key={ta.id} onClick={()=>setSelected(selected===ta.id?null:ta.id)}
-                 style={{padding:'10px 12px',cursor:'pointer',borderLeft:`3px solid ${selected===ta.id?ta.color:'transparent'}`,background:selected===ta.id?'rgba(169,124,55,0.1)':'transparent',borderBottom:'1px solid rgba(169,124,55,0.1)',transition:'all 0.2s'}}>
+                 style={{padding:'10px 12px',cursor:'pointer',borderLeft:`3px solid ${selected===ta.id?ta.color:'transparent'}`,background:selected===ta.id?'rgba(225,185,80,0.18)':'transparent',borderBottom:'1px solid rgba(225,185,80,0.18)',transition:'all 0.2s'}}>
               <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
                 <div className="ta-badge" style={{background:ta.color+'22',borderColor:ta.color+'44',color:ta.color,fontSize:'12px',width:28,height:28}}>{ta.icon}</div>
                 <div style={{flex:1,overflow:'hidden'}}>
-                  <div style={{fontSize:'10px',fontWeight:'bold',color:selected===ta.id?'#C9A050':'rgba(169,124,55,0.7)',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{ta.name}</div>
-                  <div style={{fontSize:'8px',color:'rgba(169,124,55,0.35)',marginTop:'1px'}}>{ta.faction} · {ta.era}</div>
+                  <div style={{fontSize:'10px',fontWeight:'bold',color:selected===ta.id?'#EAC858':'#D4AF50',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{ta.name}</div>
+                  <div style={{fontSize:'8px',color:'rgba(225,185,80,0.78)',marginTop:'1px'}}>{ta.faction} · {ta.era}</div>
                 </div>
               </div>
             </div>
@@ -553,7 +553,7 @@ function TeamAbilitiesSection() {
       {/* Detail panel */}
       <div style={{flex:1,overflowY:'auto',padding:'16px'}}>
         {!detail ? (
-          <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'100%',flexDirection:'column',gap:'10px',color:'rgba(169,124,55,0.3)'}}>
+          <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'100%',flexDirection:'column',gap:'10px',color:'rgba(225,185,80,0.72)'}}>
             <div style={{fontSize:'48px'}}>◉</div>
             <div className="orbitron" style={{fontSize:'12px'}}>HABILIDADES DE EQUIPO</div>
             <div style={{fontSize:'11px'}}>Selecciona una Team Ability para ver su descripción</div>
@@ -565,8 +565,8 @@ function TeamAbilitiesSection() {
               <div style={{display:'flex',alignItems:'center',gap:'14px',marginBottom:'12px'}}>
                 <div className="ta-badge" style={{width:52,height:52,background:detail.color+'22',borderColor:detail.color+'66',color:detail.color,fontSize:'22px'}}>{detail.icon}</div>
                 <div style={{flex:1}}>
-                  <div className="orbitron" style={{fontSize:'16px',fontWeight:900,color:'#C9A050'}}>{detail.name}</div>
-                  <div style={{fontSize:'11px',color:'rgba(169,124,55,0.55)',marginTop:'2px'}}>{detail.nameEs}</div>
+                  <div className="orbitron" style={{fontSize:'16px',fontWeight:900,color:'#EAC858'}}>{detail.name}</div>
+                  <div style={{fontSize:'11px',color:'rgba(225,185,80,0.94)',marginTop:'2px'}}>{detail.nameEs}</div>
                   <div style={{display:'flex',gap:'8px',marginTop:'6px'}}>
                     <span className="tag">{detail.faction}</span>
                     <span className="tag">{detail.era}</span>
@@ -576,21 +576,21 @@ function TeamAbilitiesSection() {
             </div>
 
             {/* Effect box */}
-            <div style={{padding:'12px',marginBottom:'12px',background:'rgba(169,124,55,0.08)',border:'1px solid rgba(169,124,55,0.35)',borderLeft:`3px solid ${detail.color}`}}>
-              <div style={{fontSize:'9px',color:'rgba(169,124,55,0.5)',letterSpacing:'2px',marginBottom:'6px'}}>EFECTO ACTIVO</div>
-              <div style={{fontSize:'12px',color:'#C9A050',fontWeight:'bold',lineHeight:'1.6'}}>{detail.effect}</div>
+            <div style={{padding:'12px',marginBottom:'12px',background:'rgba(225,185,80,0.16)',border:'1px solid rgba(225,185,80,0.78)',borderLeft:`3px solid ${detail.color}`}}>
+              <div style={{fontSize:'9px',color:'rgba(225,185,80,0.92)',letterSpacing:'2px',marginBottom:'6px'}}>EFECTO ACTIVO</div>
+              <div style={{fontSize:'12px',color:'#EAC858',fontWeight:'bold',lineHeight:'1.6'}}>{detail.effect}</div>
             </div>
 
             {/* Full description */}
             <div className="panel" style={{padding:'14px',marginBottom:'12px'}}>
-              <div style={{fontSize:'9px',color:'rgba(169,124,55,0.45)',letterSpacing:'2px',marginBottom:'8px'}}>DESCRIPCIÓN COMPLETA</div>
-              <div style={{fontSize:'12px',color:'rgba(201,160,80,0.85)',lineHeight:'1.8'}}>{detail.desc}</div>
+              <div style={{fontSize:'9px',color:'rgba(225,185,80,0.88)',letterSpacing:'2px',marginBottom:'8px'}}>DESCRIPCIÓN COMPLETA</div>
+              <div style={{fontSize:'12px',color:'#EED070',lineHeight:'1.8'}}>{detail.desc}</div>
             </div>
 
             {/* Note */}
             <div style={{padding:'10px 12px',background:'rgba(59,130,246,0.06)',border:'1px solid rgba(59,130,246,0.2)'}}>
-              <div style={{fontSize:'9px',color:'rgba(96,165,250,0.7)',letterSpacing:'2px',marginBottom:'4px'}}>NOTA TÁCTICA</div>
-              <div style={{fontSize:'11px',color:'rgba(96,165,250,0.8)',lineHeight:'1.6'}}>{detail.note}</div>
+              <div style={{fontSize:'9px',color:'#93C5FD',letterSpacing:'2px',marginBottom:'4px'}}>NOTA TÁCTICA</div>
+              <div style={{fontSize:'11px',color:'#BAD7FE',lineHeight:'1.6'}}>{detail.note}</div>
             </div>
 
             {/* Tags */}
@@ -609,10 +609,10 @@ function TeamAbilitiesSection() {
 // ═══════════════════════════════════════════════════════════
 // ── helpers de estilo reutilizables dentro del builder ──
 const S = {
-  label: { fontSize:'9px', color:'rgba(169,124,55,0.55)', letterSpacing:'1.5px', marginBottom:'4px', display:'block' },
+  label: { fontSize:'9px', color:'rgba(225,185,80,0.94)', letterSpacing:'1.5px', marginBottom:'4px', display:'block' },
   field: { width:'100%', padding:'8px 10px', fontSize:'11px', borderRadius:'2px' },
   row:   { display:'flex', gap:'8px' },
-  sep:   { height:'1px', background:'rgba(169,124,55,0.15)', margin:'12px 0' },
+  sep:   { height:'1px', background:'rgba(225,185,80,0.28)', margin:'12px 0' },
   err:   { fontSize:'10px', color:'#F87171', marginTop:'4px' },
 };
 
@@ -778,34 +778,34 @@ function TeamBuilder() {
     <div style={{display:'flex',flexDirection:'column',height:'100%',overflow:'hidden',position:'relative'}}>
 
       {/* ── TABS DE EQUIPOS ── */}
-      <div style={{display:'flex',gap:'3px',padding:'8px',borderBottom:'1px solid rgba(169,124,55,0.2)',background:'#0D0D16',flexShrink:0,overflowX:'auto',alignItems:'center'}}>
+      <div style={{display:'flex',gap:'3px',padding:'8px',borderBottom:'1px solid rgba(225,185,80,0.38)',background:'#141420',flexShrink:0,overflowX:'auto',alignItems:'center'}}>
         {teams.map((t,i)=>(
           <button key={t.id} onClick={()=>setIdx(i)} className="orbitron"
-                  style={{flexShrink:0,padding:'5px 12px',fontSize:'9px',background:i===idx?'rgba(169,124,55,0.2)':'rgba(169,124,55,0.05)',border:`1px solid ${i===idx?'#A97C37':'rgba(169,124,55,0.2)'}`,color:i===idx?'#C9A050':'rgba(169,124,55,0.5)',cursor:'pointer',whiteSpace:'nowrap',borderRadius:'2px',transition:'all 0.15s'}}>
+                  style={{flexShrink:0,padding:'5px 12px',fontSize:'9px',background:i===idx?'rgba(225,185,80,0.38)':'rgba(225,185,80,0.12)',border:`1px solid ${i===idx?'#D4A840':'rgba(225,185,80,0.38)'}`,color:i===idx?'#EAC858':'rgba(225,185,80,0.92)',cursor:'pointer',whiteSpace:'nowrap',borderRadius:'2px',transition:'all 0.15s'}}>
             {t.name}
-            {i===idx && <span style={{marginLeft:'4px',color:'rgba(169,124,55,0.5)',fontSize:'8px'}}>{t.chars.reduce((s,c)=>s+(parseInt(c.pts)||0),0)}p</span>}
+            {i===idx && <span style={{marginLeft:'4px',color:'rgba(225,185,80,0.92)',fontSize:'8px'}}>{t.chars.reduce((s,c)=>s+(parseInt(c.pts)||0),0)}p</span>}
           </button>
         ))}
         <button onClick={openNew}
-                style={{flexShrink:0,padding:'5px 12px',fontSize:'9px',background:'transparent',border:'1px dashed rgba(169,124,55,0.4)',color:'rgba(169,124,55,0.5)',cursor:'pointer',fontFamily:"'Share Tech Mono',monospace",borderRadius:'2px',transition:'all 0.15s'}}
-                onMouseEnter={e=>{e.target.style.borderColor='#A97C37';e.target.style.color='#A97C37';}}
-                onMouseLeave={e=>{e.target.style.borderColor='rgba(169,124,55,0.4)';e.target.style.color='rgba(169,124,55,0.5)';}}>
+                style={{flexShrink:0,padding:'5px 12px',fontSize:'9px',background:'transparent',border:'1px dashed rgba(225,185,80,0.84)',color:'rgba(225,185,80,0.92)',cursor:'pointer',fontFamily:"'Share Tech Mono',monospace",borderRadius:'2px',transition:'all 0.15s'}}
+                onMouseEnter={e=>{e.target.style.borderColor='#D4A840';e.target.style.color='#D4A840';}}
+                onMouseLeave={e=>{e.target.style.borderColor='rgba(225,185,80,0.84)';e.target.style.color='rgba(225,185,80,0.92)';}}>
           + NUEVO
         </button>
         <div style={{flex:1}}/>
         <button onClick={openImport}
-                style={{flexShrink:0,padding:'5px 10px',fontSize:'9px',background:'transparent',border:'1px solid rgba(169,124,55,0.25)',color:'rgba(169,124,55,0.45)',cursor:'pointer',fontFamily:"'Share Tech Mono',monospace",borderRadius:'2px'}}>
+                style={{flexShrink:0,padding:'5px 10px',fontSize:'9px',background:'transparent',border:'1px solid rgba(225,185,80,0.58)',color:'rgba(225,185,80,0.88)',cursor:'pointer',fontFamily:"'Share Tech Mono',monospace",borderRadius:'2px'}}>
           ↓ IMPORTAR
         </button>
       </div>
 
       {/* ── PANTALLA VACÍA ── */}
       {!team ? (
-        <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',gap:'16px',color:'rgba(169,124,55,0.4)'}}>
+        <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',gap:'16px',color:'rgba(225,185,80,0.84)'}}>
           <div style={{fontSize:'44px',lineHeight:1}}>⊕</div>
           <div className="orbitron" style={{fontSize:'12px',letterSpacing:'2px'}}>SIN EQUIPOS</div>
-          <div style={{fontSize:'11px',color:'rgba(169,124,55,0.3)',textAlign:'center',maxWidth:'280px',lineHeight:'1.6'}}>
-            Crea tu primer equipo con <strong style={{color:'#A97C37'}}>+ NUEVO</strong> o importa uno existente.
+          <div style={{fontSize:'11px',color:'rgba(225,185,80,0.72)',textAlign:'center',maxWidth:'280px',lineHeight:'1.6'}}>
+            Crea tu primer equipo con <strong style={{color:'#D4A840'}}>+ NUEVO</strong> o importa uno existente.
           </div>
           <div style={{display:'flex',gap:'8px',marginTop:'4px'}}>
             <button className="btn-gold" style={{padding:'10px 22px',fontSize:'10px',borderRadius:'2px'}} onClick={openNew}>+ CREAR EQUIPO</button>
@@ -829,26 +829,26 @@ function TeamBuilder() {
                        onKeyDown={e=>{ if(e.key==='Enter') commitEditName(); if(e.key==='Escape') setEditingName(false); }}/>
               ) : (
                 <div style={{display:'flex',alignItems:'center',gap:'6px',cursor:'pointer'}} onClick={startEditName} title="Haz clic para renombrar">
-                  <div className="orbitron" style={{fontSize:'13px',fontWeight:900,color:'#C9A050'}}>{team.name}</div>
-                  <span style={{fontSize:'9px',color:'rgba(169,124,55,0.35)'}}>✎</span>
+                  <div className="orbitron" style={{fontSize:'13px',fontWeight:900,color:'#EAC858'}}>{team.name}</div>
+                  <span style={{fontSize:'9px',color:'rgba(225,185,80,0.78)'}}>✎</span>
                 </div>
               )}
               <div style={{display:'flex',gap:'8px',marginTop:'3px',flexWrap:'wrap'}}>
-                <span style={{fontSize:'9px',color:'rgba(169,124,55,0.45)',letterSpacing:'1px'}}>LÍMITE: {team.limit} PTS</span>
-                <span style={{fontSize:'9px',color:'rgba(169,124,55,0.35)'}}>·</span>
-                <span style={{fontSize:'9px',color:'rgba(169,124,55,0.45)',letterSpacing:'1px'}}>{team.chars.length} FIGURAS</span>
-                <span style={{fontSize:'9px',color:'rgba(169,124,55,0.35)'}}>·</span>
-                <span style={{fontSize:'9px',color:'rgba(169,124,55,0.45)',letterSpacing:'1px'}}>{team.format||'Modern Age'}</span>
+                <span style={{fontSize:'9px',color:'rgba(225,185,80,0.88)',letterSpacing:'1px'}}>LÍMITE: {team.limit} PTS</span>
+                <span style={{fontSize:'9px',color:'rgba(225,185,80,0.78)'}}>·</span>
+                <span style={{fontSize:'9px',color:'rgba(225,185,80,0.88)',letterSpacing:'1px'}}>{team.chars.length} FIGURAS</span>
+                <span style={{fontSize:'9px',color:'rgba(225,185,80,0.78)'}}>·</span>
+                <span style={{fontSize:'9px',color:'rgba(225,185,80,0.88)',letterSpacing:'1px'}}>{team.format||'Modern Age'}</span>
               </div>
-              {team.notes && <div style={{fontSize:'9px',color:'rgba(169,124,55,0.35)',marginTop:'3px',fontStyle:'italic'}}>{team.notes}</div>}
+              {team.notes && <div style={{fontSize:'9px',color:'rgba(225,185,80,0.78)',marginTop:'3px',fontStyle:'italic'}}>{team.notes}</div>}
             </div>
             <div style={{textAlign:'right',flexShrink:0}}>
               <div className="orbitron" style={{fontSize:'22px',fontWeight:900,
-                color:over?'#EF4444':'#A97C37',
-                textShadow:over?'0 0 14px rgba(239,68,68,0.8)':'0 0 10px rgba(169,124,55,0.6)'}}>
-                {total}<span style={{fontSize:'13px',color:'rgba(169,124,55,0.4)',fontWeight:'normal'}}> / {team.limit}</span>
+                color:over?'#EF4444':'#D4A840',
+                textShadow:over?'0 0 14px rgba(239,68,68,0.8)':'0 0 10px rgba(225,185,80,0.96)'}}>
+                {total}<span style={{fontSize:'13px',color:'rgba(225,185,80,0.84)',fontWeight:'normal'}}> / {team.limit}</span>
               </div>
-              <div style={{fontSize:'9px',color:over?'#FCA5A5':remaining===0?'#C9A050':'rgba(169,124,55,0.5)'}}>
+              <div style={{fontSize:'9px',color:over?'#FCA5A5':remaining===0?'#EAC858':'rgba(225,185,80,0.92)'}}>
                 {over ? `⚠ +${total-team.limit} pts sobre límite` : remaining===0 ? '✓ LÍMITE EXACTO' : `${remaining} pts disponibles`}
               </div>
             </div>
@@ -861,9 +861,9 @@ function TeamBuilder() {
                 ?'linear-gradient(90deg,#92400E,#CA8A04)'
                 :'linear-gradient(90deg,#7A5820,#A97C37,#C9A050)'}}/>
           </div>
-          <div style={{display:'flex',justifyContent:'space-between',marginTop:'3px',fontSize:'8px',color:'rgba(169,124,55,0.4)'}}>
+          <div style={{display:'flex',justifyContent:'space-between',marginTop:'3px',fontSize:'8px',color:'rgba(225,185,80,0.84)'}}>
             <span>0</span>
-            <span style={{color:over?'#FCA5A5':'rgba(169,124,55,0.6)'}}>{pct}%</span>
+            <span style={{color:over?'#FCA5A5':'rgba(225,185,80,0.96)'}}>{pct}%</span>
             <span>{team.limit}</span>
           </div>
         </div>
@@ -877,26 +877,26 @@ function TeamBuilder() {
         {/* Lista de figuras */}
         <div style={{flex:1,overflowY:'auto'}}>
           {team.chars.length===0 ? (
-            <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',height:'100%',gap:'10px',color:'rgba(169,124,55,0.3)'}}>
+            <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',height:'100%',gap:'10px',color:'rgba(225,185,80,0.72)'}}>
               <div style={{fontSize:'32px'}}>◈</div>
-              <div style={{fontSize:'11px'}}>Sin figuras. Pulsa <strong style={{color:'rgba(169,124,55,0.5)'}}>+ AÑADIR FIGURA</strong>.</div>
+              <div style={{fontSize:'11px'}}>Sin figuras. Pulsa <strong style={{color:'rgba(225,185,80,0.92)'}}>+ AÑADIR FIGURA</strong>.</div>
             </div>
           ) : (
             <div style={{display:'flex',flexDirection:'column',gap:'5px'}}>
               {team.chars.map((c,ci)=>(
                 <div key={c.id} className="char-row fade-in">
-                  <div className="orbitron" style={{fontSize:'9px',color:'rgba(169,124,55,0.4)',minWidth:'22px',flexShrink:0}}>
+                  <div className="orbitron" style={{fontSize:'9px',color:'rgba(225,185,80,0.84)',minWidth:'22px',flexShrink:0}}>
                     {String(ci+1).padStart(2,'0')}
                   </div>
                   <div style={{flex:1,overflow:'hidden'}}>
-                    <div style={{fontSize:'12px',fontWeight:'bold',color:'#C9A050',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{c.name}</div>
+                    <div style={{fontSize:'12px',fontWeight:'bold',color:'#EAC858',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{c.name}</div>
                     <div style={{display:'flex',flexWrap:'wrap',gap:'3px',marginTop:'2px'}}>
                       {c.kw.map(k=><span key={k} className="tag" style={{fontSize:'8px'}}>{k}</span>)}
-                      {c.notes && <span style={{fontSize:'8px',color:'rgba(169,124,55,0.35)',fontStyle:'italic'}}>{c.notes}</span>}
+                      {c.notes && <span style={{fontSize:'8px',color:'rgba(225,185,80,0.78)',fontStyle:'italic'}}>{c.notes}</span>}
                     </div>
                   </div>
-                  <div className="orbitron" style={{fontSize:'15px',fontWeight:900,color:'#A97C37',flexShrink:0}}>{c.pts}</div>
-                  <div style={{fontSize:'9px',color:'rgba(169,124,55,0.4)',flexShrink:0}}>pts</div>
+                  <div className="orbitron" style={{fontSize:'15px',fontWeight:900,color:'#D4A840',flexShrink:0}}>{c.pts}</div>
+                  <div style={{fontSize:'9px',color:'rgba(225,185,80,0.84)',flexShrink:0}}>pts</div>
                   <button className="btn-red" style={{padding:'3px 8px',fontSize:'10px',borderRadius:'2px',flexShrink:0}}
                           onClick={()=>removeChar(c.id)}>✕</button>
                 </div>
@@ -926,18 +926,18 @@ function TeamBuilder() {
         <div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&closeModal()}>
           <div className="modal fade-in" style={{maxWidth:'440px'}}>
             {/* Cabecera */}
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px',paddingBottom:'10px',borderBottom:'1px solid rgba(169,124,55,0.2)'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px',paddingBottom:'10px',borderBottom:'1px solid rgba(225,185,80,0.38)'}}>
               <div>
-                <div className="orbitron" style={{fontSize:'13px',fontWeight:900,color:'#C9A050'}}>CREAR NUEVO EQUIPO</div>
-                <div style={{fontSize:'9px',color:'rgba(169,124,55,0.4)',marginTop:'2px',letterSpacing:'1px'}}>TEAM BUILDER // KPRESE LABS</div>
+                <div className="orbitron" style={{fontSize:'13px',fontWeight:900,color:'#EAC858'}}>CREAR NUEVO EQUIPO</div>
+                <div style={{fontSize:'9px',color:'rgba(225,185,80,0.84)',marginTop:'2px',letterSpacing:'1px'}}>TEAM BUILDER // KPRESE LABS</div>
               </div>
-              <button onClick={closeModal} style={{background:'none',border:'none',color:'rgba(169,124,55,0.5)',fontSize:'16px',cursor:'pointer',padding:'4px'}}>✕</button>
+              <button onClick={closeModal} style={{background:'none',border:'none',color:'rgba(225,185,80,0.92)',fontSize:'16px',cursor:'pointer',padding:'4px'}}>✕</button>
             </div>
 
             {/* Nombre */}
             <div style={{marginBottom:'12px'}}>
               <label style={S.label}>NOMBRE DEL EQUIPO *</label>
-              <input style={{...S.field, borderColor: ntErr&&!nt.name.trim()?'rgba(239,68,68,0.6)':'rgba(169,124,55,0.3)'}}
+              <input style={{...S.field, borderColor: ntErr&&!nt.name.trim()?'rgba(239,68,68,0.6)':'rgba(225,185,80,0.72)'}}
                      placeholder="Ej: Avengers Elite Force"
                      value={nt.name}
                      autoFocus
@@ -951,7 +951,7 @@ function TeamBuilder() {
               <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'5px'}}>
                 {LIMIT_OPTIONS.filter(o=>o.v!==0).map(o=>(
                   <button key={o.v} onClick={()=>setNt({...nt,limitSel:o.v,limitCustom:''})}
-                          style={{padding:'7px 4px',fontSize:'10px',cursor:'pointer',background:nt.limitSel===o.v?'rgba(169,124,55,0.25)':'rgba(169,124,55,0.04)',border:`1px solid ${nt.limitSel===o.v?'#A97C37':'rgba(169,124,55,0.2)'}`,color:nt.limitSel===o.v?'#C9A050':'rgba(169,124,55,0.55)',fontFamily:"'Share Tech Mono',monospace",transition:'all 0.15s',lineHeight:'1.3'}}>
+                          style={{padding:'7px 4px',fontSize:'10px',cursor:'pointer',background:nt.limitSel===o.v?'rgba(225,185,80,0.58)':'rgba(225,185,80,0.10)',border:`1px solid ${nt.limitSel===o.v?'#D4A840':'rgba(225,185,80,0.38)'}`,color:nt.limitSel===o.v?'#EAC858':'rgba(225,185,80,0.94)',fontFamily:"'Share Tech Mono',monospace",transition:'all 0.15s',lineHeight:'1.3'}}>
                     <div className="orbitron" style={{fontSize:'12px',fontWeight:900}}>{o.v}</div>
                     <div style={{fontSize:'8px',opacity:0.7}}>{o.l.split('—')[1].trim()}</div>
                   </button>
@@ -960,7 +960,7 @@ function TeamBuilder() {
               {/* Personalizado */}
               <div style={{marginTop:'6px',display:'flex',alignItems:'center',gap:'8px'}}>
                 <button onClick={()=>setNt({...nt,limitSel:0})}
-                        style={{padding:'6px 10px',fontSize:'9px',cursor:'pointer',background:nt.limitSel===0?'rgba(169,124,55,0.2)':'rgba(169,124,55,0.04)',border:`1px solid ${nt.limitSel===0?'#A97C37':'rgba(169,124,55,0.2)'}`,color:nt.limitSel===0?'#C9A050':'rgba(169,124,55,0.5)',fontFamily:"'Share Tech Mono',monospace",flexShrink:0}}>
+                        style={{padding:'6px 10px',fontSize:'9px',cursor:'pointer',background:nt.limitSel===0?'rgba(225,185,80,0.38)':'rgba(225,185,80,0.10)',border:`1px solid ${nt.limitSel===0?'#D4A840':'rgba(225,185,80,0.38)'}`,color:nt.limitSel===0?'#EAC858':'rgba(225,185,80,0.92)',fontFamily:"'Share Tech Mono',monospace",flexShrink:0}}>
                   PERSONALIZADO
                 </button>
                 {nt.limitSel===0 && (
@@ -977,7 +977,7 @@ function TeamBuilder() {
               <div style={{display:'flex',gap:'5px'}}>
                 {['Modern Age','Golden Age','Pulp','Sealed','Casual'].map(f=>(
                   <button key={f} onClick={()=>setNt({...nt,format:f})}
-                          style={{flex:1,padding:'6px 4px',fontSize:'9px',cursor:'pointer',background:nt.format===f?'rgba(169,124,55,0.2)':'rgba(169,124,55,0.04)',border:`1px solid ${nt.format===f?'#A97C37':'rgba(169,124,55,0.2)'}`,color:nt.format===f?'#C9A050':'rgba(169,124,55,0.5)',fontFamily:"'Share Tech Mono',monospace"}}>
+                          style={{flex:1,padding:'6px 4px',fontSize:'9px',cursor:'pointer',background:nt.format===f?'rgba(225,185,80,0.38)':'rgba(225,185,80,0.10)',border:`1px solid ${nt.format===f?'#D4A840':'rgba(225,185,80,0.38)'}`,color:nt.format===f?'#EAC858':'rgba(225,185,80,0.92)',fontFamily:"'Share Tech Mono',monospace"}}>
                     {f}
                   </button>
                 ))}
@@ -1014,19 +1014,19 @@ function TeamBuilder() {
       {modal==='addChar' && (
         <div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&closeModal()}>
           <div className="modal fade-in" style={{maxWidth:'420px'}}>
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'14px',paddingBottom:'10px',borderBottom:'1px solid rgba(169,124,55,0.2)'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'14px',paddingBottom:'10px',borderBottom:'1px solid rgba(225,185,80,0.38)'}}>
               <div>
-                <div className="orbitron" style={{fontSize:'12px',fontWeight:900,color:'#C9A050'}}>AÑADIR FIGURA</div>
-                <div style={{fontSize:'9px',color:'rgba(169,124,55,0.4)',marginTop:'2px'}}>{team?.name} · {remaining} pts disponibles</div>
+                <div className="orbitron" style={{fontSize:'12px',fontWeight:900,color:'#EAC858'}}>AÑADIR FIGURA</div>
+                <div style={{fontSize:'9px',color:'rgba(225,185,80,0.84)',marginTop:'2px'}}>{team?.name} · {remaining} pts disponibles</div>
               </div>
-              <button onClick={closeModal} style={{background:'none',border:'none',color:'rgba(169,124,55,0.5)',fontSize:'16px',cursor:'pointer',padding:'4px'}}>✕</button>
+              <button onClick={closeModal} style={{background:'none',border:'none',color:'rgba(225,185,80,0.92)',fontSize:'16px',cursor:'pointer',padding:'4px'}}>✕</button>
             </div>
 
             {/* Nombre + Puntos */}
             <div style={{...S.row, marginBottom:'10px'}}>
               <div style={{flex:1}}>
                 <label style={S.label}>NOMBRE DE LA FIGURA *</label>
-                <input style={{...S.field, borderColor:ncErr&&!nc.name.trim()?'rgba(239,68,68,0.5)':'rgba(169,124,55,0.3)'}}
+                <input style={{...S.field, borderColor:ncErr&&!nc.name.trim()?'rgba(239,68,68,0.5)':'rgba(225,185,80,0.72)'}}
                        placeholder="Ej: Spider-Man, Avenger"
                        value={nc.name} autoFocus
                        onChange={e=>{ setNc({...nc,name:e.target.value}); setNcErr(''); }}
@@ -1034,7 +1034,7 @@ function TeamBuilder() {
               </div>
               <div style={{width:'88px',flexShrink:0}}>
                 <label style={S.label}>PUNTOS *</label>
-                <input style={{...S.field,textAlign:'center', borderColor:ncErr&&(!nc.pts||parseInt(nc.pts)<0)?'rgba(239,68,68,0.5)':'rgba(169,124,55,0.3)'}}
+                <input style={{...S.field,textAlign:'center', borderColor:ncErr&&(!nc.pts||parseInt(nc.pts)<0)?'rgba(239,68,68,0.5)':'rgba(225,185,80,0.72)'}}
                        type="number" min="0" placeholder="0"
                        value={nc.pts}
                        onChange={e=>{ setNc({...nc,pts:e.target.value}); setNcErr(''); }}
@@ -1044,7 +1044,7 @@ function TeamBuilder() {
 
             {/* Keywords */}
             <div style={{marginBottom:'10px'}}>
-              <label style={S.label}>KEYWORDS <span style={{color:'rgba(169,124,55,0.35)',fontSize:'8px'}}>(separadas por coma)</span></label>
+              <label style={S.label}>KEYWORDS <span style={{color:'rgba(225,185,80,0.78)',fontSize:'8px'}}>(separadas por coma)</span></label>
               <input style={S.field} placeholder="Avenger, Robot, Giant, Mystical…"
                      value={nc.kw} onChange={e=>setNc({...nc,kw:e.target.value})}
                      onKeyDown={e=>e.key==='Enter'&&addChar()}/>
@@ -1060,7 +1060,7 @@ function TeamBuilder() {
 
             {/* Notas */}
             <div style={{marginBottom:'6px'}}>
-              <label style={S.label}>NOTAS <span style={{color:'rgba(169,124,55,0.35)',fontSize:'8px'}}>(opcional)</span></label>
+              <label style={S.label}>NOTAS <span style={{color:'rgba(225,185,80,0.78)',fontSize:'8px'}}>(opcional)</span></label>
               <input style={S.field} placeholder="Clic de inicio, versión, set…"
                      value={nc.notes} onChange={e=>setNc({...nc,notes:e.target.value})}
                      onKeyDown={e=>e.key==='Enter'&&addChar()}/>
@@ -1093,20 +1093,20 @@ function TeamBuilder() {
       {modal==='export' && (
         <div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&closeModal()}>
           <div className="modal fade-in" style={{maxWidth:'480px'}}>
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'14px',paddingBottom:'10px',borderBottom:'1px solid rgba(169,124,55,0.2)'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'14px',paddingBottom:'10px',borderBottom:'1px solid rgba(225,185,80,0.38)'}}>
               <div>
-                <div className="orbitron" style={{fontSize:'12px',fontWeight:900,color:'#C9A050'}}>EXPORTAR EQUIPO</div>
-                <div style={{fontSize:'9px',color:'rgba(169,124,55,0.4)',marginTop:'2px'}}>{team?.name} · {team?.chars.length} figuras · {total} pts</div>
+                <div className="orbitron" style={{fontSize:'12px',fontWeight:900,color:'#EAC858'}}>EXPORTAR EQUIPO</div>
+                <div style={{fontSize:'9px',color:'rgba(225,185,80,0.84)',marginTop:'2px'}}>{team?.name} · {team?.chars.length} figuras · {total} pts</div>
               </div>
-              <button onClick={closeModal} style={{background:'none',border:'none',color:'rgba(169,124,55,0.5)',fontSize:'16px',cursor:'pointer',padding:'4px'}}>✕</button>
+              <button onClick={closeModal} style={{background:'none',border:'none',color:'rgba(225,185,80,0.92)',fontSize:'16px',cursor:'pointer',padding:'4px'}}>✕</button>
             </div>
 
-            <div style={{fontSize:'10px',color:'rgba(169,124,55,0.5)',marginBottom:'8px',lineHeight:'1.5'}}>
+            <div style={{fontSize:'10px',color:'rgba(225,185,80,0.92)',marginBottom:'8px',lineHeight:'1.5'}}>
               Copia el JSON y compártelo con otros jugadores para que puedan importar tu equipo exacto.
             </div>
 
             <textarea readOnly
-                      style={{...S.field,height:'200px',resize:'none',lineHeight:'1.4',cursor:'text',background:'rgba(169,124,55,0.03)'}}
+                      style={{...S.field,height:'200px',resize:'none',lineHeight:'1.4',cursor:'text',background:'rgba(225,185,80,0.07)'}}
                       value={exportJson}
                       onClick={e=>e.target.select()}/>
 
@@ -1133,19 +1133,19 @@ function TeamBuilder() {
       {modal==='import' && (
         <div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&closeModal()}>
           <div className="modal fade-in" style={{maxWidth:'480px'}}>
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'14px',paddingBottom:'10px',borderBottom:'1px solid rgba(169,124,55,0.2)'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'14px',paddingBottom:'10px',borderBottom:'1px solid rgba(225,185,80,0.38)'}}>
               <div>
-                <div className="orbitron" style={{fontSize:'12px',fontWeight:900,color:'#C9A050'}}>IMPORTAR EQUIPO</div>
-                <div style={{fontSize:'9px',color:'rgba(169,124,55,0.4)',marginTop:'2px',letterSpacing:'1px'}}>PEGAR JSON DEL EQUIPO</div>
+                <div className="orbitron" style={{fontSize:'12px',fontWeight:900,color:'#EAC858'}}>IMPORTAR EQUIPO</div>
+                <div style={{fontSize:'9px',color:'rgba(225,185,80,0.84)',marginTop:'2px',letterSpacing:'1px'}}>PEGAR JSON DEL EQUIPO</div>
               </div>
-              <button onClick={closeModal} style={{background:'none',border:'none',color:'rgba(169,124,55,0.5)',fontSize:'16px',cursor:'pointer',padding:'4px'}}>✕</button>
+              <button onClick={closeModal} style={{background:'none',border:'none',color:'rgba(225,185,80,0.92)',fontSize:'16px',cursor:'pointer',padding:'4px'}}>✕</button>
             </div>
 
-            <div style={{fontSize:'10px',color:'rgba(169,124,55,0.5)',marginBottom:'10px',lineHeight:'1.5'}}>
+            <div style={{fontSize:'10px',color:'rgba(225,185,80,0.92)',marginBottom:'10px',lineHeight:'1.5'}}>
               Pega aquí el JSON exportado de otro jugador. Se creará una copia nueva del equipo en tu biblioteca.
             </div>
 
-            <textarea style={{...S.field,height:'200px',resize:'none',lineHeight:'1.4',borderColor:importErr?'rgba(239,68,68,0.5)':'rgba(169,124,55,0.3)'}}
+            <textarea style={{...S.field,height:'200px',resize:'none',lineHeight:'1.4',borderColor:importErr?'rgba(239,68,68,0.5)':'rgba(225,185,80,0.72)'}}
                       placeholder={'{\n  "name": "Nombre del equipo",\n  "limit": 300,\n  "chars": [ ... ]\n}'}
                       value={importTxt}
                       onChange={e=>{ setImportTxt(e.target.value); setImportErr(''); setImportOk(false); }}/>
@@ -1182,11 +1182,11 @@ function TeamBuilder() {
           <div className="modal fade-in" style={{maxWidth:'360px'}}>
             <div style={{textAlign:'center',padding:'8px 0 16px'}}>
               <div style={{fontSize:'36px',marginBottom:'10px'}}>⚠</div>
-              <div className="orbitron" style={{fontSize:'13px',color:'#C9A050',marginBottom:'8px'}}>ELIMINAR EQUIPO</div>
-              <div style={{fontSize:'12px',color:'rgba(169,124,55,0.7)',lineHeight:'1.7'}}>
-                ¿Eliminar <strong style={{color:'#C9A050'}}>"{team?.name}"</strong>?<br/>
+              <div className="orbitron" style={{fontSize:'13px',color:'#EAC858',marginBottom:'8px'}}>ELIMINAR EQUIPO</div>
+              <div style={{fontSize:'12px',color:'#D4AF50',lineHeight:'1.7'}}>
+                ¿Eliminar <strong style={{color:'#EAC858'}}>"{team?.name}"</strong>?<br/>
                 Esta acción no se puede deshacer.<br/>
-                <span style={{fontSize:'10px',color:'rgba(169,124,55,0.45)'}}>
+                <span style={{fontSize:'10px',color:'rgba(225,185,80,0.88)'}}>
                   Se borrarán {team?.chars.length} figuras · {total} pts
                 </span>
               </div>
@@ -1270,7 +1270,7 @@ function Calculator() {
 
   const clearRolls = () => { setRolls([]); setSimCount(0); };
 
-  const probColor = p => p>=0.7?'#22C55E': p>=0.4?'#A97C37': '#EF4444';
+  const probColor = p => p>=0.7?'#22C55E': p>=0.4?'#D4A840': '#EF4444';
 
   return (
     <div style={{display:'flex',flexDirection:'column',height:'100%',overflow:'hidden',padding:'14px',gap:'12px'}}>
@@ -1278,7 +1278,7 @@ function Calculator() {
       <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'12px',flexShrink:0}}>
         {/* Combat inputs */}
         <div className="panel corner" style={{padding:'14px'}}>
-          <div className="orbitron" style={{fontSize:'10px',color:'rgba(169,124,55,0.7)',marginBottom:'12px',letterSpacing:'2px'}}>⚔ CONFIGURAR COMBATE</div>
+          <div className="orbitron" style={{fontSize:'10px',color:'#D4AF50',marginBottom:'12px',letterSpacing:'2px'}}>⚔ CONFIGURAR COMBATE</div>
           <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
             {[
               {label:'ATAQUE',  val:atk, set:setAtk, min:1, max:20},
@@ -1286,16 +1286,16 @@ function Calculator() {
               {label:'DAÑO',    val:dmg, set:setDmg, min:1, max:10},
             ].map(({label,val,set,min,max})=>(
               <div key={label} style={{display:'flex',alignItems:'center',gap:'8px'}}>
-                <div className="orbitron" style={{fontSize:'9px',color:'rgba(169,124,55,0.5)',minWidth:'58px',letterSpacing:'1px'}}>{label}</div>
+                <div className="orbitron" style={{fontSize:'9px',color:'rgba(225,185,80,0.92)',minWidth:'58px',letterSpacing:'1px'}}>{label}</div>
                 <button onClick={()=>set(v=>Math.max(min,v-1))} className="btn-outline" style={{width:26,height:26,padding:0,fontSize:'14px',lineHeight:1}}>−</button>
-                <div className="orbitron" style={{fontSize:'18px',fontWeight:900,color:'#C9A050',minWidth:'36px',textAlign:'center'}}>{val}</div>
+                <div className="orbitron" style={{fontSize:'18px',fontWeight:900,color:'#EAC858',minWidth:'36px',textAlign:'center'}}>{val}</div>
                 <button onClick={()=>set(v=>Math.min(max,v+1))} className="btn-outline" style={{width:26,height:26,padding:0,fontSize:'14px',lineHeight:1}}>+</button>
                 <input type="range" min={min} max={max} value={val} onChange={e=>set(parseInt(e.target.value))}
-                       style={{flex:1,accentColor:'#A97C37',height:'4px',background:'transparent',cursor:'pointer'}}/>
+                       style={{flex:1,accentColor:'#D4A840',height:'4px',background:'transparent',cursor:'pointer'}}/>
               </div>
             ))}
             <div style={{display:'flex',alignItems:'center',gap:'8px',marginTop:'4px'}}>
-              <div className="orbitron" style={{fontSize:'9px',color:'rgba(169,124,55,0.5)',minWidth:'58px',letterSpacing:'1px'}}>REDUCTOR</div>
+              <div className="orbitron" style={{fontSize:'9px',color:'rgba(225,185,80,0.92)',minWidth:'58px',letterSpacing:'1px'}}>REDUCTOR</div>
               <select value={reducer} onChange={e=>setReducer(e.target.value)} style={{flex:1,padding:'4px 8px',fontSize:'10px',borderRadius:'2px'}}>
                 {REDUCERS.map(r=><option key={r.id} value={r.id}>{r.label}</option>)}
               </select>
@@ -1305,11 +1305,11 @@ function Calculator() {
 
         {/* Stats */}
         <div className="panel" style={{padding:'14px',display:'flex',flexDirection:'column',gap:'10px'}}>
-          <div className="orbitron" style={{fontSize:'10px',color:'rgba(169,124,55,0.7)',letterSpacing:'2px'}}>📊 ESTADÍSTICAS</div>
+          <div className="orbitron" style={{fontSize:'10px',color:'#D4AF50',letterSpacing:'2px'}}>📊 ESTADÍSTICAS</div>
 
           <div style={{textAlign:'center',padding:'10px 0'}}>
             <div className="orbitron" style={{fontSize:'36px',fontWeight:900,color:probColor(prob),textShadow:`0 0 16px ${probColor(prob)}88`}}>{probPct}%</div>
-            <div style={{fontSize:'10px',color:'rgba(169,124,55,0.5)',marginTop:'2px'}}>PROBABILIDAD DE IMPACTO</div>
+            <div style={{fontSize:'10px',color:'rgba(225,185,80,0.92)',marginTop:'2px'}}>PROBABILIDAD DE IMPACTO</div>
           </div>
 
           <div className="prob-bar-wrap">
@@ -1323,16 +1323,16 @@ function Calculator() {
               {l:'Daño esperado',v:expectedDmg()},
               {l:'Fallos',       v:`${(100-parseFloat(probPct)).toFixed(1)}%`},
             ].map(({l,v})=>(
-              <div key={l} style={{background:'rgba(169,124,55,0.06)',border:'1px solid rgba(169,124,55,0.15)',padding:'7px 8px',borderRadius:'2px'}}>
-                <div style={{fontSize:'8px',color:'rgba(169,124,55,0.4)',letterSpacing:'1px'}}>{l}</div>
-                <div style={{fontSize:'11px',color:'#C9A050',fontWeight:'bold',marginTop:'2px'}}>{v}</div>
+              <div key={l} style={{background:'rgba(225,185,80,0.13)',border:'1px solid rgba(225,185,80,0.28)',padding:'7px 8px',borderRadius:'2px'}}>
+                <div style={{fontSize:'8px',color:'rgba(225,185,80,0.84)',letterSpacing:'1px'}}>{l}</div>
+                <div style={{fontSize:'11px',color:'#EAC858',fontWeight:'bold',marginTop:'2px'}}>{v}</div>
               </div>
             ))}
           </div>
 
           {/* Distribución 2d6 */}
           <div style={{marginTop:'4px'}}>
-            <div style={{fontSize:'8px',color:'rgba(169,124,55,0.4)',letterSpacing:'1px',marginBottom:'5px'}}>DISTRIBUCIÓN 2d6 (necesitas ≥{Math.max(2,def-atk)})</div>
+            <div style={{fontSize:'8px',color:'rgba(225,185,80,0.84)',letterSpacing:'1px',marginBottom:'5px'}}>DISTRIBUCIÓN 2d6 (necesitas ≥{Math.max(2,def-atk)})</div>
             <div style={{display:'flex',gap:'2px',alignItems:'flex-end',height:'36px'}}>
               {OUTCOMES.map(o=>{
                 const cnt=DIST[o]||0; const pct=cnt/36; const needed=Math.max(2,def-atk);
@@ -1341,15 +1341,15 @@ function Calculator() {
                 const barH=Math.round(pct*36);
                 return (
                   <div key={o} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:'1px'}}>
-                    <div style={{width:'100%',height:`${barH}px`,background:isSnakeEyes?'#374151':hits?'#16A34A':'rgba(169,124,55,0.25)',borderRadius:'1px 1px 0 0',minHeight:'2px',transition:'height 0.3s'}}/>
-                    <div style={{fontSize:'7px',color:'rgba(169,124,55,0.4)'}}>{o}</div>
+                    <div style={{width:'100%',height:`${barH}px`,background:isSnakeEyes?'#374151':hits?'#16A34A':'rgba(225,185,80,0.58)',borderRadius:'1px 1px 0 0',minHeight:'2px',transition:'height 0.3s'}}/>
+                    <div style={{fontSize:'7px',color:'rgba(225,185,80,0.84)'}}>{o}</div>
                   </div>
                 );
               })}
             </div>
             <div style={{display:'flex',gap:'10px',marginTop:'4px',fontSize:'8px'}}>
               <span style={{color:'#16A34A'}}>■ Impacto</span>
-              <span style={{color:'rgba(169,124,55,0.35)'}}>■ Fallo</span>
+              <span style={{color:'rgba(225,185,80,0.78)'}}>■ Fallo</span>
               <span style={{color:'#374151'}}>■ Snake Eyes</span>
             </div>
           </div>
@@ -1360,28 +1360,28 @@ function Calculator() {
       <div style={{display:'flex',gap:'12px',flex:1,overflow:'hidden',minHeight:0}}>
         <div style={{flex:1,display:'flex',flexDirection:'column',gap:'8px',overflow:'hidden'}}>
           <div style={{display:'flex',gap:'8px',alignItems:'center',flexShrink:0}}>
-            <div className="orbitron" style={{fontSize:'10px',color:'rgba(169,124,55,0.7)',letterSpacing:'2px',flex:1}}>🎲 SIMULADOR DE TIRADAS</div>
+            <div className="orbitron" style={{fontSize:'10px',color:'#D4AF50',letterSpacing:'2px',flex:1}}>🎲 SIMULADOR DE TIRADAS</div>
             <button className="btn-gold" style={{padding:'6px 16px',fontSize:'10px',borderRadius:'2px'}} onClick={rollDice}>TIRAR 2d6</button>
             {rolls.length>0 && <button className="btn-outline" style={{padding:'6px 10px',fontSize:'10px',borderRadius:'2px'}} onClick={clearRolls}>LIMPIAR</button>}
           </div>
 
           <div style={{flex:1,overflowY:'auto'}}>
             {rolls.length===0 ? (
-              <div style={{textAlign:'center',padding:'24px',color:'rgba(169,124,55,0.3)',fontSize:'11px'}}>
+              <div style={{textAlign:'center',padding:'24px',color:'rgba(225,185,80,0.72)',fontSize:'11px'}}>
                 <div style={{fontSize:'28px',marginBottom:'8px'}}>🎲</div>
                 Pulsa TIRAR 2d6 para simular ataques
               </div>
             ) : (
               <div style={{display:'flex',flexDirection:'column',gap:'4px'}}>
                 {rolls.map((r,i)=>(
-                  <div key={r.id} className="fade-in" style={{display:'flex',alignItems:'center',gap:'8px',padding:'6px 10px',background:r.snakeEyes?'rgba(239,68,68,0.06)':r.hit?'rgba(22,163,74,0.06)':'rgba(169,124,55,0.04)',border:`1px solid ${r.snakeEyes?'rgba(239,68,68,0.3)':r.hit?'rgba(22,163,74,0.2)':'rgba(169,124,55,0.15)'}`,borderRadius:'2px'}}>
+                  <div key={r.id} className="fade-in" style={{display:'flex',alignItems:'center',gap:'8px',padding:'6px 10px',background:r.snakeEyes?'rgba(239,68,68,0.06)':r.hit?'rgba(22,163,74,0.06)':'rgba(225,185,80,0.10)',border:`1px solid ${r.snakeEyes?'rgba(239,68,68,0.3)':r.hit?'rgba(22,163,74,0.2)':'rgba(225,185,80,0.28)'}`,borderRadius:'2px'}}>
                     <div style={{display:'flex',gap:'3px'}}>
-                      <span className="dice-face" style={{width:24,height:24,fontSize:'13px',borderColor:r.critical?'#A97C37':'rgba(169,124,55,0.3)'}}>{r.d1}</span>
-                      <span className="dice-face" style={{width:24,height:24,fontSize:'13px',borderColor:r.critical?'#A97C37':'rgba(169,124,55,0.3)'}}>{r.d2}</span>
+                      <span className="dice-face" style={{width:24,height:24,fontSize:'13px',borderColor:r.critical?'#D4A840':'rgba(225,185,80,0.72)'}}>{r.d1}</span>
+                      <span className="dice-face" style={{width:24,height:24,fontSize:'13px',borderColor:r.critical?'#D4A840':'rgba(225,185,80,0.72)'}}>{r.d2}</span>
                     </div>
-                    <div className="orbitron" style={{fontSize:'13px',fontWeight:900,color:'rgba(169,124,55,0.7)',minWidth:'24px'}}>{r.total}</div>
-                    <div style={{fontSize:'10px',color:'rgba(169,124,55,0.5)'}}>+{atk} = <strong style={{color:'#C9A050'}}>{r.atkMod}</strong> vs {def}</div>
-                    <div style={{flex:1,fontSize:'10px',fontWeight:'bold',color:r.snakeEyes?'#EF4444':r.hit?'#22C55E':'rgba(169,124,55,0.5)'}}>
+                    <div className="orbitron" style={{fontSize:'13px',fontWeight:900,color:'#D4AF50',minWidth:'24px'}}>{r.total}</div>
+                    <div style={{fontSize:'10px',color:'rgba(225,185,80,0.92)'}}>+{atk} = <strong style={{color:'#EAC858'}}>{r.atkMod}</strong> vs {def}</div>
+                    <div style={{flex:1,fontSize:'10px',fontWeight:'bold',color:r.snakeEyes?'#EF4444':r.hit?'#22C55E':'rgba(225,185,80,0.92)'}}>
                       {r.snakeEyes?'✕ SNAKE EYES':r.critical?`★ CRÍTICO ${r.hit?'':' (falla)'}`:r.hit?'✓ IMPACTO':'✕ FALLO'}
                     </div>
                     {r.hit && <div className="orbitron" style={{fontSize:'12px',fontWeight:900,color:'#EF4444',flexShrink:0}}>{r.dmgDealt > 0 ? `-${r.dmgDealt}♥`:'-0♥'}</div>}
@@ -1411,13 +1411,13 @@ function ReglamentoSection() {
   return (
     <div style={{display:'flex',height:'100%',overflow:'hidden'}}>
       {/* Sub-nav */}
-      <div style={{width:'155px',flexShrink:0,overflowY:'auto',background:'#0A0A0D',borderRight:'1px solid rgba(169,124,55,0.2)',display:'flex',flexDirection:'column'}}>
-        <div style={{padding:'8px',borderBottom:'1px solid rgba(169,124,55,0.1)'}}>
-          <div className="orbitron" style={{fontSize:'8px',color:'rgba(169,124,55,0.4)',letterSpacing:'2px',textAlign:'center'}}>SECCIONES</div>
+      <div style={{width:'155px',flexShrink:0,overflowY:'auto',background:'#0F0F18',borderRight:'1px solid rgba(225,185,80,0.38)',display:'flex',flexDirection:'column'}}>
+        <div style={{padding:'8px',borderBottom:'1px solid rgba(225,185,80,0.18)'}}>
+          <div className="orbitron" style={{fontSize:'8px',color:'rgba(225,185,80,0.84)',letterSpacing:'2px',textAlign:'center'}}>SECCIONES</div>
         </div>
         {REGLAMENTO.map(s=>(
           <div key={s.id} onClick={()=>{setActive(s.id);setSearch('');}}
-               style={{padding:'11px 12px',cursor:'pointer',fontSize:'9px',lineHeight:'1.4',borderLeft:`3px solid ${active===s.id?'#A97C37':'transparent'}`,background:active===s.id?'rgba(169,124,55,0.1)':'transparent',color:active===s.id?'#C9A050':'rgba(169,124,55,0.5)',letterSpacing:'1px',transition:'all 0.2s',borderBottom:'1px solid rgba(169,124,55,0.08)'}}>
+               style={{padding:'11px 12px',cursor:'pointer',fontSize:'9px',lineHeight:'1.4',borderLeft:`3px solid ${active===s.id?'#D4A840':'transparent'}`,background:active===s.id?'rgba(225,185,80,0.18)':'transparent',color:active===s.id?'#EAC858':'rgba(225,185,80,0.92)',letterSpacing:'1px',transition:'all 0.2s',borderBottom:'1px solid rgba(225,185,80,0.16)'}}>
             {s.title}
           </div>
         ))}
@@ -1426,7 +1426,7 @@ function ReglamentoSection() {
       {/* Content */}
       <div style={{flex:1,overflow:'hidden',display:'flex',flexDirection:'column'}}>
         {/* Search */}
-        <div style={{padding:'10px 14px',borderBottom:'1px solid rgba(169,124,55,0.15)',background:'#0D0D16',flexShrink:0}}>
+        <div style={{padding:'10px 14px',borderBottom:'1px solid rgba(225,185,80,0.28)',background:'#141420',flexShrink:0}}>
           <input style={{width:'100%',padding:'6px 10px',fontSize:'11px',borderRadius:'2px'}} placeholder="Buscar en esta sección..."
                  value={search} onChange={e=>setSearch(e.target.value)}/>
         </div>
@@ -1434,15 +1434,15 @@ function ReglamentoSection() {
         <div style={{flex:1,overflowY:'auto',padding:'14px'}}>
           {sec && (
             <div className="fade-in">
-              <div className="orbitron" style={{fontSize:'12px',fontWeight:900,color:'#C9A050',paddingBottom:'10px',borderBottom:'1px solid rgba(169,124,55,0.25)',marginBottom:'12px'}}>{sec.title}</div>
+              <div className="orbitron" style={{fontSize:'12px',fontWeight:900,color:'#EAC858',paddingBottom:'10px',borderBottom:'1px solid rgba(225,185,80,0.58)',marginBottom:'12px'}}>{sec.title}</div>
               {filteredItems.length===0 ? (
-                <div style={{textAlign:'center',padding:'24px',color:'rgba(169,124,55,0.3)',fontSize:'11px'}}>Sin resultados para "{search}"</div>
+                <div style={{textAlign:'center',padding:'24px',color:'rgba(225,185,80,0.72)',fontSize:'11px'}}>Sin resultados para "{search}"</div>
               ) : (
                 <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
                   {filteredItems.map(it=>(
-                    <div key={it.t} style={{background:'#13131A',border:'1px solid rgba(169,124,55,0.2)',padding:'12px'}}>
-                      <div style={{color:'#A97C37',fontSize:'12px',fontWeight:'bold',marginBottom:'5px'}}>{it.t}</div>
-                      <div style={{color:'rgba(201,160,80,0.75)',fontSize:'11px',lineHeight:'1.7'}}>{it.d}</div>
+                    <div key={it.t} style={{background:'#1C1C28',border:'1px solid rgba(225,185,80,0.38)',padding:'12px'}}>
+                      <div style={{color:'#D4A840',fontSize:'12px',fontWeight:'bold',marginBottom:'5px'}}>{it.t}</div>
+                      <div style={{color:'#E8C868',fontSize:'11px',lineHeight:'1.7'}}>{it.d}</div>
                     </div>
                   ))}
                 </div>
@@ -1467,7 +1467,7 @@ const EVENT_TYPES = [
   { id:'presentacion', label:'Presentación', icon:'📋', color:'#0EA5E9' },
   { id:'pachanga',     label:'Pachanga',     icon:'🎮', color:'#16A34A' },
   { id:'liga',         label:'Liga',         icon:'🥇', color:'#7C3AED' },
-  { id:'amistoso',     label:'Amistoso',     icon:'🤝', color:'#A97C37' },
+  { id:'amistoso',     label:'Amistoso',     icon:'🤝', color:'#D4A840' },
 ];
 
 const EVENT_FORMATS = ['Modern Age','Golden Age','Pulp','Sealed','Casual'];
@@ -1561,18 +1561,18 @@ function EventosSection() {
     <div style={{display:'flex',height:'100%',overflow:'hidden',position:'relative'}}>
 
       {/* ── COLUMNA IZQUIERDA: lista + filtros ── */}
-      <div style={{width:'240px',flexShrink:0,display:'flex',flexDirection:'column',borderRight:'1px solid rgba(169,124,55,0.2)',background:'#0A0A0D'}}>
+      <div style={{width:'240px',flexShrink:0,display:'flex',flexDirection:'column',borderRight:'1px solid rgba(225,185,80,0.38)',background:'#0F0F18'}}>
 
         {/* Stats rápidas */}
-        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'1px',background:'rgba(169,124,55,0.15)',borderBottom:'1px solid rgba(169,124,55,0.2)'}}>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'1px',background:'rgba(225,185,80,0.28)',borderBottom:'1px solid rgba(225,185,80,0.38)'}}>
           {[
             {l:'EVENTOS', v:stats.total},
             {l:'TORNEOS', v:stats.torneos},
             {l:'PODIOS',  v:stats.podios},
           ].map(s=>(
-            <div key={s.l} style={{background:'#0A0A0D',padding:'8px 4px',textAlign:'center'}}>
-              <div className="orbitron" style={{fontSize:'16px',fontWeight:900,color:'#A97C37'}}>{s.v}</div>
-              <div style={{fontSize:'7px',color:'rgba(169,124,55,0.4)',letterSpacing:'1px',marginTop:'1px'}}>{s.l}</div>
+            <div key={s.l} style={{background:'#0F0F18',padding:'8px 4px',textAlign:'center'}}>
+              <div className="orbitron" style={{fontSize:'16px',fontWeight:900,color:'#D4A840'}}>{s.v}</div>
+              <div style={{fontSize:'7px',color:'rgba(225,185,80,0.84)',letterSpacing:'1px',marginTop:'1px'}}>{s.l}</div>
             </div>
           ))}
         </div>
@@ -1594,21 +1594,21 @@ function EventosSection() {
         {/* Filtro por tipo */}
         <div style={{padding:'0 8px 6px',display:'flex',flexWrap:'wrap',gap:'3px'}}>
           <button onClick={()=>setFilterType('ALL')}
-                  style={{padding:'3px 7px',fontSize:'8px',cursor:'pointer',fontFamily:"'Share Tech Mono',monospace",borderRadius:'2px',background:filterType==='ALL'?'rgba(169,124,55,0.2)':'transparent',border:`1px solid ${filterType==='ALL'?'#A97C37':'rgba(169,124,55,0.2)'}`,color:filterType==='ALL'?'#C9A050':'rgba(169,124,55,0.45)'}}>
+                  style={{padding:'3px 7px',fontSize:'8px',cursor:'pointer',fontFamily:"'Share Tech Mono',monospace",borderRadius:'2px',background:filterType==='ALL'?'rgba(225,185,80,0.38)':'transparent',border:`1px solid ${filterType==='ALL'?'#D4A840':'rgba(225,185,80,0.38)'}`,color:filterType==='ALL'?'#EAC858':'rgba(225,185,80,0.88)'}}>
             TODOS
           </button>
           {EVENT_TYPES.map(t=>(
             <button key={t.id} onClick={()=>setFilterType(filterType===t.id?'ALL':t.id)}
-                    style={{padding:'3px 7px',fontSize:'8px',cursor:'pointer',fontFamily:"'Share Tech Mono',monospace",borderRadius:'2px',background:filterType===t.id?'rgba(169,124,55,0.2)':'transparent',border:`1px solid ${filterType===t.id?t.color:'rgba(169,124,55,0.2)'}`,color:filterType===t.id?t.color:'rgba(169,124,55,0.45)'}}>
+                    style={{padding:'3px 7px',fontSize:'8px',cursor:'pointer',fontFamily:"'Share Tech Mono',monospace",borderRadius:'2px',background:filterType===t.id?'rgba(225,185,80,0.38)':'transparent',border:`1px solid ${filterType===t.id?t.color:'rgba(225,185,80,0.38)'}`,color:filterType===t.id?t.color:'rgba(225,185,80,0.88)'}}>
               {t.icon} {t.label}
             </button>
           ))}
         </div>
 
         {/* Lista de eventos */}
-        <div style={{flex:1,overflowY:'auto',borderTop:'1px solid rgba(169,124,55,0.1)'}}>
+        <div style={{flex:1,overflowY:'auto',borderTop:'1px solid rgba(225,185,80,0.18)'}}>
           {filtered.length===0 ? (
-            <div style={{textAlign:'center',padding:'32px 12px',color:'rgba(169,124,55,0.3)',fontSize:'10px'}}>
+            <div style={{textAlign:'center',padding:'32px 12px',color:'rgba(225,185,80,0.72)',fontSize:'10px'}}>
               {events.length===0 ? 'Sin eventos. Crea el primero.' : 'Sin resultados para el filtro.'}
             </div>
           ) : filtered.map(ev=>{
@@ -1616,13 +1616,13 @@ function EventosSection() {
             const isActive = ev.id===selId;
             return (
               <div key={ev.id} onClick={()=>setSelId(ev.id)}
-                   style={{padding:'10px 12px',cursor:'pointer',borderLeft:`3px solid ${isActive?ti.color:'transparent'}`,background:isActive?'rgba(169,124,55,0.08)':'transparent',borderBottom:'1px solid rgba(169,124,55,0.07)',transition:'all 0.15s'}}>
+                   style={{padding:'10px 12px',cursor:'pointer',borderLeft:`3px solid ${isActive?ti.color:'transparent'}`,background:isActive?'rgba(225,185,80,0.16)':'transparent',borderBottom:'1px solid rgba(225,185,80,0.14)',transition:'all 0.15s'}}>
                 <div style={{display:'flex',alignItems:'flex-start',gap:'7px'}}>
                   <span style={{fontSize:'14px',flexShrink:0,marginTop:'1px'}}>{ti.icon}</span>
                   <div style={{flex:1,overflow:'hidden'}}>
-                    <div style={{fontSize:'11px',fontWeight:'bold',color:isActive?'#C9A050':'rgba(169,124,55,0.75)',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{ev.name}</div>
-                    <div style={{fontSize:'8px',color:'rgba(169,124,55,0.4)',marginTop:'2px'}}>{fmtDate(ev.date)}</div>
-                    {ev.location && <div style={{fontSize:'8px',color:'rgba(169,124,55,0.35)',marginTop:'1px',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>📍 {ev.location}</div>}
+                    <div style={{fontSize:'11px',fontWeight:'bold',color:isActive?'#EAC858':'#D8B458',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{ev.name}</div>
+                    <div style={{fontSize:'8px',color:'rgba(225,185,80,0.84)',marginTop:'2px'}}>{fmtDate(ev.date)}</div>
+                    {ev.location && <div style={{fontSize:'8px',color:'rgba(225,185,80,0.78)',marginTop:'1px',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>📍 {ev.location}</div>}
                     {ev.result && <div style={{fontSize:'8px',color:ti.color,marginTop:'2px'}}>{resultLabel(ev.result)}</div>}
                   </div>
                 </div>
@@ -1635,12 +1635,12 @@ function EventosSection() {
       {/* ── COLUMNA DERECHA: detalle ── */}
       <div style={{flex:1,overflow:'hidden',display:'flex',flexDirection:'column'}}>
         {!event ? (
-          <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',gap:'14px',color:'rgba(169,124,55,0.3)'}}>
+          <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',gap:'14px',color:'rgba(225,185,80,0.72)'}}>
             <div style={{fontSize:'44px'}}>◷</div>
             <div className="orbitron" style={{fontSize:'12px',letterSpacing:'2px'}}>
               {events.length===0 ? 'SIN EVENTOS' : 'SELECCIONA UN EVENTO'}
             </div>
-            <div style={{fontSize:'11px',color:'rgba(169,124,55,0.25)',textAlign:'center',maxWidth:'260px',lineHeight:'1.7'}}>
+            <div style={{fontSize:'11px',color:'rgba(225,185,80,0.58)',textAlign:'center',maxWidth:'260px',lineHeight:'1.7'}}>
               {events.length===0
                 ? 'Registra torneos, presentaciones y partidas con el botón "+ NUEVO EVENTO".'
                 : 'Haz clic en un evento de la lista para ver su detalle.'}
@@ -1656,13 +1656,13 @@ function EventosSection() {
           return (
             <div style={{flex:1,overflow:'hidden',display:'flex',flexDirection:'column'}}>
               {/* Cabecera del detalle */}
-              <div style={{padding:'14px 16px',borderBottom:'1px solid rgba(169,124,55,0.2)',background:'#0D0D16',flexShrink:0}}>
+              <div style={{padding:'14px 16px',borderBottom:'1px solid rgba(225,185,80,0.38)',background:'#141420',flexShrink:0}}>
                 <div style={{display:'flex',alignItems:'flex-start',gap:'12px'}}>
                   <div style={{width:46,height:46,borderRadius:'6px',background:ti.color+'22',border:`2px solid ${ti.color}44`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'22px',flexShrink:0}}>
                     {ti.icon}
                   </div>
                   <div style={{flex:1}}>
-                    <div className="orbitron" style={{fontSize:'15px',fontWeight:900,color:'#C9A050'}}>{event.name}</div>
+                    <div className="orbitron" style={{fontSize:'15px',fontWeight:900,color:'#EAC858'}}>{event.name}</div>
                     <div style={{display:'flex',flexWrap:'wrap',gap:'6px',marginTop:'4px'}}>
                       <span className="tag" style={{borderColor:ti.color+'66',color:ti.color}}>{ti.label}</span>
                       <span className="tag">{event.format||'Modern Age'}</span>
@@ -1687,8 +1687,8 @@ function EventosSection() {
                     { icon:'🎮', label:'FORMATO', val: event.format || '—' },
                   ].map(item=>(
                     <div key={item.label} className="panel" style={{padding:'10px 12px'}}>
-                      <div style={{fontSize:'9px',color:'rgba(169,124,55,0.4)',letterSpacing:'1px',marginBottom:'4px'}}>{item.icon} {item.label}</div>
-                      <div style={{fontSize:'12px',color:'#C9A050',fontWeight:'bold',lineHeight:'1.3'}}>{item.val}</div>
+                      <div style={{fontSize:'9px',color:'rgba(225,185,80,0.84)',letterSpacing:'1px',marginBottom:'4px'}}>{item.icon} {item.label}</div>
+                      <div style={{fontSize:'12px',color:'#EAC858',fontWeight:'bold',lineHeight:'1.3'}}>{item.val}</div>
                     </div>
                   ))}
                 </div>
@@ -1696,15 +1696,15 @@ function EventosSection() {
                 {/* Equipo usado */}
                 {event.teamUsed && (
                   <div className="panel" style={{padding:'12px'}}>
-                    <div style={{fontSize:'9px',color:'rgba(169,124,55,0.4)',letterSpacing:'1px',marginBottom:'5px'}}>⊕ EQUIPO USADO</div>
-                    <div style={{fontSize:'12px',color:'#C9A050'}}>{event.teamUsed}</div>
+                    <div style={{fontSize:'9px',color:'rgba(225,185,80,0.84)',letterSpacing:'1px',marginBottom:'5px'}}>⊕ EQUIPO USADO</div>
+                    <div style={{fontSize:'12px',color:'#EAC858'}}>{event.teamUsed}</div>
                   </div>
                 )}
 
                 {/* Resultado destacado */}
                 {event.result && (
                   <div style={{padding:'12px 14px',background:ti.color+'11',border:`1px solid ${ti.color}44`,borderLeft:`3px solid ${ti.color}`}}>
-                    <div style={{fontSize:'9px',color:'rgba(169,124,55,0.4)',letterSpacing:'1px',marginBottom:'4px'}}>RESULTADO</div>
+                    <div style={{fontSize:'9px',color:'rgba(225,185,80,0.84)',letterSpacing:'1px',marginBottom:'4px'}}>RESULTADO</div>
                     <div style={{fontSize:'16px',fontWeight:'bold',color:ti.color}}>{resultLabel(event.result)}</div>
                   </div>
                 )}
@@ -1712,11 +1712,11 @@ function EventosSection() {
                 {/* Notas */}
                 {event.notes ? (
                   <div className="panel" style={{padding:'12px'}}>
-                    <div style={{fontSize:'9px',color:'rgba(169,124,55,0.4)',letterSpacing:'1px',marginBottom:'6px'}}>📝 NOTAS</div>
-                    <div style={{fontSize:'12px',color:'rgba(201,160,80,0.8)',lineHeight:'1.75',whiteSpace:'pre-wrap'}}>{event.notes}</div>
+                    <div style={{fontSize:'9px',color:'rgba(225,185,80,0.84)',letterSpacing:'1px',marginBottom:'6px'}}>📝 NOTAS</div>
+                    <div style={{fontSize:'12px',color:'#ECCC6C',lineHeight:'1.75',whiteSpace:'pre-wrap'}}>{event.notes}</div>
                   </div>
                 ) : (
-                  <div style={{textAlign:'center',padding:'16px',color:'rgba(169,124,55,0.25)',fontSize:'10px',border:'1px dashed rgba(169,124,55,0.15)',borderRadius:'2px',cursor:'pointer'}}
+                  <div style={{textAlign:'center',padding:'16px',color:'rgba(225,185,80,0.58)',fontSize:'10px',border:'1px dashed rgba(225,185,80,0.28)',borderRadius:'2px',cursor:'pointer'}}
                        onClick={()=>openEdit(event)}>
                     Sin notas — pulsa <strong>✎ EDITAR</strong> para añadir
                   </div>
@@ -1735,18 +1735,18 @@ function EventosSection() {
           <div className="modal fade-in" style={{maxWidth:'480px',maxHeight:'90vh',overflowY:'auto'}}>
 
             {/* Cabecera */}
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px',paddingBottom:'10px',borderBottom:'1px solid rgba(169,124,55,0.2)',position:'sticky',top:0,background:'#13131A',zIndex:1}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'16px',paddingBottom:'10px',borderBottom:'1px solid rgba(225,185,80,0.38)',position:'sticky',top:0,background:'#1C1C28',zIndex:1}}>
               <div>
-                <div className="orbitron" style={{fontSize:'12px',fontWeight:900,color:'#C9A050'}}>{modal==='new'?'NUEVO EVENTO':'EDITAR EVENTO'}</div>
-                <div style={{fontSize:'8px',color:'rgba(169,124,55,0.4)',marginTop:'2px',letterSpacing:'1px'}}>REGISTRO DE ACTIVIDAD // KPRESE LABS</div>
+                <div className="orbitron" style={{fontSize:'12px',fontWeight:900,color:'#EAC858'}}>{modal==='new'?'NUEVO EVENTO':'EDITAR EVENTO'}</div>
+                <div style={{fontSize:'8px',color:'rgba(225,185,80,0.84)',marginTop:'2px',letterSpacing:'1px'}}>REGISTRO DE ACTIVIDAD // KPRESE LABS</div>
               </div>
-              <button onClick={closeModal} style={{background:'none',border:'none',color:'rgba(169,124,55,0.5)',fontSize:'16px',cursor:'pointer',padding:'4px'}}>✕</button>
+              <button onClick={closeModal} style={{background:'none',border:'none',color:'rgba(225,185,80,0.92)',fontSize:'16px',cursor:'pointer',padding:'4px'}}>✕</button>
             </div>
 
             {/* Nombre */}
             <div style={{marginBottom:'12px'}}>
               <label style={S.label}>NOMBRE DEL EVENTO *</label>
-              <input style={{...S.field,borderColor:formErr&&!form.name.trim()?'rgba(239,68,68,0.5)':'rgba(169,124,55,0.3)'}}
+              <input style={{...S.field,borderColor:formErr&&!form.name.trim()?'rgba(239,68,68,0.5)':'rgba(225,185,80,0.72)'}}
                      placeholder="Ej: Torneo Estatal HeroClix Madrid 2025"
                      value={form.name} autoFocus
                      onChange={e=>{ setForm({...form,name:e.target.value}); setFormErr(''); }}/>
@@ -1756,7 +1756,7 @@ function EventosSection() {
             <div style={{...S.row,marginBottom:'12px'}}>
               <div style={{flex:'0 0 140px'}}>
                 <label style={S.label}>FECHA *</label>
-                <input type="date" style={{...S.field,borderColor:formErr&&!form.date?'rgba(239,68,68,0.5)':'rgba(169,124,55,0.3)',colorScheme:'dark'}}
+                <input type="date" style={{...S.field,borderColor:formErr&&!form.date?'rgba(239,68,68,0.5)':'rgba(225,185,80,0.72)',colorScheme:'dark'}}
                        value={form.date} onChange={e=>{ setForm({...form,date:e.target.value}); setFormErr(''); }}/>
               </div>
               <div style={{flex:1}}>
@@ -1772,7 +1772,7 @@ function EventosSection() {
               <div style={{display:'flex',flexWrap:'wrap',gap:'5px'}}>
                 {EVENT_TYPES.map(t=>(
                   <button key={t.id} onClick={()=>setForm({...form,type:t.id})}
-                          style={{padding:'7px 10px',fontSize:'10px',cursor:'pointer',fontFamily:"'Share Tech Mono',monospace",borderRadius:'2px',background:form.type===t.id?t.color+'22':'rgba(169,124,55,0.04)',border:`1px solid ${form.type===t.id?t.color:'rgba(169,124,55,0.2)'}`,color:form.type===t.id?t.color:'rgba(169,124,55,0.55)',transition:'all 0.15s'}}>
+                          style={{padding:'7px 10px',fontSize:'10px',cursor:'pointer',fontFamily:"'Share Tech Mono',monospace",borderRadius:'2px',background:form.type===t.id?t.color+'22':'rgba(225,185,80,0.10)',border:`1px solid ${form.type===t.id?t.color:'rgba(225,185,80,0.38)'}`,color:form.type===t.id?t.color:'rgba(225,185,80,0.94)',transition:'all 0.15s'}}>
                     {t.icon} {t.label}
                   </button>
                 ))}
@@ -1785,7 +1785,7 @@ function EventosSection() {
               <div style={{display:'flex',flexWrap:'wrap',gap:'5px'}}>
                 {EVENT_FORMATS.map(f=>(
                   <button key={f} onClick={()=>setForm({...form,format:f})}
-                          style={{padding:'6px 10px',fontSize:'9px',cursor:'pointer',fontFamily:"'Share Tech Mono',monospace",borderRadius:'2px',background:form.format===f?'rgba(169,124,55,0.2)':'rgba(169,124,55,0.04)',border:`1px solid ${form.format===f?'#A97C37':'rgba(169,124,55,0.2)'}`,color:form.format===f?'#C9A050':'rgba(169,124,55,0.5)',transition:'all 0.15s'}}>
+                          style={{padding:'6px 10px',fontSize:'9px',cursor:'pointer',fontFamily:"'Share Tech Mono',monospace",borderRadius:'2px',background:form.format===f?'rgba(225,185,80,0.38)':'rgba(225,185,80,0.10)',border:`1px solid ${form.format===f?'#D4A840':'rgba(225,185,80,0.38)'}`,color:form.format===f?'#EAC858':'rgba(225,185,80,0.92)',transition:'all 0.15s'}}>
                     {f}
                   </button>
                 ))}
@@ -1798,7 +1798,7 @@ function EventosSection() {
               <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'4px'}}>
                 {RESULT_OPTIONS.map(r=>(
                   <button key={r.id} onClick={()=>setForm({...form,result:r.id})}
-                          style={{padding:'6px 4px',fontSize:'9px',cursor:'pointer',fontFamily:"'Share Tech Mono',monospace",borderRadius:'2px',textAlign:'center',lineHeight:'1.3',background:form.result===r.id?'rgba(169,124,55,0.2)':'rgba(169,124,55,0.04)',border:`1px solid ${form.result===r.id?'#A97C37':'rgba(169,124,55,0.2)'}`,color:form.result===r.id?'#C9A050':'rgba(169,124,55,0.5)',transition:'all 0.15s'}}>
+                          style={{padding:'6px 4px',fontSize:'9px',cursor:'pointer',fontFamily:"'Share Tech Mono',monospace",borderRadius:'2px',textAlign:'center',lineHeight:'1.3',background:form.result===r.id?'rgba(225,185,80,0.38)':'rgba(225,185,80,0.10)',border:`1px solid ${form.result===r.id?'#D4A840':'rgba(225,185,80,0.38)'}`,color:form.result===r.id?'#EAC858':'rgba(225,185,80,0.92)',transition:'all 0.15s'}}>
                     {r.label||'—'}
                   </button>
                 ))}
@@ -1807,14 +1807,14 @@ function EventosSection() {
 
             {/* Equipo usado */}
             <div style={{marginBottom:'12px'}}>
-              <label style={S.label}>EQUIPO USADO <span style={{color:'rgba(169,124,55,0.35)',fontSize:'8px'}}>(opcional)</span></label>
+              <label style={S.label}>EQUIPO USADO <span style={{color:'rgba(225,185,80,0.78)',fontSize:'8px'}}>(opcional)</span></label>
               <input style={S.field} placeholder="Nombre del equipo o figuras principales"
                      value={form.teamUsed} onChange={e=>setForm({...form,teamUsed:e.target.value})}/>
             </div>
 
             {/* Notas */}
             <div style={{marginBottom:'14px'}}>
-              <label style={S.label}>NOTAS <span style={{color:'rgba(169,124,55,0.35)',fontSize:'8px'}}>(opcional)</span></label>
+              <label style={S.label}>NOTAS <span style={{color:'rgba(225,185,80,0.78)',fontSize:'8px'}}>(opcional)</span></label>
               <textarea style={{...S.field,height:'80px',resize:'vertical',lineHeight:'1.6'}}
                         placeholder="Rivales, rondas, anécdotas, preparación…"
                         value={form.notes} onChange={e=>setForm({...form,notes:e.target.value})}/>
@@ -1842,10 +1842,10 @@ function EventosSection() {
           <div className="modal fade-in" style={{maxWidth:'340px'}}>
             <div style={{textAlign:'center',padding:'8px 0 16px'}}>
               <div style={{fontSize:'32px',marginBottom:'10px'}}>⚠</div>
-              <div className="orbitron" style={{fontSize:'12px',color:'#C9A050',marginBottom:'8px'}}>ELIMINAR EVENTO</div>
-              <div style={{fontSize:'12px',color:'rgba(169,124,55,0.7)',lineHeight:'1.7'}}>
-                ¿Eliminar <strong style={{color:'#C9A050'}}>"{event?.name}"</strong>?<br/>
-                <span style={{fontSize:'10px',color:'rgba(169,124,55,0.4)'}}>Esta acción no se puede deshacer.</span>
+              <div className="orbitron" style={{fontSize:'12px',color:'#EAC858',marginBottom:'8px'}}>ELIMINAR EVENTO</div>
+              <div style={{fontSize:'12px',color:'#D4AF50',lineHeight:'1.7'}}>
+                ¿Eliminar <strong style={{color:'#EAC858'}}>"{event?.name}"</strong>?<br/>
+                <span style={{fontSize:'10px',color:'rgba(225,185,80,0.84)'}}>Esta acción no se puede deshacer.</span>
               </div>
             </div>
             <div style={{display:'flex',gap:'8px',marginTop:'4px'}}>
@@ -1881,13 +1881,13 @@ function App() {
         <div style={{width:'152px',flexShrink:0}}><SideNav active={sec} onChange={setSec}/></div>
         <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
           {/* Top bar */}
-          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'7px 16px',background:'#0D0D16',borderBottom:'1px solid rgba(169,124,55,0.3)',flexShrink:0}}>
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'7px 16px',background:'#141420',borderBottom:'1px solid rgba(225,185,80,0.72)',flexShrink:0}}>
             <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
-              <div style={{width:'3px',height:'16px',background:'#A97C37'}}/>
-              <span className="orbitron" style={{fontSize:'10px',color:'#C9A050',letterSpacing:'1px'}}>{SECTION_LABELS[sec]}</span>
+              <div style={{width:'3px',height:'16px',background:'#D4A840'}}/>
+              <span className="orbitron" style={{fontSize:'10px',color:'#EAC858',letterSpacing:'1px'}}>{SECTION_LABELS[sec]}</span>
             </div>
             <div style={{display:'flex',gap:'5px'}}>
-              {[0.3,0.55,1].map((o,i)=><div key={i} style={{width:'7px',height:'7px',borderRadius:'50%',background:`rgba(169,124,55,${o})`}}/>)}
+              {[0.45,0.72,1].map((o,i)=><div key={i} style={{width:'7px',height:'7px',borderRadius:'50%',background:`rgba(225,185,80,${o})`}}/>)}
             </div>
           </div>
           {/* Content */}
