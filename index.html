@@ -396,30 +396,31 @@ function SideNav({ active, onChange }) {
     { id:'calculator', label:'CALCULADORA',   sub:'COMBATE',        icon:'⌗' },
     { id:'reglamento', label:'REGLAMENTO',    sub:'REGLAS',         icon:'◎' },
     { id:'eventos',    label:'EVENTOS',       sub:'HISTORIAL',      icon:'◷' },
+    { id:'ajustes',    label:'AJUSTES',       sub:'OPCIONES',       icon:'⚙' },
   ];
   return (
-    <div style={{background:'#0F0F18',borderRight:'1px solid rgba(225,185,80,0.72)',display:'flex',flexDirection:'column',height:'100%'}}>
+    <div style={{background:'#0F0F18',borderRight:'1px solid rgba(225,185,80,0.72)',display:'flex',flexDirection:'column',height:'100%',width:'100%',overflow:'hidden',boxSizing:'border-box'}}>
       <div style={{padding:'14px 12px 10px',borderBottom:'1px solid rgba(225,185,80,0.32)',textAlign:'center'}}>
         <div className="orbitron" style={{fontSize:'18px',fontWeight:900,color:'#D4A840',textShadow:'0 0 14px #D4AF50',lineHeight:1}}>HERO</div>
         <div className="orbitron" style={{fontSize:'7px',color:'rgba(225,185,80,0.88)',letterSpacing:'5px',marginTop:'2px'}}>COMMAND</div>
         <div style={{fontSize:'8px',color:'rgba(225,185,80,0.58)',marginTop:'5px',letterSpacing:'1px'}}>KPRESE LABS</div>
       </div>
       <div style={{padding:'6px 12px 2px'}}><div style={{height:'1px',background:'linear-gradient(90deg,transparent,#A97C37,transparent)'}}/></div>
-      <nav style={{flex:1,paddingTop:'2px',overflowY:'auto'}}>
+      <nav style={{flex:1,paddingTop:'2px',overflowY:'auto',overflowX:'hidden',minHeight:0}}>
         {items.map(it => (
           <div key={it.id} className={`nav-item ${active===it.id?'active':''}`} onClick={()=>onChange(it.id)}
-               style={{padding:'10px 12px',marginBottom:'1px'}}>
-            <div style={{display:'flex',alignItems:'center',gap:'7px'}}>
+               style={{padding:'10px 10px',marginBottom:'1px',boxSizing:'border-box',width:'100%',overflow:'hidden'}}>
+            <div style={{display:'flex',alignItems:'center',gap:'6px',minWidth:0}}>
               <span style={{color:active===it.id?'#D4A840':'rgba(225,185,80,0.78)',fontSize:'12px',flexShrink:0}}>{it.icon}</span>
-              <div>
-                <div className="orbitron" style={{fontSize:'9px',fontWeight:'bold',color:active===it.id?'#EAC858':'rgba(225,185,80,0.96)',letterSpacing:'1px',lineHeight:1.2}}>{it.label}</div>
-                <div style={{fontSize:'7px',color:'rgba(225,185,80,0.72)',letterSpacing:'1px',marginTop:'2px'}}>{it.sub}</div>
+              <div style={{minWidth:0,overflow:'hidden'}}>
+                <div className="orbitron" style={{fontSize:'9px',fontWeight:'bold',color:active===it.id?'#EAC858':'rgba(225,185,80,0.96)',letterSpacing:'1px',lineHeight:1.2,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{it.label}</div>
+                <div style={{fontSize:'7px',color:'rgba(225,185,80,0.72)',letterSpacing:'1px',marginTop:'2px',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{it.sub}</div>
               </div>
             </div>
           </div>
         ))}
       </nav>
-      <div style={{padding:'8px 12px',borderTop:'1px solid rgba(225,185,80,0.32)',fontSize:'8px',color:'rgba(225,185,80,0.65)',lineHeight:'1.6'}}>
+      <div style={{padding:'8px 10px',borderTop:'1px solid rgba(225,185,80,0.32)',fontSize:'8px',color:'rgba(225,185,80,0.58)',lineHeight:'1.7',flexShrink:0}}>
         <div>WizKids HeroClix</div>
         <div>Modern Age Rules</div>
       </div>
@@ -1861,6 +1862,94 @@ function EventosSection() {
 }
 
 // ═══════════════════════════════════════════════════════════
+//  AJUSTES SECTION
+// ═══════════════════════════════════════════════════════════
+function AjustesSection({ zoom, setZoom }) {
+  const ZOOM_MIN = 0.70, ZOOM_MAX = 1.40, ZOOM_STEP = 0.05;
+  const pct = Math.round(zoom * 100);
+  const adj = (d) => setZoom(z => parseFloat(Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, z + d)).toFixed(2)));
+
+  const presets = [
+    { label:'PEQUEÑO', val:0.80 },
+    { label:'NORMAL',  val:1.00 },
+    { label:'GRANDE',  val:1.20 },
+    { label:'XL',      val:1.40 },
+  ];
+
+  // bar fill %
+  const fill = ((zoom - ZOOM_MIN) / (ZOOM_MAX - ZOOM_MIN) * 100).toFixed(1);
+
+  return (
+    <div style={{height:'100%',overflowY:'auto',padding:'24px',display:'flex',flexDirection:'column',gap:'20px',maxWidth:'560px'}}>
+
+      {/* Header */}
+      <div>
+        <div className="orbitron" style={{fontSize:'18px',fontWeight:900,color:'#EAC858',marginBottom:'4px'}}>AJUSTES</div>
+        <div style={{fontSize:'11px',color:'rgba(225,185,80,0.72)'}}>Configuración de la interfaz — guardada automáticamente</div>
+        <div style={{height:'1px',background:'linear-gradient(90deg,#D4A840,transparent)',marginTop:'12px'}}/>
+      </div>
+
+      {/* Zoom card */}
+      <div className="panel corner" style={{padding:'20px 24px'}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'16px'}}>
+          <div>
+            <div className="orbitron" style={{fontSize:'11px',fontWeight:700,color:'#EAC858',letterSpacing:'2px'}}>TAMAÑO DE INTERFAZ</div>
+            <div style={{fontSize:'10px',color:'rgba(225,185,80,0.72)',marginTop:'3px'}}>Escala todos los elementos de la app</div>
+          </div>
+          <div className="orbitron" style={{fontSize:'32px',fontWeight:900,color:'#D4A840',textShadow:'0 0 16px rgba(212,168,64,0.6)',lineHeight:1}}>{pct}<span style={{fontSize:'16px'}}>%</span></div>
+        </div>
+
+        {/* Slider grande */}
+        <div style={{display:'flex',alignItems:'center',gap:'10px',marginBottom:'10px'}}>
+          <button onClick={()=>adj(-ZOOM_STEP)} disabled={zoom<=ZOOM_MIN} className="btn-outline"
+                  style={{flexShrink:0,width:36,height:36,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'20px',borderRadius:'3px',padding:0,opacity:zoom<=ZOOM_MIN?0.3:1}}>−</button>
+          <div style={{flex:1,position:'relative',height:'36px',display:'flex',alignItems:'center'}}>
+            {/* Track visual personalizado */}
+            <div style={{position:'absolute',left:0,right:0,height:'4px',background:'rgba(225,185,80,0.15)',borderRadius:'2px'}}/>
+            <div style={{position:'absolute',left:0,width:`${fill}%`,height:'4px',background:'linear-gradient(90deg,#7A5820,#D4A840)',borderRadius:'2px',transition:'width 0.15s'}}/>
+            <input type="range" min={ZOOM_MIN} max={ZOOM_MAX} step={ZOOM_STEP} value={zoom}
+                   onChange={e=>setZoom(parseFloat(e.target.value))}
+                   style={{position:'absolute',left:0,right:0,width:'100%',opacity:0,height:'36px',cursor:'pointer',margin:0,padding:0}}/>
+            {/* Thumb visual */}
+            <div style={{position:'absolute',left:`calc(${fill}% - 9px)`,width:'18px',height:'18px',borderRadius:'50%',background:'linear-gradient(135deg,#C9A040,#EAC858)',border:'2px solid #EAC858',boxShadow:'0 0 10px rgba(212,168,64,0.7)',pointerEvents:'none',transition:'left 0.15s'}}/>
+          </div>
+          <button onClick={()=>adj(ZOOM_STEP)} disabled={zoom>=ZOOM_MAX} className="btn-outline"
+                  style={{flexShrink:0,width:36,height:36,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'20px',borderRadius:'3px',padding:0,opacity:zoom>=ZOOM_MAX?0.3:1}}>+</button>
+        </div>
+
+        {/* Etiquetas min/max */}
+        <div style={{display:'flex',justifyContent:'space-between',fontSize:'9px',color:'rgba(225,185,80,0.58)',marginBottom:'16px',padding:'0 46px'}}>
+          <span>70%</span><span>100%</span><span>140%</span>
+        </div>
+
+        {/* Presets */}
+        <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'8px'}}>
+          {presets.map(p=>{
+            const active = Math.abs(zoom-p.val)<0.001;
+            return (
+              <button key={p.val} onClick={()=>setZoom(p.val)} className={active?'btn-gold':'btn-outline'}
+                      style={{padding:'10px 4px',fontSize:'10px',borderRadius:'3px',textAlign:'center'}}>
+                <div className="orbitron" style={{fontSize:'9px',letterSpacing:'1px'}}>{p.label}</div>
+                <div style={{fontSize:'11px',fontWeight:'bold',marginTop:'3px'}}>{Math.round(p.val*100)}%</div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Info */}
+      <div style={{padding:'14px 16px',background:'rgba(225,185,80,0.06)',border:'1px solid rgba(225,185,80,0.22)',borderLeft:'3px solid #D4A840',fontSize:'11px',color:'rgba(225,185,80,0.78)',lineHeight:'1.75'}}>
+        <div style={{fontWeight:'bold',color:'#EAC858',marginBottom:'4px',fontSize:'10px',letterSpacing:'1px'}}>ℹ INFORMACIÓN</div>
+        El nivel de zoom se guarda automáticamente en tu navegador y se restaura en cada visita.
+        Usa los presets para cambios rápidos o el slider para ajuste fino.
+        El rango va de <strong style={{color:'#EAC858'}}>70%</strong> (compacto) a <strong style={{color:'#EAC858'}}>140%</strong> (accesibilidad).
+      </div>
+
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════
 //  APP ROOT
 // ═══════════════════════════════════════════════════════════
 const SECTION_LABELS = {
@@ -1869,13 +1958,21 @@ const SECTION_LABELS = {
   builder:'EDITOR DE EQUIPOS',
   calculator:'CALCULADORA DE COMBATE',
   reglamento:'REGLAMENTO MODERNO',
-  eventos:'REGISTRO DE EVENTOS'
+  eventos:'REGISTRO DE EVENTOS',
+  ajustes:'AJUSTES'
 };
 
 function App() {
   const [sec, setSec] = useState('pac');
+  const [zoom, setZoom] = useState(() => {
+    try { return parseFloat(localStorage.getItem('heroclix_zoom') || '1'); } catch { return 1; }
+  });
+  useEffect(() => {
+    try { localStorage.setItem('heroclix_zoom', zoom); } catch {}
+  }, [zoom]);
+
   return (
-    <div style={{width:'100vw',height:'100vh',display:'flex',flexDirection:'column',background:'#080810',overflow:'hidden'}}>
+    <div style={{width:`calc(100vw / ${zoom})`,height:`calc(100vh / ${zoom})`,display:'flex',flexDirection:'column',background:'#080810',overflow:'hidden',zoom:zoom,transformOrigin:'top left'}}>
       <StatusBar/>
       <div style={{flex:1,display:'flex',overflow:'hidden'}}>
         <div style={{width:'152px',flexShrink:0}}><SideNav active={sec} onChange={setSec}/></div>
@@ -1900,6 +1997,7 @@ function App() {
               {sec==='calculator' && <Calculator/>}
               {sec==='reglamento' && <ReglamentoSection/>}
               {sec==='eventos'    && <EventosSection/>}
+              {sec==='ajustes'    && <AjustesSection zoom={zoom} setZoom={setZoom}/>}
             </div>
           </div>
         </div>
