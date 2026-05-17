@@ -437,20 +437,156 @@ function SideNav({ active, onChange }) {
 //  PAC SECTION
 // ═══════════════════════════════════════════════════════════
 function PACSection() {
-  const [cat, setCat] = useState('movement');
-  const [col, setCol] = useState(null);
-  const catData = PAC[cat];
-  const power = col && catData.powers[col];
+  const [cat, setCat]         = useState('movement');
+  const [col, setCol]         = useState(null);
+  const [containerW, setW]    = useState(900);
+  const containerRef          = useRef(null);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(entries => setW(entries[0].contentRect.width));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const catData  = PAC[cat];
+  const power    = col && catData.powers[col];
+  const selColor = COLORS.find(c => c.id === col);
+
+  // breakpoints
+  const isWide    = containerW >= 560;   // columna lateral completa
+  const isMedium  = containerW >= 380;   // columna lateral compacta (solo dot)
+  // < 380 → franja horizontal de dots arriba
+
+  /* ── Selector de color: franja horizontal (pantallas muy pequeñas) ── */
+  const ColorStripH = () => (
+    <div style={{flexShrink:0,display:'flex',flexWrap:'wrap',gap:'5px',
+                 padding:'8px 10px',borderBottom:'1px solid rgba(225,185,80,0.28)',
+                 background:'#0D0D18'}}>
+      {COLORS.map(c => {
+        const isSel = col === c.id;
+        return (
+          <button key={c.id} title={c.label} onClick={()=>setCol(isSel?null:c.id)}
+                  style={{width:30,height:30,borderRadius:'4px',background:c.bg,cursor:'pointer',
+                          border:isSel?'2px solid rgba(255,255,255,0.85)':'2px solid transparent',
+                          boxShadow:isSel?`0 0 8px ${c.bg}`:'none',
+                          flexShrink:0,transition:'all 0.15s'}}/>
+        );
+      })}
+    </div>
+  );
+
+  /* ── Selector de color: columna lateral solo dot (ancho medio) ── */
+  const ColorColDots = () => (
+    <div style={{width:'46px',flexShrink:0,display:'flex',flexDirection:'column',
+                 borderRight:'1px solid rgba(225,185,80,0.28)',background:'#0D0D18',
+                 overflowY:'auto',padding:'8px 7px',gap:'5px',alignItems:'center'}}>
+      {COLORS.map(c => {
+        const isSel = col === c.id;
+        return (
+          <button key={c.id} title={c.label} onClick={()=>setCol(isSel?null:c.id)}
+                  style={{width:26,height:26,borderRadius:'50%',background:c.bg,cursor:'pointer',
+                          border:isSel?'2px solid rgba(255,255,255,0.85)':'2px solid transparent',
+                          boxShadow:isSel?`0 0 8px ${c.bg}`:'none',
+                          flexShrink:0,transition:'all 0.15s'}}/>
+        );
+      })}
+    </div>
+  );
+
+  /* ── Selector de color: columna lateral completa con etiqueta ── */
+  const ColorColFull = () => (
+    <div style={{width:'118px',flexShrink:0,display:'flex',flexDirection:'column',
+                 borderRight:'1px solid rgba(225,185,80,0.28)',background:'#0D0D18',overflowY:'auto'}}>
+      <div style={{padding:'8px 8px 4px',fontSize:'8px',color:'rgba(225,185,80,0.50)',
+                   letterSpacing:'2px',textAlign:'center',flexShrink:0}}>COLOR PAC</div>
+      <div style={{display:'flex',flexDirection:'column',gap:'3px',padding:'0 6px 8px'}}>
+        {COLORS.map(c => {
+          const isSel = col === c.id;
+          return (
+            <button key={c.id} onClick={()=>setCol(isSel?null:c.id)}
+                    style={{display:'flex',alignItems:'center',gap:'7px',padding:'7px 8px',
+                            cursor:'pointer',borderRadius:'3px',
+                            background:isSel?c.bg:'transparent',
+                            color:isSel?c.fg:'rgba(225,185,80,0.88)',
+                            border:isSel?`1px solid ${c.bg}`:'1px solid rgba(225,185,80,0.20)',
+                            fontFamily:"'Share Tech Mono',monospace",fontSize:'11px',fontWeight:'bold',
+                            textAlign:'left',transition:'all 0.15s',
+                            boxShadow:isSel?`0 0 10px ${c.bg}55`:'none'}}>
+              <span style={{width:'11px',height:'11px',borderRadius:'50%',flexShrink:0,background:c.bg,
+                            border:isSel?'2px solid rgba(255,255,255,0.4)':'1px solid rgba(255,255,255,0.15)',
+                            boxShadow:isSel?`0 0 6px ${c.bg}`:'none',display:'inline-block'}}/>
+              <span style={{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{c.label}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+
+  /* ── Panel de detalles del poder ── */
+  const PowerPanel = () => (
+    <div style={{flex:1,overflowY:'auto',padding:'14px'}}>
+      {!power ? (
+        <div style={{display:'flex',alignItems:'center',justifyContent:'center',
+                     height:'100%',flexDirection:'column',gap:'12px',color:'rgba(225,185,80,0.65)'}}>
+          <div style={{fontSize:'54px',lineHeight:1}}>{catData.icon}</div>
+          <div className="orbitron" style={{fontSize:'13px',color:'rgba(225,185,80,0.88)',letterSpacing:'2px'}}>
+            {catData.label}
+          </div>
+          <div style={{fontSize:'11px',textAlign:'center',maxWidth:'200px',lineHeight:1.6}}>
+            Selecciona un color para ver el poder correspondiente
+          </div>
+          <div style={{marginTop:'6px',display:'flex',flexDirection:'column',gap:'3px',width:'70px',opacity:0.22}}>
+            {COLORS.map(c=><div key={c.id} style={{height:'5px',borderRadius:'2px',background:c.bg}}/>)}
+          </div>
+        </div>
+      ) : (
+        <div className="panel corner fade-in" style={{padding:'16px'}}>
+          <div style={{display:'flex',alignItems:'center',gap:'12px',marginBottom:'14px'}}>
+            <div style={{width:42,height:42,background:selColor?.bg,borderRadius:'6px',flexShrink:0,
+                         border:'1px solid rgba(255,255,255,0.2)',boxShadow:`0 0 16px ${selColor?.bg}70`}}/>
+            <div style={{flex:1,minWidth:0}}>
+              <div className="orbitron" style={{fontSize:'14px',fontWeight:900,color:'#EAC858',lineHeight:1.2}}>
+                {power.name}
+              </div>
+              <div style={{fontSize:'11px',color:'rgba(225,185,80,0.94)',marginTop:'4px'}}>{power.nameEs}</div>
+            </div>
+            <div style={{fontSize:'9px',textAlign:'right',flexShrink:0,lineHeight:1.7}}>
+              <div style={{color:'rgba(225,185,80,0.80)'}}>{catData.label}</div>
+              <div style={{marginTop:'2px',padding:'2px 6px',background:selColor?.bg,
+                           color:selColor?.fg,borderRadius:'2px',fontWeight:'bold',fontSize:'9px'}}>
+                {selColor?.label.toUpperCase()}
+              </div>
+            </div>
+          </div>
+          <span className="pwr-type">{power.type.toUpperCase()}</span>
+          <div style={{marginTop:'13px',fontSize:'12px',lineHeight:'1.85',color:'#F0D272'}}>{power.desc}</div>
+          <div style={{marginTop:'14px',paddingTop:'11px',borderTop:'1px solid rgba(225,185,80,0.32)'}}>
+            <div style={{fontSize:'9px',color:'rgba(225,185,80,0.75)',letterSpacing:'2px',marginBottom:'6px'}}>KEYWORDS</div>
+            <div style={{display:'flex',flexWrap:'wrap',gap:'5px'}}>
+              {power.kw.map(k=><span key={k} className="tag">{k}</span>)}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 
   return (
-    <div style={{display:'flex',flexDirection:'column',height:'100%',overflow:'hidden'}}>
-      {/* Category tabs */}
-      <div style={{display:'flex',gap:'4px',padding:'10px',borderBottom:'1px solid rgba(225,185,80,0.38)',background:'#141420',flexShrink:0}}>
+    <div ref={containerRef} style={{display:'flex',flexDirection:'column',height:'100%',overflow:'hidden'}}>
+
+      {/* ── Pestañas de categoría ── */}
+      <div style={{display:'flex',gap:'4px',padding:'10px',borderBottom:'1px solid rgba(225,185,80,0.38)',
+                   background:'#141420',flexShrink:0}}>
         {Object.values(PAC).map(c => {
-          const isA = cat===c.id;
+          const isA = cat === c.id;
           return (
-            <button key={c.id} onClick={()=>{setCat(c.id);setCol(null);}} className="cat-btn"
-                    style={{flex:1,background:isA?'rgba(225,185,80,0.38)':'rgba(225,185,80,0.10)',border:`1px solid ${isA?'#D4A840':'rgba(225,185,80,0.38)'}`,color:isA?'#EAC858':'rgba(225,185,80,0.92)',borderRadius:'2px'}}>
+            <button key={c.id} onClick={()=>{setCat(c.id); setCol(null);}} className="cat-btn"
+                    style={{flex:1,background:isA?'rgba(225,185,80,0.38)':'rgba(225,185,80,0.10)',
+                            border:`1px solid ${isA?'#D4A840':'rgba(225,185,80,0.38)'}`,
+                            color:isA?'#EAC858':'rgba(225,185,80,0.92)',borderRadius:'2px'}}>
               <div style={{fontSize:'18px',lineHeight:1}}>{c.icon}</div>
               <div className="orbitron" style={{fontSize:'8px',marginTop:'3px',letterSpacing:'1px'}}>{c.label}</div>
             </button>
@@ -458,59 +594,21 @@ function PACSection() {
         })}
       </div>
 
-      <div style={{flex:1,overflow:'hidden',display:'flex',flexDirection:'column',padding:'12px',gap:'10px'}}>
-        {/* Color buttons */}
-        <div style={{flexShrink:0}}>
-          <div style={{fontSize:'9px',color:'rgba(225,185,80,0.88)',letterSpacing:'2px',marginBottom:'8px'}}>▸ SELECCIONAR COLOR — {catData.label} ({catData.labelEn})</div>
-          <div style={{display:'flex',flexWrap:'wrap',gap:'6px'}}>
-            {COLORS.map(c => (
-              <button key={c.id} onClick={()=>setCol(col===c.id?null:c.id)} className={`color-btn ${col===c.id?'sel':''}`}
-                      style={{background:c.bg,color:c.fg,border:col===c.id?'2px solid white':'2px solid transparent',padding:'4px 10px',fontSize:'10px',fontFamily:"'Share Tech Mono',monospace",fontWeight:'bold',borderRadius:'3px',minWidth:'70px',cursor:'pointer'}}>
-                {c.label}
-              </button>
-            ))}
-          </div>
+      {/* ── Cuerpo responsive ── */}
+      {!isMedium ? (
+        /* Pantalla muy pequeña: franja horizontal + panel abajo */
+        <div style={{flex:1,overflow:'hidden',display:'flex',flexDirection:'column'}}>
+          <ColorStripH/>
+          <PowerPanel/>
         </div>
-
-        {/* Power panel */}
-        <div style={{flex:1,overflowY:'auto'}}>
-          {!power ? (
-            <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'100%',flexDirection:'column',gap:'10px',color:'rgba(225,185,80,0.72)'}}>
-              <div style={{fontSize:'52px'}}>{catData.icon}</div>
-              <div className="orbitron" style={{fontSize:'13px',color:'rgba(225,185,80,0.92)'}}>{catData.label}</div>
-              <div style={{fontSize:'11px'}}>Selecciona un color para ver el poder</div>
-              <div style={{marginTop:'8px',display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'4px',maxWidth:'280px',opacity:0.3}}>
-                {COLORS.map(c=><div key={c.id} style={{height:'6px',borderRadius:'2px',background:c.bg}}/>)}
-              </div>
-            </div>
-          ) : (
-            <div className="panel corner fade-in" style={{padding:'18px'}}>
-              <div style={{display:'flex',alignItems:'center',gap:'14px',marginBottom:'14px'}}>
-                <div style={{width:42,height:42,background:COLORS.find(c=>c.id===col)?.bg,borderRadius:'5px',flexShrink:0,border:'1px solid rgba(255,255,255,0.2)',boxShadow:`0 0 12px ${COLORS.find(c=>c.id===col)?.bg}60`}}/>
-                <div style={{flex:1}}>
-                  <div className="orbitron" style={{fontSize:'14px',fontWeight:900,color:'#EAC858',lineHeight:1.2}}>{power.name}</div>
-                  <div style={{fontSize:'11px',color:'rgba(225,185,80,0.94)',marginTop:'3px'}}>{power.nameEs}</div>
-                </div>
-                <div style={{fontSize:'9px',color:'rgba(225,185,80,0.78)',textAlign:'right'}}>
-                  <div>{catData.label}</div>
-                  <div style={{color:'rgba(225,185,80,0.92)',marginTop:'2px'}}>{COLORS.find(c=>c.id===col)?.label.toUpperCase()}</div>
-                </div>
-              </div>
-
-              <span className="pwr-type">{power.type.toUpperCase()}</span>
-
-              <div style={{marginTop:'14px',fontSize:'12px',lineHeight:'1.8',color:'#F0D272'}}>{power.desc}</div>
-
-              <div style={{marginTop:'14px',paddingTop:'12px',borderTop:'1px solid rgba(225,185,80,0.38)'}}>
-                <div style={{fontSize:'9px',color:'rgba(225,185,80,0.84)',letterSpacing:'2px',marginBottom:'6px'}}>TAGS</div>
-                <div style={{display:'flex',flexWrap:'wrap',gap:'5px'}}>
-                  {power.kw.map(k=><span key={k} className="tag">{k}</span>)}
-                </div>
-              </div>
-            </div>
-          )}
+      ) : (
+        /* Pantalla media/grande: columna izquierda + panel derecho */
+        <div style={{flex:1,overflow:'hidden',display:'flex'}}>
+          {isWide ? <ColorColFull/> : <ColorColDots/>}
+          <PowerPanel/>
         </div>
-      </div>
+      )}
+
     </div>
   );
 }
@@ -1970,7 +2068,7 @@ const SECTION_LABELS = {
 function App() {
   const [sec, setSec] = useState('pac');
   const [zoom, setZoom] = useState(() => {
-    try { return parseFloat(localStorage.getItem('heroclix_zoom') || '1'); } catch { return 1; }
+    try { return parseFloat(localStorage.getItem('heroclix_zoom') || '1.25'); } catch { return 1.25; }
   });
   useEffect(() => {
     try { localStorage.setItem('heroclix_zoom', zoom); } catch {}
